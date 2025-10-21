@@ -3,6 +3,14 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict
 from app.scoring import score_candidate
 from app.linkedin_scraper.scraper import scrape_linkedin_profiles
+from app.helper.scraper_to_database import transform_scraped_profile
+
+from app.models import (
+  DateInfo,
+  Experience,
+  Education,
+  LinkedInCandidate
+)
 from app.database.queries import (
   insert_candidate, 
   get_all_candidates, 
@@ -17,44 +25,6 @@ app = FastAPI()
 """
 START OF CANDIDATE CLASS
 """
-
-class Experience(BaseModel):
-  title: str
-  company: str
-  start_date: Optional[str] = None
-  end_date: Optional[str] = None
-  duration: Optional[str] = None
-  description: Optional[str] = None
-  skills: List[str] = []
-
-class Education(BaseModel):
-  school: str
-  degree: Optional[str] = None
-  start_year: Optional[int] = None
-  end_year: Optional[int] = None
-
-class LinkedInCandidate(BaseModel):
-  # Basic info 
-  name: str
-  headline: Optional[str] = None
-  summary: Optional[str] = None
-  location: Optional[str] = None
-  linkedin_url: str
-
-  # Current position
-  current_title: Optional[str] = None
-  current_company: Optional[str] = None
-  current_description: Optional[str] = None 
-  current_start_date: Optional[str] = None
-
-  # Full history
-  experience: List[Experience] = []
-  education: List[Education] = []
-  skills: List[str] = []
-  certifications: List[str] = []
-  
-  # Scoring
-  benchmark_scores: Dict[str, float] = {}
 
 """
 END OF CANDIDATE CLASS
@@ -154,9 +124,20 @@ def scrape_linkedin_profile(profile_url: str):
     
     profile = results[0]
 
-    return profile
+    # initial stages of building this function
+    transformed_profile = transform_scraped_profile(profile)
+
+    return transformed_profile
 
   except HTTPException:
     raise
   except Exception as e: 
     raise HTTPException(status_code=500, detail=f"Scraping error: {str(e)}")
+
+
+@app.post("/transform-scraped-data")
+def transform_scraped_data(scraped_data):
+  
+  validated_experiences = transform_scraped_experience(scraped_data)
+  
+  return validated_experiences

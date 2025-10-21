@@ -1,0 +1,1077 @@
+{
+  "profileUrl": "https://linkedin.com/in/vsr4321",
+  "basic_info": {
+    "fullname": "Vijay Shekhar R.",
+    "first_name": "Vijay Shekhar",
+    "last_name": "R.",
+    "headline": "CCIE Security(Emeritus), CISSP, 9xAWS",
+    "public_identifier": "vsr4321",
+    "profile_url": "https://linkedin.com/in/vsr4321",
+    "profile_picture_url": "https://media.licdn.com/dms/image/v2/D5603AQHcbvxKygQAWg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1712656094827?e=1762387200&v=beta&t=WU3WctS-q8OuzlaQFQ1CXS4ZPNrdEAJI3jeFwR4za88",
+    "about": "I am not a Ninja, Jedi or a Rockstar! I just use my skills, knowledge and available data to help make decisions and solve problems to deliver tangible outcomes.\n\nPersonalityType: Analytic and Driver",
+    "location": {
+      "country": "Australia",
+      "city": "Sydney, New South Wales",
+      "full": "Sydney, New South Wales, Australia",
+      "country_code": "AU"
+    },
+    "creator_hashtags": [
+      "cloud",
+      "aws"
+    ],
+    "is_creator": true,
+    "is_influencer": false,
+    "is_premium": false,
+    "created_timestamp": 1142874101000,
+    "show_follower_count": true,
+    "background_picture_url": "https://media.licdn.com/dms/image/v2/C5116AQEU-SyI9vW0uQ/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1516340299281?e=1762387200&v=beta&t=zSR5cSnrOCb51ZXUSyCZEi1h8UcJwSnEqmP6aKkz-nM",
+    "urn": "ACoAAABQ3fwB1JYi0EvotLRCBSd3EmflANavG54",
+    "follower_count": 954,
+    "connection_count": 781,
+    "current_company": "Amazon Web Services (AWS)",
+    "current_company_urn": "2382910",
+    "current_company_url": "https://www.linkedin.com/company/amazon-web-services",
+    "email": null
+  },
+  "experience": [
+    {
+      "title": "Systems Engineer , AWS Region Services",
+      "company": "Amazon Web Services (AWS)",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQFqdm1TZ-RZKQ/company-logo_400_400/B4EZgOay6gHEAg-/0/1752588562343/amazon_web_services_logo?e=1762387200&v=beta&t=1Lu_A9LfpuMKByEDSmrx3GXoSSg2EkBRWj1_NRmYClY",
+      "duration": "Jul 2025 - Present · 4 mos",
+      "location": "Sydney, New South Wales, Australia",
+      "employment_type": "On-site",
+      "company_linkedin_url": "https://www.linkedin.com/company/2382910/",
+      "description": "Building and operating AWS services and regions regions as part of Utility Computing team.",
+      "start_date": {
+        "month": "Jul",
+        "year": 2025
+      },
+      "end_date": {
+        "year": null,
+        "month": null
+      },
+      "is_current": true,
+      "skills": []
+    },
+    {
+      "title": "Partner Solution Architect (Public Sector- Global System Integrators)",
+      "company": "Amazon Web Services (AWS)",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQFqdm1TZ-RZKQ/company-logo_400_400/B4EZgOay6gHEAg-/0/1752588562343/amazon_web_services_logo?e=1762387200&v=beta&t=1Lu_A9LfpuMKByEDSmrx3GXoSSg2EkBRWj1_NRmYClY",
+      "duration": "Nov 2022 - Jul 2025 · 2 yrs 9 mos",
+      "location": "Sydney, New South Wales, Australia",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/company/2382910/",
+      "description": "Presales focussed \nCore Responsibilities:\n• Drive technical enablement and success of AWS Partner ecosystem\n• Architect scalable cloud solutions leveraging full AWS service portfolio\n• Guide partners through AWS technical validation and certification process\n• Lead technical deep-dives and architectural reviews with partner teams\n• Enable partners to build and optimize AWS-based solutions\n• Validate partner solutions against AWS Well-Architected Framework\n\nKey Achievements:\n• Accelerate partner journey from ideation to market-ready solutions\n• Provide technical guidance on AWS best practices and service integration\n• Enable partners' technical teams through workshops and hands-on labs\n• Drive architectural excellence in partner solutions\n\nTechnical Focus:\n• Cloud architecture and solution design\n• Multi-service AWS implementations\n• Security, reliability, and performance optimization\n• Cost-effective cloud solutions",
+      "start_date": {
+        "month": "Nov",
+        "year": 2022
+      },
+      "end_date": {
+        "month": "Jul",
+        "year": 2025
+      },
+      "is_current": false,
+      "skills": [
+        "Troubleshooting",
+        "Technology Trends",
+        "Presales"
+      ]
+    },
+    {
+      "title": "Cloud Technical Account Manager (Independent Software Vendors)",
+      "company": "Amazon Web Services (AWS)",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQFqdm1TZ-RZKQ/company-logo_400_400/B4EZgOay6gHEAg-/0/1752588562343/amazon_web_services_logo?e=1762387200&v=beta&t=1Lu_A9LfpuMKByEDSmrx3GXoSSg2EkBRWj1_NRmYClY",
+      "duration": "Apr 2019 - Nov 2022 · 3 yrs 8 mos",
+      "location": "Phoenix metropolitan area, Arizona, United States",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/company/2382910/",
+      "description": "Core Responsibilities:\n• Craft and execute customer-specific AWS adoption strategies\n• Serve as principal technical advisor and customer advocate within AWS\n• Drive 'Working Backwards' methodology to align AWS solutions with customer needs\n• Provide strategic technical leadership in solution planning and implementation\n• Ensure operational health of customers' AWS environments\n• Align AWS solutions with customers' business objectives and technical challenges\n\nKey Focus:\n• Deep customer engagement\n• Cross-functional collaboration\n• Best practices advocacy\n• Proactive operational oversight",
+      "start_date": {
+        "month": "Apr",
+        "year": 2019
+      },
+      "end_date": {
+        "month": "Nov",
+        "year": 2022
+      },
+      "is_current": false,
+      "skills": [
+        "Troubleshooting",
+        "Technology Trends"
+      ]
+    },
+    {
+      "title": "Engineering Tech Lead, Network automation and Analytics (DNAC NDP/Assurance)",
+      "company": "Cisco",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQFYnR_Zrm87Dg/company-logo_400_400/B56ZnMyVr4HUAY-/0/1760077372453/cisco_logo?e=1762387200&v=beta&t=jqUUAHir8zbz2Ab0bB0D-tIfXp6c_g8Hf5Be0wGlZi4",
+      "duration": "Sep 2017 - Apr 2019 · 1 yr 8 mos",
+      "location": "San Francisco, California, United States",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/company/1063/",
+      "description": "• Drive network analytics solutions for enhanced troubleshooting capabilities\n• Lead test strategy and feature coverage initiatives\n• Guide lab operations, resource optimization, and capacity planning\n• Collaborate with TMEs on product demonstrations and use cases\n• Support Sales/TAC teams with PoCs and customer escalations\n• Spearhead automation initiatives for feature testing and regression\n\nTechnical Focus:\n• Network analytics and visibility solutions\n• Test automation and infrastructure optimization\n• Cross-functional technical leadership",
+      "start_date": {
+        "month": "Sep",
+        "year": 2017
+      },
+      "end_date": {
+        "month": "Apr",
+        "year": 2019
+      },
+      "is_current": false,
+      "skills": [
+        "Troubleshooting",
+        "Technology Trends"
+      ]
+    },
+    {
+      "title": "Professional Services Consultant ANZ (SDN Practice)",
+      "company": "Juniper Networks",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQGEHZaYOKgaTw/company-logo_400_400/B4EZigFz1IHIAc-/0/1755032534663/juniper_networks_logo?e=1762387200&v=beta&t=gjIvuV8SseTCm-3GBMFXZKGfnQjWJPlvfcEsvtdYT1M",
+      "duration": "Nov 2015 - Oct 2017 · 2 yrs",
+      "location": "Sydney, Australia",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/company/2240/",
+      "description": "Core Focus Areas:\n• Contrail SDN Networking\n• OpenStack Networking integration\n• NFV solutions with Juniper vNF, vMX, and vSRX\n• Large-scale network automation for greenfield deployments\n• Python scripting for network management and configuration analysis\n\nKey Responsibilities:\n• Deliver cutting-edge solutions to Juniper's APAC clientele\n• Bridge pre-sales and post-sales activities, including PoCs\n• Drive adoption of SDN, NFV, and automation technologies\n\nTechnical Passions:\n• Linux enthusiast\n• Active follower of OpenStack developments",
+      "start_date": {
+        "month": "Nov",
+        "year": 2015
+      },
+      "end_date": {
+        "month": "Oct",
+        "year": 2017
+      },
+      "is_current": false,
+      "skills": [
+        "Troubleshooting",
+        "Technology Trends",
+        "Presales"
+      ]
+    },
+    {
+      "title": "IT Architect (FinTech), Consultant and Trainer",
+      "company": "Various Clients",
+      "company_logo_url": "",
+      "duration": "Jan 2010 - Oct 2015 · 5 yrs 10 mos",
+      "location": "Sydney Area",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/search/results/all/?keywords=Various+Clients",
+      "description": "Key Deliverables:\n• Datacenter relocations for major Australian bank and critical DR sites\n• Private Cloud implementations (Cisco UCS, VMware, IBM P-Series, AIX)\n• VDI infrastructure using Cisco UCS, Xen Hypervisor, and XenDesktop\n• Mission-critical migrations (Alteon to F5) for Internet Banking\n• Large-scale firewall optimization (200+ instances)\n• Government financial institution security audits\n• Bluecoat solutions: ProxySG, CAS, ProxyAV, MACH5 WAN optimization\n• Sophos UTM deployments\n• Cisco Fiber Channel SAN with Nexus and MDS\n\nResponsibilities:\n• End-to-end project management: scoping, planning, design, and delivery\n• Technical SME and escalation point\n• Client, vendor, and peer communication at all levels\n• Team mentorship and leadership\n\nAdditional Role:\nContract Trainer for Sophos and Bluecoat products",
+      "start_date": {
+        "month": "Jan",
+        "year": 2010
+      },
+      "end_date": {
+        "month": "Oct",
+        "year": 2015
+      },
+      "is_current": false,
+      "skills": [
+        "Troubleshooting",
+        "Technology Trends",
+        "Presales"
+      ]
+    },
+    {
+      "title": "Security Escalation Engineer (Network Admission Control)",
+      "company": "Cisco Systems",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQFYnR_Zrm87Dg/company-logo_400_400/B56ZnMyVr4HUAY-/0/1760077372453/cisco_logo?e=1762387200&v=beta&t=jqUUAHir8zbz2Ab0bB0D-tIfXp6c_g8Hf5Be0wGlZi4",
+      "duration": "Aug 2008 - Jan 2010 · 1 yr 6 mos",
+      "location": "Sydney, Australia",
+      "employment_type": "Full-time",
+      "company_linkedin_url": "https://www.linkedin.com/company/1063/",
+      "description": "• Subject Matter Expert (SME) providing escalation support to global Cisco TAC teams\n• Drive complex problem resolution through lab reproduction and root cause analysis\n• Key liaison between APAC Support, Sales, Pro Services, and Business Unit\n• Influence product roadmap through direct technical feedback and market insights",
+      "start_date": {
+        "month": "Aug",
+        "year": 2008
+      },
+      "end_date": {
+        "month": "Jan",
+        "year": 2010
+      },
+      "is_current": false,
+      "skills": []
+    },
+    {
+      "title": "NAC Solution Test Engineer",
+      "company": "Cisco Systems",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQFYnR_Zrm87Dg/company-logo_400_400/B56ZnMyVr4HUAY-/0/1760077372453/cisco_logo?e=1762387200&v=beta&t=jqUUAHir8zbz2Ab0bB0D-tIfXp6c_g8Hf5Be0wGlZi4",
+      "duration": "Apr 2005 - Aug 2008 · 3 yrs 5 mos",
+      "location": "Bangalore India",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/company/1063/",
+      "description": "• Progressed through roles: Development, Feature, Regression, and Solution Testing\n• Validated enterprise-class NAC technologies and interoperability\n• Bridged gaps between development, customer support, and escalation teams\n\nKey focus: Enhancing NAC solutions through comprehensive testing and cross-functional collaboration",
+      "start_date": {
+        "month": "Apr",
+        "year": 2005
+      },
+      "end_date": {
+        "month": "Aug",
+        "year": 2008
+      },
+      "is_current": false,
+      "skills": []
+    },
+    {
+      "title": "Security Test Engineer",
+      "company": "Nokia Enterprise Solutions",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQGL8hpduEqGKQ/company-logo_400_400/company-logo_400_400/0/1677420439270/nokia_logo?e=1762387200&v=beta&t=vJATNd0c7T3Q9Z4OOm9ILjar_DiBiTZpgAD_zTK-86o",
+      "duration": "Jan 2004 - Apr 2005 · 1 yr 4 mos",
+      "location": "",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/company/1070/",
+      "description": "• Led testing initiatives for enterprise security solutions including Checkpoint VSX\n• Core testing engineer for Nokia SSL VPN and IPSO operating system\n• Executed critical security features validation in agile engineering team",
+      "start_date": {
+        "month": "Jan",
+        "year": 2004
+      },
+      "end_date": {
+        "month": "Apr",
+        "year": 2005
+      },
+      "is_current": false,
+      "skills": []
+    },
+    {
+      "title": "NOC Engineer",
+      "company": "ERNET India",
+      "company_logo_url": "",
+      "duration": "Mar 2002 - Dec 2003 · 1 yr 10 mos",
+      "location": "",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/search/results/all/?keywords=ERNET+India",
+      "description": "NOC Engineer at ERNET India (Govt. of India's Class A ISP):\n• Manage core operations for India's .IN domain registry and authoritative DNS\n• Drive connectivity solutions across national education & research network\n• Oversee 13 POPs and VSAT Hub serving remote universities nationwide",
+      "start_date": {
+        "month": "Mar",
+        "year": 2002
+      },
+      "end_date": {
+        "month": "Dec",
+        "year": 2003
+      },
+      "is_current": false,
+      "skills": []
+    },
+    {
+      "title": "PartTime-Freelance Author & Technical reviewer",
+      "company": "CyberMedia",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQF0N4qwJH4Hgg/company-logo_400_400/company-logo_400_400/0/1728897188902/cybermedia_logo?e=1762387200&v=beta&t=nLOjDCkhyWzv2dZhZkQQxtEVE-UtcHSYAAimomhUpxc",
+      "duration": "Feb 2003 - Jul 2003 · 6 mos",
+      "location": "",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/company/10274/",
+      "description": "Author of two Linux technical books:\n• 'RedHat Linux: Study Guide'\n• 'RedHat Linux: Complete Bible'\nPublished by Lakshmi Publications, New Delhi\n\nTechnical Reviewer for multiple industry publications and articles.",
+      "start_date": {
+        "month": "Feb",
+        "year": 2003
+      },
+      "end_date": {
+        "month": "Jul",
+        "year": 2003
+      },
+      "is_current": false,
+      "skills": []
+    },
+    {
+      "title": "IT Support",
+      "company": "Reliance Industries Limited",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQGL2p38Nc6Qkg/company-logo_400_400/company-logo_400_400/0/1661518370542/reliance_logo?e=1762387200&v=beta&t=-KW8uSzkdGOHzpkVIJ6Jp1QKwpxls8f-jpN4L7matE0",
+      "duration": "2001 - 2002 · 1 yr",
+      "location": "",
+      "employment_type": "",
+      "company_linkedin_url": "https://www.linkedin.com/company/2378/",
+      "description": "Progressed from IT Admin Assistant to Site Manager, overseeing technology operations for 200+ personnel.\n\nLed mission-critical IT infrastructure for Reliance Petroleum's Trading Floor - the organization's highest-priority technology environment",
+      "start_date": {
+        "year": 2001,
+        "month": null
+      },
+      "end_date": {
+        "year": 2002,
+        "month": null
+      },
+      "is_current": false,
+      "skills": []
+    }
+  ],
+  "education": [
+    {
+      "school": "Doctor Bhim Rao Ambedkar University",
+      "degree": "BE, Computer Science",
+      "degree_name": "BE",
+      "field_of_study": "Computer Science",
+      "duration": "1997 - 2001",
+      "school_linkedin_url": "https://www.linkedin.com/company/15092855/",
+      "description": "",
+      "activities": "",
+      "school_logo_url": "",
+      "start_date": {
+        "year": 1997,
+        "month": null
+      },
+      "end_date": {
+        "year": 2001,
+        "month": null
+      }
+    }
+  ],
+  "projects": [
+    {
+      "name": "Digital Library",
+      "start_date": "Jan 2003",
+      "end_date": "Present",
+      "description": "",
+      "associated_company": "",
+      "company_urn": "",
+      "skills": [],
+      "contributors": [
+        "ACoAAACeV1UBxwVxpNce_-bAxux7yKz1bgR_Cc0",
+        "ACoAAAMDkeABUIa0texvP9Vkt7Iy7s-b4WhAgS0"
+      ],
+      "project_urls": [],
+      "media_items": []
+    },
+    {
+      "name": "BS courseware development",
+      "start_date": "Feb 2007",
+      "end_date": "Jul 2007",
+      "description": "Was involved in authoring to develop Online training content (e-learning) on behalf of NIIT Limited for www.itt-tech.edu . The course “Security Architecture” was part of BS curriculum offered by the university.",
+      "associated_company": "",
+      "company_urn": "",
+      "skills": [],
+      "contributors": [
+        "ACoAAAKsfNMBIr-NTmWyBMP8WNO9EN5E9Dd88GM"
+      ],
+      "project_urls": [],
+      "media_items": []
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Foundations of Behavioral Science",
+      "organization": "Columbia+",
+      "organization_urn": "98320518",
+      "credential_id": "Credential ID 160714809",
+      "issue_date": "Sep 2025",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "https://badges.plus.columbia.edu/ab0fac3b-b6b9-42a0-a297-92ac80dac6dc"
+    },
+    {
+      "name": "AWS Certified Data Engineer – Associate",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "",
+      "issue_date": "Feb 2025 · Expires Feb 2028",
+      "expiration_date": "Feb 2028",
+      "skills": [],
+      "credential_url": "https://www.credly.com/badges/549059d4-7c38-410c-bd74-2e92b9e99128/linked_in_profile"
+    },
+    {
+      "name": "AWS Certified AI Practitioner Early Adopter",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "",
+      "issue_date": "Nov 2024",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "https://www.credly.com/badges/f0226527-0f9a-472f-b331-9c628bd1bec2/linked_in_profile"
+    },
+    {
+      "name": "SME Associate",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "",
+      "issue_date": "Jun 2023 · Expires Dec 2025",
+      "expiration_date": "Dec 2025",
+      "skills": [],
+      "credential_url": "https://www.credly.com/badges/cf27429c-3b51-4c17-92ba-f2f67121ee17/linked_in_profile"
+    },
+    {
+      "name": "AWS Certification SME",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "",
+      "issue_date": "Dec 2021",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "https://www.credly.com/badges/0bcbe365-f9c5-410a-a9a6-77765a297e60"
+    },
+    {
+      "name": "AWS Certified SysOps Administrator – Associate",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "",
+      "issue_date": "Jun 2021",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "https://www.credly.com/badges/2f04eec2-8e44-4508-8739-3a44b9e34265"
+    },
+    {
+      "name": "Redhat Certified Openstack Admin",
+      "organization": "Red Hat",
+      "organization_urn": "3545",
+      "credential_id": "Credential ID 110-852-472",
+      "issue_date": "Apr 2016",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "https://www.redhat.com/en/services/training/ex210-red-hat-certified-system-administrator-red-hat-openstack-exam"
+    },
+    {
+      "name": "Sophos Certified Architect-UTM",
+      "organization": "Sophos",
+      "organization_urn": "",
+      "credential_id": "",
+      "issue_date": "Sep 2014",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": ""
+    },
+    {
+      "name": "VCP5-DCV",
+      "organization": "VMware",
+      "organization_urn": "2988",
+      "credential_id": "",
+      "issue_date": "Feb 2014",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "http://www.vmware.com/go/vcp5dcv"
+    },
+    {
+      "name": "JNCIS",
+      "organization": "Juniper Networks",
+      "organization_urn": "2240",
+      "credential_id": "",
+      "issue_date": "Mar 2012",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": ""
+    },
+    {
+      "name": "CCIE SECURITY",
+      "organization": "Cisco",
+      "organization_urn": "1063",
+      "credential_id": "Credential ID 17589",
+      "issue_date": "Mar 2007",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "http://www.cisco.com/web/learning/certifications/expert/index.html"
+    },
+    {
+      "name": "RHCE",
+      "organization": "Red Hat",
+      "organization_urn": "3545",
+      "credential_id": "",
+      "issue_date": "May 2005",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "http://www.redhat.com/training/certifications/rhce/"
+    },
+    {
+      "name": "CISSP",
+      "organization": "ISC2",
+      "organization_urn": "",
+      "credential_id": "",
+      "issue_date": "Mar 2005",
+      "expiration_date": null,
+      "skills": [],
+      "credential_url": "https://www.isc2.org/CISSP/Default.aspx"
+    },
+    {
+      "name": "AWS Certified DevOps Engineer – Professional",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "",
+      "issue_date": "Jul 2022 · Expired Jul 2025",
+      "expiration_date": "Jul 2025",
+      "skills": [],
+      "credential_url": "https://www.credly.com/badges/ec2c2b02-ae18-4601-b9eb-1b904704f8b4?source=linked_in_profile"
+    },
+    {
+      "name": "AWS Certified Database – Specialty",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "",
+      "issue_date": "May 2021 · Expired May 2024",
+      "expiration_date": "May 2024",
+      "skills": [],
+      "credential_url": "https://www.credly.com/badges/b0e733f6-0b46-45cb-b859-edfead7d3f68/public_url"
+    },
+    {
+      "name": "AWS Certified Solution Architect Professional",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "Credential ID AWS00866787",
+      "issue_date": "Mar 2021 · Expired Feb 2024",
+      "expiration_date": "Feb 2024",
+      "skills": [],
+      "credential_url": "https://www.youracclaim.com/badges/9b0287ed-bacf-4c84-9844-32ba13d76ed9/public_url"
+    },
+    {
+      "name": "AWS Certified Solutions Architect - Associate",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "Credential ID 9B7G9M02BE4410GE",
+      "issue_date": "Jun 2019 · Expired Feb 2024",
+      "expiration_date": "Feb 2024",
+      "skills": [],
+      "credential_url": "https://www.youracclaim.com/badges/a1d7c29c-f932-43cd-b580-258f9854d558/public_url"
+    },
+    {
+      "name": "AWS Certified Developer – Associate",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "",
+      "issue_date": "Sep 2020 · Expired Sep 2023",
+      "expiration_date": "Sep 2023",
+      "skills": [],
+      "credential_url": "https://www.youracclaim.com/earner/earned/badge/04068305-f34b-4281-8199-2f65001ae3ee"
+    },
+    {
+      "name": "AWS Certified Security Speciality",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "Credential ID AWS00866787",
+      "issue_date": "Jan 2020 · Expired Jan 2023",
+      "expiration_date": "Jan 2023",
+      "skills": [],
+      "credential_url": "https://www.youracclaim.com/badges/dac4f20c-5228-4923-bc26-2d3a1c852419/public_url"
+    },
+    {
+      "name": "AWS Certified Advanced Networking - Specialty",
+      "organization": "Amazon Web Services (AWS)",
+      "organization_urn": "2382910",
+      "credential_id": "Credential ID J5X9CRBCG11QQ29R",
+      "issue_date": "Sep 2019 · Expired Sep 2022",
+      "expiration_date": "Sep 2022",
+      "skills": [],
+      "credential_url": "https://www.youracclaim.com/badges/4c49e3bf-969c-43af-9baf-72f8847d6f97/public_url"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Technology Trends",
+      "endorsement_count": 0,
+      "related_experiences": [
+        "5 experiences across Amazon Web Services (AWS) and 3 other companies"
+      ]
+    },
+    {
+      "name": "Troubleshooting",
+      "endorsement_count": 0,
+      "related_experiences": [
+        "10 experiences across Amazon Web Services (AWS) and 7 other companies"
+      ]
+    },
+    {
+      "name": "Presales",
+      "endorsement_count": 0,
+      "related_experiences": [
+        "3 experiences across Amazon Web Services (AWS) and 2 other companies"
+      ]
+    },
+    {
+      "name": "Network Security",
+      "endorsement_count": 57,
+      "related_experiences": []
+    },
+    {
+      "name": "Firewalls",
+      "endorsement_count": 48,
+      "related_experiences": []
+    },
+    {
+      "name": "Cisco Technologies",
+      "endorsement_count": 39,
+      "related_experiences": []
+    },
+    {
+      "name": "VPN",
+      "endorsement_count": 26,
+      "related_experiences": []
+    },
+    {
+      "name": "Checkpoint",
+      "endorsement_count": 17,
+      "related_experiences": []
+    },
+    {
+      "name": "Security",
+      "endorsement_count": 14,
+      "related_experiences": []
+    },
+    {
+      "name": "Juniper",
+      "endorsement_count": 9,
+      "related_experiences": []
+    },
+    {
+      "name": "IPSec",
+      "endorsement_count": 9,
+      "related_experiences": []
+    },
+    {
+      "name": "Virtualization",
+      "endorsement_count": 19,
+      "related_experiences": []
+    },
+    {
+      "name": "Data Center",
+      "endorsement_count": 30,
+      "related_experiences": []
+    },
+    {
+      "name": "TCP/IP",
+      "endorsement_count": 13,
+      "related_experiences": []
+    },
+    {
+      "name": "Load Balancing",
+      "endorsement_count": 8,
+      "related_experiences": []
+    },
+    {
+      "name": "Cisco Nexus",
+      "endorsement_count": 7,
+      "related_experiences": []
+    },
+    {
+      "name": "Switches",
+      "endorsement_count": 10,
+      "related_experiences": []
+    },
+    {
+      "name": "Network Design",
+      "endorsement_count": 9,
+      "related_experiences": []
+    },
+    {
+      "name": "CCIE",
+      "endorsement_count": 4,
+      "related_experiences": []
+    },
+    {
+      "name": "Red Hat Linux",
+      "endorsement_count": 7,
+      "related_experiences": []
+    },
+    {
+      "name": "Routers",
+      "endorsement_count": 8,
+      "related_experiences": []
+    },
+    {
+      "name": "IP",
+      "endorsement_count": 7,
+      "related_experiences": []
+    },
+    {
+      "name": "VMware",
+      "endorsement_count": 9,
+      "related_experiences": []
+    },
+    {
+      "name": "OSPF",
+      "endorsement_count": 7,
+      "related_experiences": []
+    },
+    {
+      "name": "IDS",
+      "endorsement_count": 3,
+      "related_experiences": []
+    },
+    {
+      "name": "Cisco UCS",
+      "endorsement_count": 4,
+      "related_experiences": []
+    },
+    {
+      "name": "Networking",
+      "endorsement_count": 15,
+      "related_experiences": []
+    },
+    {
+      "name": "Network Engineering",
+      "endorsement_count": 4,
+      "related_experiences": []
+    },
+    {
+      "name": "Routing Protocols",
+      "endorsement_count": 2,
+      "related_experiences": []
+    },
+    {
+      "name": "PKI",
+      "endorsement_count": 3,
+      "related_experiences": []
+    },
+    {
+      "name": "Computer Security",
+      "endorsement_count": 4,
+      "related_experiences": []
+    },
+    {
+      "name": "Routing",
+      "endorsement_count": 7,
+      "related_experiences": []
+    },
+    {
+      "name": "IPS",
+      "endorsement_count": 2,
+      "related_experiences": []
+    },
+    {
+      "name": "IPv6",
+      "endorsement_count": 2,
+      "related_experiences": []
+    },
+    {
+      "name": "ASA",
+      "endorsement_count": 3,
+      "related_experiences": []
+    },
+    {
+      "name": "LDAP",
+      "endorsement_count": 2,
+      "related_experiences": []
+    },
+    {
+      "name": "Linux",
+      "endorsement_count": 6,
+      "related_experiences": []
+    },
+    {
+      "name": "Cisco IOS",
+      "endorsement_count": 5,
+      "related_experiences": []
+    },
+    {
+      "name": "CCNP",
+      "endorsement_count": 3,
+      "related_experiences": []
+    },
+    {
+      "name": "BGP",
+      "endorsement_count": 4,
+      "related_experiences": []
+    },
+    {
+      "name": "QoS",
+      "endorsement_count": 2,
+      "related_experiences": []
+    },
+    {
+      "name": "CISSP",
+      "endorsement_count": 2,
+      "related_experiences": []
+    },
+    {
+      "name": "Tufin",
+      "endorsement_count": 1,
+      "related_experiences": []
+    },
+    {
+      "name": "Wireshark",
+      "endorsement_count": 1,
+      "related_experiences": []
+    },
+    {
+      "name": "Cisco",
+      "endorsement_count": 0,
+      "related_experiences": []
+    },
+    {
+      "name": "FCoE",
+      "endorsement_count": 0,
+      "related_experiences": []
+    },
+    {
+      "name": "Enterprise Network Design",
+      "endorsement_count": 0,
+      "related_experiences": []
+    },
+    {
+      "name": "Enterprise Network Security",
+      "endorsement_count": 0,
+      "related_experiences": []
+    },
+    {
+      "name": "Technical Sales Presentations",
+      "endorsement_count": 0,
+      "related_experiences": []
+    },
+    {
+      "name": "Corporate Sales Presentations",
+      "endorsement_count": 0,
+      "related_experiences": []
+    },
+    {
+      "name": "Deep Packet Inspection",
+      "endorsement_count": 0,
+      "related_experiences": []
+    },
+    {
+      "name": "VirtualBox",
+      "endorsement_count": 0,
+      "related_experiences": []
+    },
+    {
+      "name": "Redhat KVM",
+      "endorsement_count": 0,
+      "related_experiences": []
+    }
+  ],
+  "recommendations": {
+    "received_recommendations": [
+      {
+        "recommender_name": "Steven Taylor",
+        "recommender_title": "Solution Architect: IoT | AI | Knowledge Graph | Portals | Streaming | Cloud | Analytics | Automation | Devices | IT Strategy",
+        "recommender_profile_id": "ACoAAADT_kUBQ44QpMgrIbtv0LjAS_BxD0Q8R_U",
+        "recommendation_date": "March 17, 2025",
+        "relationship": "Steven was Vijay Shekhar’s client",
+        "recommendation_text": "I can wholeheartedly recommend Vijay as a trusted partner. I work with Vijay on some fairly complex solutions at NBN and have been impressed by Vijay's integrity, his business and technical acumen, his ability to filter valuable signals from the noise, and his unshakable drive towards outcomes. Vijay is my go-to when I exhaust my own understanding of AWS options and I've not yet hit the limit of what he can offer, and is generous with it. I can reliably call on Vijay to get expertise when I need fresh insight or to get perspective on a problem."
+      },
+      {
+        "recommender_name": "Vincent Borg",
+        "recommender_title": "Managing Director at Tourist Australia Tourism & Media Pty Ltd",
+        "recommender_profile_id": "ACoAAA1bdLcB3_Ej8HbYGdACl3rMpq1Y2xcLhHU",
+        "recommendation_date": "September 27, 2016",
+        "relationship": "Vincent was Vijay Shekhar’s client",
+        "recommendation_text": "Vijay has completed integral implementations for the security and increased stability of our systems to ensure continuance of our operations now and into the future. He has always shown complete professionalism and competence with an abundance of knowledge within his extensive field. I would highly recommend him as the best I have every dealt with in the past 15 years."
+      },
+      {
+        "recommender_name": "Ritesh Shah",
+        "recommender_title": "Service Management Leader",
+        "recommender_profile_id": "ACoAAAEU_GgBw5BLhLLsNC1djhTTtghXoOfTFsk",
+        "recommendation_date": "October 22, 2015",
+        "relationship": "Ritesh managed Vijay Shekhar directly",
+        "recommendation_text": "Vijay is an exceptional technologist and a visionary in his field of expertise.  He thrives on learning, solving complex problems and creating long term IT capabilities.  No problem is too big.\r\n\r\nVijay, it is a pleasure working with you."
+      },
+      {
+        "recommender_name": "Karen Farrell",
+        "recommender_title": "Executive Manager Data Centre Modernisation @ Commonwealth Bank",
+        "recommender_profile_id": "ACoAAAfJsncBekb5kA4F08FTvcEz16oaatMXsaw",
+        "recommendation_date": "September 2, 2013",
+        "relationship": "Karen worked with Vijay Shekhar on the same team",
+        "recommendation_text": "Vijay is dedicated to delivering successful outcomes for both IBM and our customers. He always acts with integrity and values input from all members of the team. Vijay has exceptional technical skills and his ability to analyse and resolve technical network issues is second to none."
+      },
+      {
+        "recommender_name": "Santosh K Krishna Murthy",
+        "recommender_title": "Principal Architect, CCIE Security (Emeritus), Okta Certified Professional, Lean Six Sigma Yellow Belt",
+        "recommender_profile_id": "ACoAAADkrRoBst-IRDAJyLz3I5ctPWCP2eT3Ihs",
+        "recommendation_date": "August 1, 2013",
+        "relationship": "Santosh K worked with Vijay Shekhar but on different teams",
+        "recommendation_text": "Worked with Vijay on multiple customer escalated issue. Always admired with his commitment and tech. expertise. His skills to approach on solving a problem and understanding the business needs are amazing.\r\nHe is a guy who wake up with an hunger for knowledge everyday.Good luck with your current & future endeavors"
+      },
+      {
+        "recommender_name": "Santokh Randhawa",
+        "recommender_title": "Senior Network Engineer",
+        "recommender_profile_id": "ACoAAAPLPagBKl4oG0w_Ukh2tVToncZzltAnQvo",
+        "recommendation_date": "December 9, 2012",
+        "relationship": "Santokh worked with Vijay Shekhar but on different teams",
+        "recommendation_text": "I worked on various projects as an Network Implementer in IBM where Vijay was the Architect.\r\n\r\nVijay has the following qualities -\r\n\r\nTechnical Excellence\r\nSincerity\r\nPersistence\r\nLeadership\r\n\r\nI have worked with many architects and I can say that Vijay is one of the best. He is an excellent enterprise architect who  has taken on complex implementation projects and delivered successfully. \r\n\r\nVijay has the ability to understand complex concepts under stressful  situations and come up with solutions. Many of the infrastructure environments could not have been completed successfully if not for Vijay's architectural and technical ability. His grasp of technical issues is brilliant and on many occasions Vijay displayed outstanding troubleshooting skills.\r\n\r\nVijay is a definite asset to any organization"
+      },
+      {
+        "recommender_name": "Gagan Sethi",
+        "recommender_title": "Strategic Customer Engagements at Amazon Web Services (AWS)",
+        "recommender_profile_id": "ACoAAAFfFwoB8sSgRBqnU713peM_L82k_ElwGLw",
+        "recommendation_date": "June 26, 2010",
+        "relationship": "Gagan worked with Vijay Shekhar but they were at different companies",
+        "recommendation_text": "Vijay and I interacted on some complex security design discussions, he was then part of the security team @ Cisco.\r\nHe is very instrumental in foreseeing risks and mitigating them during design phase. I was also very impressed by his calm and composed attitude to approach situations.\r\nOverall, Vijay is a good combination of seasoned network security professional with Industry recognized certifications & a humble person to interact with, I wish him all the very best for future assignments, both professionally & personally."
+      },
+      {
+        "recommender_name": "Syed Ghayur",
+        "recommender_title": "VP of Customer Success and Solution Engineering at ArmorCode Inc.",
+        "recommender_profile_id": "ACoAAABVsmwBvveE7HwhMfYMEElTRWvkdzQRPwo",
+        "recommendation_date": "January 25, 2010",
+        "relationship": "Syed worked with Vijay Shekhar but on different teams",
+        "recommendation_text": "Vijay is a very smart individual. I have worked with him closely with NAC escalations. He helped me in resolving some technical issues at very critical times. He worked well with engineering to drive number of high priority bugs to resolution."
+      },
+      {
+        "recommender_name": "Vadim Linev (vadim.linev gmail.com)",
+        "recommender_title": "Solutions Architect at Cisco",
+        "recommender_profile_id": "ACoAAABdytgBtn8SErpHMCa1B-FUJPErwWf8p9U",
+        "recommendation_date": "October 28, 2009",
+        "relationship": "Vadim worked with Vijay Shekhar but on different teams",
+        "recommendation_text": "Has been working with Vijay for about 2 years and it’s always a pleasure to deal with. Very knowledgeable and very sharp when it comes to some new technology or product. Impressively multiskilled and combines wide field of view with attention to minute details, crucial qualities for engineer. Always stay calm and focused when working under hard pressure. You can always rely on him if he committed to finish some job. Vijay is a real asset in any company."
+      },
+      {
+        "recommender_name": "Kesava V.",
+        "recommender_title": "Cyber Security | Engineering Leadership | Execution | Customer Success | People Management",
+        "recommender_profile_id": "ACoAAAKU7UABJfmKikdn2PIT69Q-tD5BYsHmvf0",
+        "recommendation_date": "October 22, 2009",
+        "relationship": "Vijay Shekhar was senior to Kesava but didn't manage Kesava directly",
+        "recommendation_text": "Vijay Shekhar was my mentor when I Joined Cisco Systems as an employee.\r\nWell ., it's needless to mention about his vast & keen Networking skill set. Any one who works with him will get that in possible shortest time. Besides his sound Networking skills., he is a very good  instructor [bit strict :-)]. He used to encourage others to be independent & that helped me in some of the key times. Missed you!! All the Best."
+      },
+      {
+        "recommender_name": "Ejaj M",
+        "recommender_title": "Addl Dir at Govt of India",
+        "recommender_profile_id": "ACoAAAFvD1QB3wo4qiYc4WeP1y58ugNcTD4q8Q8",
+        "recommendation_date": "June 7, 2009",
+        "relationship": "Ejaj was Vijay Shekhar’s client",
+        "recommendation_text": "Vijay as a Network Engineer, is always successful to meet the scheduled time to deliver. I have found him very hard working as individual, as well as team member. He possess the quality of being team leader also."
+      },
+      {
+        "recommender_name": "Sushil Nehra",
+        "recommender_title": "Director / Scientist F, Ministry of Electronics & Information Technology",
+        "recommender_profile_id": "ACoAAACeV1UBxwVxpNce_-bAxux7yKz1bgR_Cc0",
+        "recommendation_date": "October 12, 2008",
+        "relationship": "Sushil was senior to Vijay Shekhar but didn't manage Vijay Shekhar directly",
+        "recommendation_text": "Vijay is a person who has the eye and aptitude for details. He is a self driven professional, once a task is assigned to him then there is no need to monitor. In fact he will be coming up with lots of new ideas. He leads in implementing the ideas with full vigor.\r\nHe is an asset worth not loosing by any organization."
+      },
+      {
+        "recommender_name": "Bhawna Gulati",
+        "recommender_title": "Product Manager  | Experienced in B2B  | B2C  | Internal Developer Platforms | Internal Tooling",
+        "recommender_profile_id": "ACoAAABjd0EBigsilPA2ZuP1Y1egyL__XrEXUMQ",
+        "recommendation_date": "April 16, 2008",
+        "relationship": "Bhawna was Vijay Shekhar’s client",
+        "recommendation_text": "V.Shekhar is great to work with. He is a sincere person dedicated to his work. He meets all the deadlines well in time while providing quality work as well."
+      },
+      {
+        "recommender_name": "Chandra Prakash Suryawanshi",
+        "recommender_title": "Managing Director and India Leader for Global Cyber Risk Services",
+        "recommender_profile_id": "ACoAAABxjdYBNZXn_ILrW4J_75_ujrXju6sBk5Y",
+        "recommendation_date": "April 15, 2008",
+        "relationship": "Chandra Prakash worked with Vijay Shekhar on the same team",
+        "recommendation_text": "Vijay Shekhar is one of the finest technical person seen in my career, He thinks differently, plans his work appropriately, very sinceare in his work and has tremendous amount of energy and enthusiasm for techncial networking and security work.\r\n\r\nHighly recommended, he is an Asset."
+      },
+      {
+        "recommender_name": "Neeraj Chaudhary",
+        "recommender_title": "Principal Software Development Engineer at ZScaler",
+        "recommender_profile_id": "ACoAAABYCQ0BU_nw1Oe6jWzVqrhr2deRBiZifak",
+        "recommendation_date": "April 14, 2008",
+        "relationship": "Neeraj worked with Vijay Shekhar on the same team",
+        "recommendation_text": "Shekhar is a master in TCP/IP Networking and security. Our whole team at Cisco has immensely benefited from his knowledge and experience. He has always been proactive and supportive. I strongly recommend him for the Network and Security Design and Deployment."
+      }
+    ],
+    "given_recommendations": [
+      {
+        "recommender_name": "KV Suresh",
+        "recommender_title": "SASE | Cyber Sec | Technical Product Marketing | GTM | Solutions Architect",
+        "recommender_profile_id": "ACoAAAjj3NAB7UgvdlJG6FAXRKXkHDQTQ4Lf8_Y",
+        "recommendation_date": "February 18, 2024",
+        "relationship": "Vijay Shekhar worked with KV but on different teams",
+        "recommendation_text": "I know Suresh as we worked at Nokia and Cisco as part of product engineering. We worked together in implementing testing framework for end-to-end validation of several security and networking product features. \nSuresh is detail-oriented, easy to work with and a great team-player.I wish him good luck for the future."
+      },
+      {
+        "recommender_name": "Vijayram Gopu",
+        "recommender_title": "Sr Tools Dev at Apple",
+        "recommender_profile_id": "ACoAAANPXPABiGCxaSO_JEbquTBviMnFxRgG0gc",
+        "recommendation_date": "July 11, 2019",
+        "relationship": "Vijay Shekhar was senior to Vijayram but didn't manage Vijayram directly",
+        "recommendation_text": "I know Vijayram Gopu from Cisco in SW Application-Frameworks development team, we worked together in implementing a framework-solution for end-to-end system validation, this had been a good value-add to the group, several teams leveraged upon it to do their system-validation, also helped us in several other valuable productivity tools; he is a good innovative developer, responsible, detail-oriented, easy to work with and a great team-player.I wish him good luck for the future.\n\n"
+      },
+      {
+        "recommender_name": "Teong Quah",
+        "recommender_title": "Looking for and welcoming opportunities!",
+        "recommender_profile_id": "ACoAAAFzPLwBYwqpQnp71YhYNaSGHkNiXxAi5bg",
+        "recommendation_date": "June 30, 2017",
+        "relationship": "Vijay Shekhar reported directly to Teong",
+        "recommendation_text": "Teong was my hiring manager in Juniper and I had the pleasure to report to him for almost two years before management shakeups changed reporting lines.\nI found Teong to be very approachable, trustworthy, listening and accommodating from a manager's perspective.\nHe also has this ability to get things done by presenting the problem to you and asking your opinion instead of just pushing the conclusion on you. \nI have found him to be very analytic and objective in solving problems, conflicts and communicating very effectively and balancing conflicting requirements.\nHe also has a vision and sets goals for himself and for his team to achieve and ensures they are recognized.\nI will have no issues recommending him or working with him in the future.\n\n"
+      },
+      {
+        "recommender_name": "Chandramouli GS",
+        "recommender_title": "Engineering Leader - Network, Cloud, End Point Security, SASE Products at Lookout",
+        "recommender_profile_id": "ACoAAAEBDncBfWQrDmF4-3xab2AlO808ZeW6I6E",
+        "recommendation_date": "November 23, 2015",
+        "relationship": "Chandramouli was senior to Vijay Shekhar but didn't manage Vijay Shekhar directly",
+        "recommendation_text": "I worked with Mouli during my stint with Nokia Enterprise Services prior to Checkpoint's acquisition.  He was an experienced team lead with wealth of knowledge. He was my mentor and go to person for any technical or work related advise. I always found him to be very approachable, humble and loaded with knowledge. I can certainly say he did make mine and several others new hires transition into Nokia a seamless process and contributed to the organization. All the best!"
+      },
+      {
+        "recommender_name": "Jeff Wang",
+        "recommender_title": "Senior Security Engineer at Northern Beaches Council",
+        "recommender_profile_id": "ACoAAADsdvABD8WXHgxuTV3vXSU0A-ECtNjn2No",
+        "recommendation_date": "October 14, 2014",
+        "relationship": "Vijay Shekhar was senior to Jeff but didn't manage Jeff directly",
+        "recommendation_text": "I worked with Jeff for over 8 months on a critical Datacenter relocation project for the Online Banking platform's DR site. \r\nJeff's role as a network SME was to assist us in detailed design,  impact analysis and head the implementation team.\r\nDuring this engagement I found Jeff to be very Hardworking, Detailed oriented and   knowledgeable. He has the courage to call out if there are risks involved. Over all he is easy going, calm and great to work with. \r\nI have no doubt recommending Jeff, and wish him success."
+      },
+      {
+        "recommender_name": "Rajkumar (Raj) Samy",
+        "recommender_title": "Presales (Enterprise Architecture & Hybrid Cloud )",
+        "recommender_profile_id": "ACoAAAhsYCQBSikL2G6oKa76nU98uqE4FTU0D5o",
+        "recommendation_date": "November 10, 2013",
+        "relationship": "Vijay Shekhar worked with Rajkumar (Raj) but on different teams",
+        "recommendation_text": "I worked with Raj on various projects @ IBM where he played lead architect role involving complex Datacenter technologies.\r\nI always found him competent architectwho had that 20,000 foot view of objective, but also detailed enough to mentor the implementers.\r\n\r\nI will not hesitate to recommend him as a IT Solution Architect who is very competent in-various system technologies like Intel, Windows, Linux, AIX, Storage, Virtualizarion etc."
+      },
+      {
+        "recommender_name": "Andrew Duma",
+        "recommender_title": "Executive Director - Infrastructure Platforms Client Solution",
+        "recommender_profile_id": "ACoAAAUfXs0B3c9Luiw3u5UU_p6H3K1Zc9icE6k",
+        "recommendation_date": "March 24, 2013",
+        "relationship": "Vijay Shekhar worked with Andrew but on different teams",
+        "recommendation_text": "I have worked with Andrew on ESB project with IBM where he was managing the Project.\r\nI can say he has great Project Management qualities. He was able to run the project successfully in tough times, when customer requirements and expectations kept changing.\r\nHe was able to clearly communicate with various stakeholders and teams to deliver project on time."
+      },
+      {
+        "recommender_name": "Balaji Ramisetty",
+        "recommender_title": "Senior Service Engineer in Information and Network Security domain",
+        "recommender_profile_id": "ACoAAAdluhIBuQF5BtbHOhwOTcVWFteqwBWaxxU",
+        "recommendation_date": "June 14, 2011",
+        "relationship": "Vijay Shekhar worked with Balaji but on different teams",
+        "recommendation_text": "I worked with Balaji at two occasions, One when we were working for Nokia Enterprise Solutions India and then in IBM Australia. \r\nIn both occasions I found Balaji to be very sincere dependable and knowledgeable in his domain. \r\nHe is hardworking and ready to go that extra mile to get the task done.\r\nHe is an asset to any team."
+      },
+      {
+        "recommender_name": "Chandramouli GS",
+        "recommender_title": "Engineering Leader - Network, Cloud, End Point Security, SASE Products at Lookout",
+        "recommender_profile_id": "ACoAAAEBDncBfWQrDmF4-3xab2AlO808ZeW6I6E",
+        "recommendation_date": "August 28, 2010",
+        "relationship": "Chandramouli was senior to Vijay Shekhar but didn't manage Vijay Shekhar directly",
+        "recommendation_text": "I worked with Mouli in Nokia ES Hyderabad, where he was my team lead.\r\nHe was not only my Team lead he was my mentor too.\r\nI can say that he certainly has great technical and leadership qualities. He has good interpersonal skills too. he was very popular among the whole organization, not to mention that he is very hardworking and devoted towards his work.\r\nI will more than happy to work with him again, given a chance. Good Luck!"
+      },
+      {
+        "recommender_name": "Santosh K Krishna Murthy",
+        "recommender_title": "Principal Architect, CCIE Security (Emeritus), Okta Certified Professional, Lean Six Sigma Yellow Belt",
+        "recommender_profile_id": "ACoAAADkrRoBst-IRDAJyLz3I5ctPWCP2eT3Ihs",
+        "recommendation_date": "July 13, 2010",
+        "relationship": "Vijay Shekhar worked with Santosh K but on different teams",
+        "recommendation_text": "I worked with Santosh on various escalation cases in Cisco and found to him very knowledgeable and sharp when it comes to technology. \r\nHe is also very methodical in his approach and keeps his nerves in stressful network down conditions.\r\nHe also completed his CCIE security in a very short time which further reinforces that fact that he is a quick learner and sharp shooter.\r\nI highly recommend him and wish him all the best with his career!!"
+      },
+      {
+        "recommender_name": "Narendra Devaskar",
+        "recommender_title": "Senior Product Owner/Manager",
+        "recommender_profile_id": "ACoAAAELwpgBu_RNw6Ee7DmdwpkTpOOlO52FJjE",
+        "recommendation_date": "March 4, 2010",
+        "relationship": "Vijay Shekhar worked with Narendra but on different teams",
+        "recommendation_text": "I worked a lot with Naren when I was working for Cisco as a NAC escalation engineer. He was one of the few TAC engineers in Security team whom I can rely on to get the job done. He is dependable and sincere in his efforts great communicator and has a good sense of humor.Not to mention his technical abilities, his CCIE in security speaks for his Technical skills itself.\r\nIf i ever get to make a recommendation or influence the hiring decision, i will make an extra effort for this guy!"
+      },
+      {
+        "recommender_name": "Kesava V.",
+        "recommender_title": "Cyber Security | Engineering Leadership | Execution | Customer Success | People Management",
+        "recommender_profile_id": "ACoAAAKU7UABJfmKikdn2PIT69Q-tD5BYsHmvf0",
+        "recommendation_date": "October 22, 2009",
+        "relationship": "Vijay Shekhar managed Kesava directly",
+        "recommendation_text": "Kesava came out fresh from college to work with us. I acted as  a mentor to him and found him to be very sincere, hardworking, quick learner and someone who has aptitude for details.\r\nHe ramped up on key NAC and other networking areas quite quickly and started adding value in no time.\r\nI would definately hire him again if the need be. Good luck to him!!"
+      },
+      {
+        "recommender_name": "Sushil Nehra",
+        "recommender_title": "Director / Scientist F, Ministry of Electronics & Information Technology",
+        "recommender_profile_id": "ACoAAACeV1UBxwVxpNce_-bAxux7yKz1bgR_Cc0",
+        "recommendation_date": "October 13, 2008",
+        "relationship": "Sushil was senior to Vijay Shekhar but didn't manage Vijay Shekhar directly",
+        "recommendation_text": "Mr Nehra, is a sincere and steady person, who keeps working to achieve his goal.\r\nHe has experience of taking up Job responsibilities of varied nature. This gives him a broad understanding of varoious aspects of Business."
+      },
+      {
+        "recommender_name": "Chandra Prakash Suryawanshi",
+        "recommender_title": "Managing Director and India Leader for Global Cyber Risk Services",
+        "recommender_profile_id": "ACoAAABxjdYBNZXn_ILrW4J_75_ujrXju6sBk5Y",
+        "recommendation_date": "April 16, 2008",
+        "relationship": "Vijay Shekhar worked with Chandra Prakash on the same team",
+        "recommendation_text": "I have had the privilege of working with Chandra Prakash in NOKIA. He is very sincere, honest and hardworking.\r\nHis profile has the right mix of Technicality and Business sense. \r\nHighly recommended for IT consulting."
+      },
+      {
+        "recommender_name": "Neeraj Chaudhary",
+        "recommender_title": "Principal Software Development Engineer at ZScaler",
+        "recommender_profile_id": "ACoAAABYCQ0BU_nw1Oe6jWzVqrhr2deRBiZifak",
+        "recommendation_date": "April 14, 2008",
+        "relationship": "Vijay Shekhar worked with Neeraj but on different teams",
+        "recommendation_text": "I have worked with Neeraj in Cisco Systems Bangalore. \r\nHe is excellent in application security and understands various exploits very well.\r\nI Would always recommend Neeraj to anyone who is in need of seasoned security researchers."
+      },
+      {
+        "recommender_name": "Shilpa Dureja Puri",
+        "recommender_title": "Director Marketing @SamsungIndia | Ex-Microsoft | LinkedIn PowerProfile 2018, 2012 | CMOAsia Awardee | Speaker",
+        "recommender_profile_id": "ACoAAABOAqMBmFWE1RE8LOMs9Xe6W0SI7CQaACA",
+        "recommendation_date": "April 18, 2007",
+        "relationship": "Vijay Shekhar worked with Shilpa Dureja but they were at different companies",
+        "recommendation_text": "Great person to work with."
+      }
+    ]
+  }
+}

@@ -1,5 +1,3 @@
-import yaml
-
 def score_candidate(candidate: dict, benchmark_job: dict) -> float: 
   """ Score a candidate using benchmark job from database """
   score = 0.0
