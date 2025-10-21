@@ -1,0 +1,27 @@
+roles:
+  network_engineer:
+    # Skill scoring
+    skill_weights:
+      base_bonus: 20
+      additional_bonus: 5
+      max_bonus: 40
+      key_skills: [IGMP, PIM, UDP, TCP, multicast]
+    
+    # Company weights 
+    company_weights:
+      Amazon: 25
+
+    # Location weights: 
+    location_weights: 
+      Sydney: 15
+      default: 0
+
+universities: 
+  T1: [UNSW, USYD, UMELB]
+  T2: [UTS]
+
+weights:
+  university_t1: 20
+  university_t2: 10
+  tenure_per_month: 0.5
+  max_tenure_bonus: 20
