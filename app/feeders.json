@@ -1,0 +1,39 @@
+{
+  "network_engineer": {
+    "role_name": "network_engineer",
+    "display_name": "Network Engineer",
+    "feeders": [
+      {
+        "company": "Amazon",
+        "company_aliases": [
+          "Amazon Web Services",
+          "Amazon Web Services (AWS)",
+          "AWS"
+        ],
+        "priority": 1,
+        "min_tenure_years": 2.0,
+        "max_tenure_years": 15.0,
+        "required_titles": ["Network Engineer", "Network Development Engineer", "NDE"],
+        "boost_keywords": ["multicast", "IGMP", "PIM", "UDP", "low-latency"],
+        "score_boost": 30,
+        "candidates_sourced": 0,
+        "candidates_placed": 0,
+        "conversion_rate": 0,
+        "last_updated": "2025-10-29"
+      }
+    ],
+    "required_skills": [],
+    "nice_to_have_skills": ["Multicast", "User Datagram Protocol (UDP)", "IGMP", "Wireshark"],
+    "avoid_companies": ["early-stage startups"],
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 150000,
+      "base_max": 250000,
+      "total_comp_min": 200000,
+      "total_comp_max": 550000,
+      "currency": "AUD",
+      "note": "Top HFT firms pay 30%-50% higher"
+    },
+    "notes": "All of my network engineer placements come from Amazon"
+  }
+}
