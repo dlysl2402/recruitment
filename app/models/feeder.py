@@ -17,6 +17,23 @@ class WeightedSkill(BaseModel):
     weight: float = 1.0
 
 
+class PedigreeCompany(BaseModel):
+    """Represents a prestigious company for career pedigree scoring.
+
+    Pedigree companies are those where working there signals high quality,
+    regardless of whether they're a feeder for the current role.
+
+    Attributes:
+        company: Primary company name.
+        company_aliases: Alternative names for the same company.
+        points_per_year: Points awarded per year of tenure at this company.
+                         Accounts for different prestige levels.
+    """
+    company: str
+    company_aliases: List[str] = []
+    points_per_year: float = 2.0
+
+
 class FeederPattern(BaseModel):
     """Defines a company-based pattern for identifying strong candidates.
 
@@ -65,6 +82,8 @@ class RoleFeederConfig(BaseModel):
         feeders: List of feeder patterns to match against.
         required_skills: Weighted skills that candidates must have.
         nice_to_have_skills: Weighted optional skills that boost the score.
+        pedigree_companies: Prestigious companies for career pedigree scoring.
+        relevant_title_keywords: Keywords required in job title for pedigree to count.
         avoid_companies: Companies that are red flags for this role.
         red_flags: Other negative signals to watch for.
         typical_salary_range: Salary range metadata for the role.
@@ -78,6 +97,10 @@ class RoleFeederConfig(BaseModel):
     # Role requirements
     required_skills: List[WeightedSkill] = []
     nice_to_have_skills: List[WeightedSkill] = []
+
+    # Pedigree scoring
+    pedigree_companies: List[PedigreeCompany] = []
+    relevant_title_keywords: List[str] = []  # Required keywords in title for pedigree to count
 
     # Negative signals
     avoid_companies: List[str] = []

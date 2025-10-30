@@ -29,6 +29,14 @@
       {"name": "User Datagram Protocol (UDP)", "weight": 3.0},
       {"name": "Wireshark", "weight": 2.0}
     ],
+    "pedigree_companies": [
+      {
+        "company": "Google",
+        "company_aliases": ["Google LLC", "Alphabet"],
+        "points_per_year": 3.0
+      }
+    ],
+    "relevant_title_keywords": ["network", "NDE"],
     "avoid_companies": ["early-stage startups"],
     "red_flags": [],
     "typical_salary_range": {

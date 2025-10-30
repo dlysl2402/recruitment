@@ -8,7 +8,7 @@ from typing import Dict, Optional, List, Set, Tuple
 from dataclasses import dataclass, field
 
 from app.models import LinkedInCandidate, DateInfo, Experience
-from app.feeder_models import RoleFeederConfig, FeederPattern
+from app.feeder_models import RoleFeederConfig, FeederPattern, PedigreeCompany
 from app.constants import FEEDER_CONFIG_FILE, MONTH_NAME_TO_NUMBER, DAYS_PER_YEAR, MONTHS_PER_YEAR
 
 
@@ -85,6 +85,7 @@ def score_candidate(candidate: LinkedInCandidate, target_role: str) -> ScoringRe
     - Keyword presence in description
     - Required skills coverage
     - Nice-to-have skills
+    - Career pedigree (prestigious company history)
     - Negative signals (avoid companies, job hopping)
 
     Args:
@@ -131,6 +132,13 @@ def score_candidate(candidate: LinkedInCandidate, target_role: str) -> ScoringRe
     )
     total_score += nice_score
     breakdown.update(nice_breakdown)
+
+    # Score career pedigree
+    pedigree_score, pedigree_breakdown = _score_pedigree(
+        candidate, role_config
+    )
+    total_score += pedigree_score
+    breakdown.update(pedigree_breakdown)
 
     # Apply negative signals
     negative_score, negative_breakdown = _apply_negative_signals(
@@ -293,6 +301,92 @@ def _score_nice_to_have_skills(
 
     if matched_skills:
         breakdown["nice_to_have_matched"] = matched_skills
+
+    return score, breakdown
+
+
+def _score_pedigree(
+    candidate: LinkedInCandidate,
+    role_config: RoleFeederConfig,
+    max_tenure_per_company: float = 4.0
+) -> Tuple[int, Dict]:
+    """Score candidate based on career pedigree from prestigious companies.
+
+    Iterates through all work experiences and awards points for time spent
+    at prestigious companies. Multiple prestigious companies stack.
+
+    Tenure is capped per company to prevent over-weighting very long tenures.
+    Getting hired at a prestigious company is the signal, not staying forever.
+
+    Title relevance is validated if relevant_title_keywords is configured.
+    Only awards points if the title at that company was relevant to the role.
+
+    Args:
+        candidate: The candidate to score.
+        role_config: Role configuration with pedigree companies and title keywords.
+        max_tenure_per_company: Maximum years counted per company (default: 4).
+
+    Returns:
+        Tuple of (score, breakdown_dict).
+    """
+    score = 0
+    breakdown = {}
+
+    if not role_config.pedigree_companies:
+        return score, breakdown
+
+    pedigree_details = []
+
+    for experience in candidate.experience:
+        for pedigree_company in role_config.pedigree_companies:
+            # Check if this experience matches a pedigree company
+            if company_matches(experience.company, pedigree_company):
+                # Check title relevance if keywords are configured
+                if role_config.relevant_title_keywords:
+                    title_lower = (experience.title or "").lower()
+                    title_relevant = any(
+                        keyword.lower() in title_lower
+                        for keyword in role_config.relevant_title_keywords
+                    )
+                    if not title_relevant:
+                        # Skip this experience - title not relevant to role
+                        break
+
+                # Calculate tenure for this experience
+                tenure_years = 0.0
+                if experience.duration:
+                    tenure_years = parse_duration_to_years(experience.duration)
+                elif experience.start_date:
+                    # Calculate from dates
+                    if experience.end_date:
+                        start_tenure = calculate_tenure(experience.start_date)
+                        end_tenure = calculate_tenure(experience.end_date)
+                        tenure_years = abs(start_tenure - end_tenure)
+                    else:
+                        # Current position
+                        tenure_years = calculate_tenure(experience.start_date)
+
+                if tenure_years > 0:
+                    # Cap tenure to prevent over-weighting long tenures
+                    capped_tenure = min(tenure_years, max_tenure_per_company)
+                    points = capped_tenure * pedigree_company.points_per_year
+                    score += int(points)
+
+                    # Show actual vs capped in breakdown
+                    if tenure_years > max_tenure_per_company:
+                        pedigree_details.append(
+                            f"{pedigree_company.company} ({tenure_years:.1f}y→{capped_tenure:.1f}y cap, +{int(points)})"
+                        )
+                    else:
+                        pedigree_details.append(
+                            f"{pedigree_company.company} ({tenure_years:.1f}y, +{int(points)})"
+                        )
+
+                # Only match one pedigree company per experience
+                break
+
+    if pedigree_details:
+        breakdown["pedigree_companies"] = pedigree_details
 
     return score, breakdown
 

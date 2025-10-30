@@ -11,7 +11,7 @@ from app.models.candidate import (
     Skills,
     LinkedInCandidate
 )
-from app.models.feeder import WeightedSkill, FeederPattern, RoleFeederConfig
+from app.models.feeder import WeightedSkill, PedigreeCompany, FeederPattern, RoleFeederConfig
 
 __all__ = [
     "DateInfo",
@@ -24,6 +24,7 @@ __all__ = [
     "Skills",
     "LinkedInCandidate",
     "WeightedSkill",
+    "PedigreeCompany",
     "FeederPattern",
     "RoleFeederConfig"
 ]
