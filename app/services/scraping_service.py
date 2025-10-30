@@ -2,12 +2,12 @@
 
 from typing import List, Dict, Any
 
-from app.linkedin_scraper.profile_scraper import (
+from app.scrapers.profile_scraper import (
     scrape_linkedin_profiles,
     extract_linkedin_username
 )
-from app.linkedin_scraper.company_scraper import scrape_linkedin_company
-from app.helper.scraper_to_database import transform_scraped_profile
+from app.scrapers.company_scraper import scrape_linkedin_company
+from app.transformers.scraper_to_database import transform_scraped_profile
 from app.repositories.candidate_repository import CandidateRepository
 
 

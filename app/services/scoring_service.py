@@ -5,7 +5,7 @@ from typing import List
 from app.models import LinkedInCandidate
 from app.scoring import score_candidate, ScoringResult
 from app.repositories.candidate_repository import CandidateRepository
-from app.helper.scraper_to_database import db_row_to_candidate
+from app.transformers.scraper_to_database import db_row_to_candidate
 
 
 class ScoringService:

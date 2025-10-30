@@ -1,4 +1,4 @@
-"""Backward compatibility module - imports from new location."""
+"""Pydantic models for the recruitment application."""
 
 from app.models.candidate import (
     DateInfo,
@@ -10,6 +10,7 @@ from app.models.candidate import (
     Skills,
     LinkedInCandidate
 )
+from app.models.feeder import FeederPattern, RoleFeederConfig
 
 __all__ = [
     "DateInfo",
@@ -19,5 +20,7 @@ __all__ = [
     "Project",
     "Certification",
     "Skills",
-    "LinkedInCandidate"
+    "LinkedInCandidate",
+    "FeederPattern",
+    "RoleFeederConfig"
 ]

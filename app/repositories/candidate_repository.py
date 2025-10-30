@@ -6,7 +6,7 @@ from typing import Dict, Optional, Set, Any, List
 from supabase import Client
 
 from app.models import LinkedInCandidate
-from app.helper.scraper_to_database import db_row_to_candidate
+from app.transformers.scraper_to_database import db_row_to_candidate
 
 
 class CandidateRepository:
