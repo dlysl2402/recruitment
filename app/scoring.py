@@ -169,7 +169,13 @@ def _score_feeder_match(
         if not company_matches(candidate.current_company, feeder):
             continue
 
-        tenure_years = calculate_tenure(candidate.current_start_date)
+        # Calculate consecutive tenure at current company (handles internal moves)
+        tenure_years = calculate_consecutive_company_tenure(
+            candidate.experience,
+            candidate.current_company,
+            feeder,
+            candidate.current_start_date
+        )
 
         if not (feeder.min_tenure_years <= tenure_years <= feeder.max_tenure_years):
             continue
@@ -343,6 +349,78 @@ def calculate_tenure(start_date: Optional[DateInfo]) -> float:
 
     days = (current - start).days
     return days / DAYS_PER_YEAR
+
+
+def calculate_consecutive_company_tenure(
+    experiences: List[Experience],
+    current_company: str,
+    feeder: FeederPattern,
+    fallback_start_date: Optional[DateInfo] = None
+) -> float:
+    """Calculate tenure for current consecutive stint at company.
+
+    Iterates through experiences (newest to oldest) and sums duration
+    while the company matches. Stops when a different company is encountered.
+
+    This handles internal moves, promotions, and transfers within the same
+    company without counting previous stints at the same company after gaps.
+
+    Args:
+        experiences: List of work experience entries (sorted newest first).
+        current_company: The candidate's current company name.
+        feeder: Feeder pattern with company name and aliases for matching.
+        fallback_start_date: Fallback to single date calculation if no durations.
+
+    Returns:
+        Total consecutive years at current company. Returns 0.0 if no valid data.
+
+    Examples:
+        >>> # Candidate worked at Amazon 1yr, then Amazon 2yrs (consecutive)
+        >>> calculate_consecutive_company_tenure(experiences, "Amazon", feeder)
+        3.0  # Counts both roles
+
+        >>> # Candidate worked at Amazon 5yr, left for Telstra 10yr, back to Amazon 1yr
+        >>> calculate_consecutive_company_tenure(experiences, "Amazon", feeder)
+        1.0  # Only counts current stint
+    """
+    if not experiences:
+        # No experience data, fall back to start date calculation
+        return calculate_tenure(fallback_start_date)
+
+    consecutive_tenure = 0.0
+    found_matching_experiences = False
+
+    for experience in experiences:
+        # Check if this experience is at the current company
+        if company_matches(experience.company, feeder):
+            found_matching_experiences = True
+
+            # Try to use duration string if available
+            if experience.duration:
+                tenure = parse_duration_to_years(experience.duration)
+                if tenure > 0:
+                    consecutive_tenure += tenure
+                    continue
+
+            # Fall back to date calculation if no duration
+            if experience.start_date:
+                start_tenure = calculate_tenure(experience.start_date)
+                if experience.end_date:
+                    end_tenure = calculate_tenure(experience.end_date)
+                    consecutive_tenure += abs(start_tenure - end_tenure)
+                else:
+                    # Current position, calculate from start to now
+                    consecutive_tenure += start_tenure
+        else:
+            # Hit a different company - stop counting
+            if found_matching_experiences:
+                break
+
+    # If no valid experience data found, fall back to start date
+    if consecutive_tenure == 0.0 and not found_matching_experiences:
+        return calculate_tenure(fallback_start_date)
+
+    return consecutive_tenure
 
 
 def calculate_average_tenure(experiences: List[Experience]) -> float:
