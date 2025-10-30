@@ -340,10 +340,18 @@ def _score_pedigree(
 
     pedigree_details = []
 
-    for experience in candidate.experience:
+    # Group consecutive experiences by company to avoid double-counting overlapping roles
+    processed_companies = set()
+
+    for i, experience in enumerate(candidate.experience):
         for pedigree_company in role_config.pedigree_companies:
             # Check if this experience matches a pedigree company
             if company_matches(experience.company, pedigree_company):
+                # Skip if we already processed this pedigree company
+                company_key = pedigree_company.company.lower()
+                if company_key in processed_companies:
+                    break
+
                 # Check title relevance if keywords are configured
                 if role_config.relevant_title_keywords:
                     title_lower = (experience.title or "").lower()
@@ -355,19 +363,37 @@ def _score_pedigree(
                         # Skip this experience - title not relevant to role
                         break
 
-                # Calculate tenure for this experience
-                tenure_years = 0.0
-                if experience.duration:
-                    tenure_years = parse_duration_to_years(experience.duration)
-                elif experience.start_date:
-                    # Calculate from dates
-                    if experience.end_date:
-                        start_tenure = calculate_tenure(experience.start_date)
-                        end_tenure = calculate_tenure(experience.end_date)
-                        tenure_years = abs(start_tenure - end_tenure)
+                # Find all consecutive experiences at this pedigree company
+                earliest_start = experience.start_date
+                latest_end = experience.end_date
+
+                # Look ahead for more consecutive roles at same company
+                for j in range(i + 1, len(candidate.experience)):
+                    next_exp = candidate.experience[j]
+                    if company_matches(next_exp.company, pedigree_company):
+                        # Update earliest/latest dates
+                        if next_exp.start_date and earliest_start:
+                            if _date_is_earlier(next_exp.start_date, earliest_start):
+                                earliest_start = next_exp.start_date
+                        if next_exp.end_date and latest_end:
+                            if _date_is_later(next_exp.end_date, latest_end):
+                                latest_end = next_exp.end_date
+                        elif next_exp.end_date is None:
+                            latest_end = None  # Currently employed
                     else:
-                        # Current position
-                        tenure_years = calculate_tenure(experience.start_date)
+                        # Hit different company, stop looking
+                        break
+
+                # Calculate total tenure from earliest to latest
+                tenure_years = 0.0
+                if earliest_start:
+                    if latest_end is None:
+                        # Currently employed
+                        tenure_years = calculate_tenure(earliest_start)
+                    else:
+                        start_tenure = calculate_tenure(earliest_start)
+                        end_tenure = calculate_tenure(latest_end)
+                        tenure_years = abs(start_tenure - end_tenure)
 
                 if tenure_years > 0:
                     # Calculate points using S-curve with company multiplier
@@ -381,6 +407,9 @@ def _score_pedigree(
                     pedigree_details.append(
                         f"{pedigree_company.company} ({tenure_years:.1f}y, +{points})"
                     )
+
+                    # Mark this company as processed
+                    processed_companies.add(company_key)
 
                 # Only match one pedigree company per experience
                 break
@@ -545,8 +574,8 @@ def calculate_consecutive_company_tenure(
 ) -> float:
     """Calculate tenure for current consecutive stint at company.
 
-    Iterates through experiences (newest to oldest) and sums duration
-    while the company matches. Stops when a different company is encountered.
+    Tracks earliest start date and latest end date across consecutive roles
+    at the same company to handle promotions/role changes without double-counting.
 
     This handles internal moves, promotions, and transfers within the same
     company without counting previous stints at the same company after gaps.
@@ -573,7 +602,9 @@ def calculate_consecutive_company_tenure(
         # No experience data, fall back to start date calculation
         return calculate_tenure(fallback_start_date)
 
-    consecutive_tenure = 0.0
+    # Track earliest start and latest end across consecutive roles at same company
+    earliest_start: Optional[DateInfo] = None
+    latest_end: Optional[DateInfo] = None
     found_matching_experiences = False
 
     for experience in experiences:
@@ -581,32 +612,66 @@ def calculate_consecutive_company_tenure(
         if company_matches(experience.company, feeder):
             found_matching_experiences = True
 
-            # Try to use duration string if available
-            if experience.duration:
-                tenure = parse_duration_to_years(experience.duration)
-                if tenure > 0:
-                    consecutive_tenure += tenure
-                    continue
-
-            # Fall back to date calculation if no duration
+            # Track earliest start date
             if experience.start_date:
-                start_tenure = calculate_tenure(experience.start_date)
-                if experience.end_date:
-                    end_tenure = calculate_tenure(experience.end_date)
-                    consecutive_tenure += abs(start_tenure - end_tenure)
+                if earliest_start is None:
+                    earliest_start = experience.start_date
                 else:
-                    # Current position, calculate from start to now
-                    consecutive_tenure += start_tenure
+                    # Compare dates to find earliest
+                    if _date_is_earlier(experience.start_date, earliest_start):
+                        earliest_start = experience.start_date
+
+            # Track latest end date (None = present, which is latest)
+            if experience.end_date is None:
+                latest_end = None  # Currently employed
+            elif latest_end is not None:
+                # Both have end dates, compare them
+                if _date_is_later(experience.end_date, latest_end):
+                    latest_end = experience.end_date
+            # If latest_end is None (already at present), keep it as None
         else:
             # Hit a different company - stop counting
             if found_matching_experiences:
                 break
 
+    # Calculate tenure from earliest start to latest end (or present)
+    if earliest_start:
+        if latest_end is None:
+            # Currently employed - calculate from start to now
+            return calculate_tenure(earliest_start)
+        else:
+            # Calculate span between earliest start and latest end
+            start_tenure = calculate_tenure(earliest_start)
+            end_tenure = calculate_tenure(latest_end)
+            return abs(start_tenure - end_tenure)
+
     # If no valid experience data found, fall back to start date
-    if consecutive_tenure == 0.0 and not found_matching_experiences:
+    if not found_matching_experiences:
         return calculate_tenure(fallback_start_date)
 
-    return consecutive_tenure
+    return 0.0
+
+
+def _date_is_earlier(date1: DateInfo, date2: DateInfo) -> bool:
+    """Check if date1 is earlier than date2."""
+    if date1.year != date2.year:
+        return date1.year < date2.year
+    # Same year, compare months if available
+    if date1.month and date2.month:
+        from app.constants import MONTH_NAME_TO_NUMBER
+        return MONTH_NAME_TO_NUMBER.get(date1.month, 1) < MONTH_NAME_TO_NUMBER.get(date2.month, 1)
+    return False
+
+
+def _date_is_later(date1: DateInfo, date2: DateInfo) -> bool:
+    """Check if date1 is later than date2."""
+    if date1.year != date2.year:
+        return date1.year > date2.year
+    # Same year, compare months if available
+    if date1.month and date2.month:
+        from app.constants import MONTH_NAME_TO_NUMBER
+        return MONTH_NAME_TO_NUMBER.get(date1.month, 1) > MONTH_NAME_TO_NUMBER.get(date2.month, 1)
+    return False
 
 
 def calculate_average_tenure(experiences: List[Experience]) -> float:

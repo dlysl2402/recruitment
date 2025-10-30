@@ -276,6 +276,26 @@ def get_specific_candidate(candidate_id: str):
         raise HTTPException(status_code=404, detail=str(error))
 
 
+@app.get("/candidates/by-name")
+def get_candidates_by_name(first_name: str, last_name: str):
+    """Retrieve candidates by full name.
+
+    Args:
+        first_name: Candidate's first name (case-insensitive).
+        last_name: Candidate's last name (case-insensitive).
+
+    Returns:
+        List of LinkedInCandidate objects matching the name.
+
+    Raises:
+        HTTPException: If no candidates found with that name.
+    """
+    try:
+        return candidate_service.get_candidates_by_name(first_name, last_name)
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+
+
 @app.delete("/candidates/{candidate_id}")
 def delete_candidate(candidate_id: str):
     """Delete a candidate by ID.

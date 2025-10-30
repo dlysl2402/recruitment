@@ -59,27 +59,14 @@
         "priority": 1,
         "min_tenure_years": 3.0,
         "max_tenure_years": 15.0,
-        "required_titles": ["Linux Engineer", "Linux System Administrator", "DevOps Engineer", "Site Reliability Engineer"],
-        "boost_keywords": ["kernel", "systemd", "bash", "ansible", "puppet", "chef"],
-        "multiplier": 1.0,
-        "candidates_sourced": 0,
-        "candidates_placed": 0,
-        "conversion_rate": 0,
-        "last_updated": "2025-10-30"
-      },
-      {
-        "company": "Amazon",
-        "company_aliases": [
-          "Amazon Web Services",
-          "Amazon Web Services (AWS)",
-          "AWS"
+        "required_titles": [
+          "Linux Engineer", 
+          "Linux System Administrator", 
+          "DevOps Engineer", 
+          "Site Reliability Engineer"
         ],
-        "priority": 2,
-        "min_tenure_years": 3.0,
-        "max_tenure_years": 15.0,
-        "required_titles": ["Systems Engineer", "DevOps Engineer", "Site Reliability Engineer", "SRE"],
-        "boost_keywords": ["linux", "kernel", "automation", "infrastructure"],
-        "multiplier": 0.9,
+        "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
+        "multiplier": 1.0,
         "candidates_sourced": 0,
         "candidates_placed": 0,
         "conversion_rate": 0,
@@ -88,44 +75,32 @@
     ],
     "required_skills": [
       {"name": "Linux", "weight": 1.0},
-      {"name": "Bash", "weight": 0.8}
+      {"name": "Bash", "weight": 0.75}
     ],
     "nice_to_have_skills": [
-      {"name": "Ansible", "weight": 5.0},
-      {"name": "Docker", "weight": 4.0},
-      {"name": "Kubernetes", "weight": 4.0},
-      {"name": "Python (Programming Language)", "weight": 3.0},
-      {"name": "Terraform", "weight": 3.0},
-      {"name": "Git", "weight": 2.0}
+      {"name": "Red Hat Linux", "weight": 5.0},
+      {"name": "Puppet", "weight": 5.0},
+      {"name": "Linux Kernel", "weight": 5.0},
+      {"name": "Python (Programming Language)", "weight": 3.0}
     ],
     "pedigree_companies": [
       {
         "company": "Google",
         "company_aliases": ["Google LLC", "Alphabet"],
         "multiplier": 1.0
-      },
-      {
-        "company": "Meta",
-        "company_aliases": ["Facebook", "Meta Platforms"],
-        "multiplier": 1.0
-      },
-      {
-        "company": "Netflix",
-        "company_aliases": ["Netflix, Inc."],
-        "multiplier": 0.9
       }
     ],
     "relevant_title_keywords": ["linux", "system", "devops", "sre", "infrastructure"],
     "avoid_companies": [],
     "red_flags": [],
     "typical_salary_range": {
-      "base_min": 120000,
-      "base_max": 200000,
-      "total_comp_min": 150000,
-      "total_comp_max": 350000,
+      "base_min": 150000,
+      "base_max": 300000,
+      "total_comp_min": 250000,
+      "total_comp_max": 650000,
       "currency": "AUD",
-      "note": "Senior roles at FAANG can exceed these ranges"
+      "note": "Google candidates have been super strong for this role as they have really good linux infrastructure"
     },
-    "notes": "Linux engineers from cloud infrastructure backgrounds tend to have strong automation skills"
+    "notes": "We have roles available for Virtu + Jump Trading"
   }
 }

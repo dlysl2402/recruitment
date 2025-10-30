@@ -101,6 +101,26 @@ class CandidateService:
         """
         return self.candidate_repository.get_all()
 
+    def get_candidates_by_name(self, first_name: str, last_name: str) -> List[LinkedInCandidate]:
+        """Get candidates by full name.
+
+        Args:
+            first_name: Candidate's first name.
+            last_name: Candidate's last name.
+
+        Returns:
+            List of LinkedInCandidate objects.
+
+        Raises:
+            ValueError: If no candidates found with that name.
+        """
+        candidates_data = self.candidate_repository.get_by_name(first_name, last_name)
+
+        if not candidates_data:
+            raise ValueError(f"No candidates found with name '{first_name} {last_name}'")
+
+        return [self.candidate_repository.get_by_id(c["id"]) for c in candidates_data]
+
     def delete_candidate(self, candidate_id: str) -> Dict[str, Any]:
         """Delete a candidate by ID.
 

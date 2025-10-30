@@ -133,3 +133,22 @@ class CandidateRepository:
             return True
         except Exception as error:
             raise Exception(f"Failed to delete candidate: {str(error)}")
+
+    def get_by_name(self, first_name: str, last_name: str) -> List[Dict[str, Any]]:
+        """Retrieve candidates by full name (case-insensitive).
+
+        Args:
+            first_name: Candidate's first name.
+            last_name: Candidate's last name.
+
+        Returns:
+            List of candidate records matching the name.
+        """
+        response = (
+            self.db_client.table("candidates")
+            .select("*")
+            .ilike("first_name", first_name)
+            .ilike("last_name", last_name)
+            .execute()
+        )
+        return response.data
