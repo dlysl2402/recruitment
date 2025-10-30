@@ -81,12 +81,24 @@ def transform_scraped_education(scraped_data: Dict[str, Any]) -> List[Education]
     transformed_educations = []
 
     for education_entry in scraped_data.get("education", []):
+        # Safely extract year from date fields (handle dict, string, or None)
+        start_date = education_entry.get("start_date")
+        end_date = education_entry.get("end_date")
+
+        start_year = None
+        if isinstance(start_date, dict):
+            start_year = start_date.get("year")
+
+        end_year = None
+        if isinstance(end_date, dict):
+            end_year = end_date.get("year")
+
         transformed_educations.append(
             Education(
                 school=education_entry.get("school", ""),
                 degree=education_entry.get("degree", ""),
-                start_year=education_entry.get("start_date", {}).get("year"),
-                end_year=education_entry.get("end_date", {}).get("year")
+                start_year=start_year,
+                end_year=end_year
             )
         )
 

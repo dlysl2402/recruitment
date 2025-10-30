@@ -56,7 +56,7 @@ class Experience(BaseModel):
     title: str
     company: CompanyReference
     company_linkedin_url: Optional[str] = None
-    start_date: DateInfo
+    start_date: Optional[DateInfo] = None
     end_date: Optional[DateInfo] = None
     duration: Optional[str] = None
     description: Optional[str] = None
