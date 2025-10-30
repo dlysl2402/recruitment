@@ -203,13 +203,24 @@ def transform_scraped_skills(scraped_data: Dict[str, Any]) -> List[Skills]:
     transformed_skills = []
 
     for skill_entry in scraped_data.get("skills", []):
-        transformed_skills.append(
-            Skills(
-                name=skill_entry.get("name", "").lower(),
-                display_name=skill_entry.get("name", ""),
-                endorsement_count=skill_entry.get("endorsement_count", 0)
+        # Handle both dict format and string format
+        if isinstance(skill_entry, dict):
+            transformed_skills.append(
+                Skills(
+                    name=skill_entry.get("name", "").lower(),
+                    display_name=skill_entry.get("name", ""),
+                    endorsement_count=skill_entry.get("endorsement_count", 0)
+                )
             )
-        )
+        elif isinstance(skill_entry, str):
+            # Legacy format: just skill names as strings
+            transformed_skills.append(
+                Skills(
+                    name=skill_entry.lower(),
+                    display_name=skill_entry,
+                    endorsement_count=0
+                )
+            )
 
     return transformed_skills
 
@@ -226,10 +237,21 @@ def transform_scraped_profile(scraped_data: Dict[str, Any]) -> LinkedInCandidate
     Raises:
         ValidationError: If required fields are missing or invalid.
     """
+    # Safely extract basic_info (handle if it's not a dict)
     basic_info = scraped_data.get("basic_info", {})
+    if not isinstance(basic_info, dict):
+        basic_info = {}
+
+    # Safely extract location (handle if it's not a dict)
     location_data = basic_info.get("location", {})
+    if not isinstance(location_data, dict):
+        location_data = {}
+
+    # Safely extract experiences
     experiences = scraped_data.get("experience", [])
     current_experience = experiences[0] if experiences else {}
+    if not isinstance(current_experience, dict):
+        current_experience = {}
 
     profile = LinkedInCandidate(
         # Basic info
