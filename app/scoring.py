@@ -426,7 +426,8 @@ def _apply_negative_signals(
 ) -> Tuple[int, Dict]:
     """Apply penalties for negative signals.
 
-    Includes avoid companies, avoid title keywords, and job hopping penalties.
+    Includes avoid companies, avoid title keywords (current and historical),
+    and job hopping penalties.
 
     Args:
         candidate: The candidate to score.
@@ -445,17 +446,42 @@ def _apply_negative_signals(
         score -= 20
         breakdown["avoid_company"] = True
 
-    # Avoid title keywords penalty (non-hands-on roles)
-    if candidate.current_title and role_config.avoid_title_keywords:
-        current_title_lower = candidate.current_title.lower()
-        matched_avoid_keywords = [
-            keyword
-            for keyword in role_config.avoid_title_keywords
-            if keyword.lower() in current_title_lower
-        ]
-        if matched_avoid_keywords:
-            score -= 1000
-            breakdown["avoid_title_match"] = matched_avoid_keywords
+    # Avoid title keywords penalty (non-hands-on roles and irrelevant backgrounds)
+    if role_config.avoid_title_keywords:
+        matched_titles = []
+
+        # Check current title
+        if candidate.current_title:
+            current_title_lower = candidate.current_title.lower()
+            for keyword in role_config.avoid_title_keywords:
+                if keyword.lower() in current_title_lower:
+                    score -= 1000
+                    matched_titles.append({
+                        "title": candidate.current_title,
+                        "company": candidate.current_company.name if isinstance(candidate.current_company, CompanyReference) else str(candidate.current_company),
+                        "keyword": keyword,
+                        "is_current": True
+                    })
+                    break  # Only count current role once
+
+        # Check all historical experience
+        for experience in candidate.experience:
+            if not experience.title:
+                continue
+            exp_title_lower = experience.title.lower()
+            for keyword in role_config.avoid_title_keywords:
+                if keyword.lower() in exp_title_lower:
+                    score -= 1000
+                    matched_titles.append({
+                        "title": experience.title,
+                        "company": experience.company.name if hasattr(experience.company, "name") else str(experience.company),
+                        "keyword": keyword,
+                        "is_current": False
+                    })
+                    break  # Only count each experience once
+
+        if matched_titles:
+            breakdown["avoid_title_matches"] = matched_titles
 
     # Job hopping penalty
     if len(candidate.experience) >= 3:
