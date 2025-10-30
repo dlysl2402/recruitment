@@ -17,15 +17,14 @@ from app.helper.scraper_to_database import (
     db_row_to_candidate
 )
 from app.models import DateInfo, Experience, Education, LinkedInCandidate
-from app.database.queries import (
-    insert_candidate,
-    get_candidate_with_id,
-    get_all_candidates,
-    get_candidates_with_filters
-)
+from app.database.client import supabase
+from app.repositories.candidate_repository import CandidateRepository
 
 
 app = FastAPI()
+
+# Initialize repository
+candidate_repository = CandidateRepository(supabase)
 
 
 # API Response Models
@@ -69,7 +68,7 @@ def score_candidate_endpoint(candidate_id: str, target_role: str):
     Raises:
         HTTPException: If candidate not found or role invalid.
     """
-    candidate = get_candidate_with_id(candidate_id)
+    candidate = candidate_repository.get_by_id(candidate_id)
 
     if candidate is None:
         raise HTTPException(
@@ -116,7 +115,7 @@ def get_top_candidates(target_role: str, num_of_profiles: int):
             detail="num_of_profiles must be greater than 0"
         )
 
-    all_profiles = get_all_candidates().data
+    all_profiles = candidate_repository.get_all()
 
     results = []
 
@@ -156,7 +155,7 @@ def create_candidate(candidate: LinkedInCandidate):
         HTTPException: If insertion fails (e.g., duplicate).
     """
     try:
-        result = insert_candidate(candidate.dict())
+        result = candidate_repository.insert(candidate.dict())
 
         if not result.data:
             raise HTTPException(
@@ -191,8 +190,7 @@ def list_candidates():
     Note:
         Returns raw database records. Consider pagination for production.
     """
-    result = get_all_candidates()
-    return result.data
+    return candidate_repository.get_all()
 
 
 @app.get("/candidates/id")
@@ -208,7 +206,7 @@ def get_specific_candidate(candidate_id: str):
     Raises:
         HTTPException: If candidate not found.
     """
-    candidate = get_candidate_with_id(candidate_id)
+    candidate = candidate_repository.get_by_id(candidate_id)
 
     if candidate is None:
         raise HTTPException(
@@ -248,13 +246,13 @@ def filter_candidates(
             if skill.strip()
         }
 
-    result = get_candidates_with_filters(
+    candidate_data_list = candidate_repository.get_with_filters(
         filters=query_filters,
         skills=requested_skills
     )
 
     filtered_candidates = []
-    for candidate_data in result.data:
+    for candidate_data in candidate_data_list:
         candidate_skills = candidate_data.get("skills", [])
 
         # Extract skill names from JSONB array of objects
@@ -347,7 +345,7 @@ def _process_single_profile(username: str, profile_data: Dict) -> Dict:
         candidate = transform_scraped_profile(profile_data)
         candidate_dict = candidate.dict()
 
-        database_result = insert_candidate(candidate_dict)
+        database_result = candidate_repository.insert(candidate_dict)
 
         if not database_result.data:
             raise ValueError("Insert returned no data")
