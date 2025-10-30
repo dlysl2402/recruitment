@@ -215,11 +215,14 @@ def _score_required_skills(
     candidate: LinkedInCandidate,
     role_config: RoleFeederConfig
 ) -> Tuple[int, Dict]:
-    """Score candidate based on required skills coverage.
+    """Score candidate based on weighted required skills coverage.
+
+    Uses weighted coverage: if candidate has 80% of weighted skills,
+    they get 80% of max points (16/20). Higher weight skills have more impact.
 
     Args:
         candidate: The candidate to score.
-        role_config: Role configuration with required skills.
+        role_config: Role configuration with weighted required skills.
 
     Returns:
         Tuple of (score, breakdown_dict).
@@ -227,20 +230,33 @@ def _score_required_skills(
     score = 0
     breakdown = {}
 
-    candidate_skills = {skill.name.lower() for skill in candidate.skills}
-    required_matched = [
-        skill
-        for skill in role_config.required_skills
-        if skill.lower() in candidate_skills
-    ]
+    if not role_config.required_skills:
+        return score, breakdown
 
-    if len(required_matched) == len(role_config.required_skills):
-        score += 20
-        breakdown["all_required_skills"] = True
-    else:
-        missing_count = len(role_config.required_skills) - len(required_matched)
-        score -= missing_count * 5
-        breakdown["missing_required_skills"] = missing_count
+    candidate_skills = {skill.name.lower() for skill in candidate.skills}
+
+    # Calculate total weight and matched weight
+    total_weight = sum(skill.weight for skill in role_config.required_skills)
+    matched_weight = 0.0
+    matched_skills = []
+    missing_skills = []
+
+    for skill in role_config.required_skills:
+        if skill.name.lower() in candidate_skills:
+            matched_weight += skill.weight
+            matched_skills.append(f"{skill.name} (w:{skill.weight})")
+        else:
+            missing_skills.append(f"{skill.name} (w:{skill.weight})")
+
+    # Calculate coverage percentage and score
+    coverage = matched_weight / total_weight if total_weight > 0 else 0.0
+    score = int(coverage * 20)  # Max 20 points
+
+    breakdown["required_skills_coverage"] = f"{coverage*100:.1f}%"
+    if matched_skills:
+        breakdown["matched_required_skills"] = matched_skills
+    if missing_skills:
+        breakdown["missing_required_skills"] = missing_skills
 
     return score, breakdown
 
@@ -249,11 +265,14 @@ def _score_nice_to_have_skills(
     candidate: LinkedInCandidate,
     role_config: RoleFeederConfig
 ) -> Tuple[int, Dict]:
-    """Score candidate based on nice-to-have skills.
+    """Score candidate based on weighted nice-to-have skills.
+
+    Each matched skill contributes points equal to its weight.
+    Higher weight skills are worth more points.
 
     Args:
         candidate: The candidate to score.
-        role_config: Role configuration with optional skills.
+        role_config: Role configuration with weighted optional skills.
 
     Returns:
         Tuple of (score, breakdown_dict).
@@ -261,16 +280,19 @@ def _score_nice_to_have_skills(
     score = 0
     breakdown = {}
 
-    candidate_skills = {skill.name.lower() for skill in candidate.skills}
-    nice_to_have_matched = [
-        skill
-        for skill in role_config.nice_to_have_skills
-        if skill.lower() in candidate_skills
-    ]
+    if not role_config.nice_to_have_skills:
+        return score, breakdown
 
-    if nice_to_have_matched:
-        score += len(nice_to_have_matched) * 3
-        breakdown["nice_to_have_matched"] = nice_to_have_matched
+    candidate_skills = {skill.name.lower() for skill in candidate.skills}
+    matched_skills = []
+
+    for skill in role_config.nice_to_have_skills:
+        if skill.name.lower() in candidate_skills:
+            score += int(skill.weight)
+            matched_skills.append(f"{skill.name} (+{skill.weight:.1f})")
+
+    if matched_skills:
+        breakdown["nice_to_have_matched"] = matched_skills
 
     return score, breakdown
 

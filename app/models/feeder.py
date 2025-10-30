@@ -4,6 +4,19 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict
 
 
+class WeightedSkill(BaseModel):
+    """Represents a skill with an importance weight for scoring.
+
+    Attributes:
+        name: Skill name (e.g., "multicast", "bgp").
+        weight: Importance weight for this skill (default: 1.0).
+                Higher weights mean more important skills.
+                Used for proportional scoring calculations.
+    """
+    name: str
+    weight: float = 1.0
+
+
 class FeederPattern(BaseModel):
     """Defines a company-based pattern for identifying strong candidates.
 
@@ -50,8 +63,8 @@ class RoleFeederConfig(BaseModel):
         role_name: Machine-readable role identifier (e.g., "network_engineer").
         display_name: Human-readable role name (e.g., "Network Engineer").
         feeders: List of feeder patterns to match against.
-        required_skills: Skills that candidates must have.
-        nice_to_have_skills: Optional skills that boost the score.
+        required_skills: Weighted skills that candidates must have.
+        nice_to_have_skills: Weighted optional skills that boost the score.
         avoid_companies: Companies that are red flags for this role.
         red_flags: Other negative signals to watch for.
         typical_salary_range: Salary range metadata for the role.
@@ -63,8 +76,8 @@ class RoleFeederConfig(BaseModel):
     feeders: List[FeederPattern]
 
     # Role requirements
-    required_skills: List[str] = []
-    nice_to_have_skills: List[str] = []
+    required_skills: List[WeightedSkill] = []
+    nice_to_have_skills: List[WeightedSkill] = []
 
     # Negative signals
     avoid_companies: List[str] = []

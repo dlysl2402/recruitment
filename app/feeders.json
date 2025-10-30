@@ -23,7 +23,12 @@
       }
     ],
     "required_skills": [],
-    "nice_to_have_skills": ["Multicast", "User Datagram Protocol (UDP)", "IGMP", "Wireshark"],
+    "nice_to_have_skills": [
+      {"name": "Multicast", "weight": 5.0},
+      {"name": "IGMP", "weight": 4.0},
+      {"name": "User Datagram Protocol (UDP)", "weight": 3.0},
+      {"name": "Wireshark", "weight": 2.0}
+    ],
     "avoid_companies": ["early-stage startups"],
     "red_flags": [],
     "typical_salary_range": {
