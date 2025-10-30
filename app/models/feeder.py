@@ -104,6 +104,7 @@ class RoleFeederConfig(BaseModel):
 
     # Negative signals
     avoid_companies: List[str] = []
+    avoid_title_keywords: List[str] = []
     red_flags: List[str] = []
 
     # Metadata

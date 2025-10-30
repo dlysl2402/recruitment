@@ -426,7 +426,7 @@ def _apply_negative_signals(
 ) -> Tuple[int, Dict]:
     """Apply penalties for negative signals.
 
-    Includes avoid companies and job hopping penalties.
+    Includes avoid companies, avoid title keywords, and job hopping penalties.
 
     Args:
         candidate: The candidate to score.
@@ -444,6 +444,18 @@ def _apply_negative_signals(
     if current_company_name and current_company_name in role_config.avoid_companies:
         score -= 20
         breakdown["avoid_company"] = True
+
+    # Avoid title keywords penalty (non-hands-on roles)
+    if candidate.current_title and role_config.avoid_title_keywords:
+        current_title_lower = candidate.current_title.lower()
+        matched_avoid_keywords = [
+            keyword
+            for keyword in role_config.avoid_title_keywords
+            if keyword.lower() in current_title_lower
+        ]
+        if matched_avoid_keywords:
+            score -= 1000
+            breakdown["avoid_title_match"] = matched_avoid_keywords
 
     # Job hopping penalty
     if len(candidate.experience) >= 3:

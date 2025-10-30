@@ -97,12 +97,17 @@ def score_candidate_endpoint(candidate_id: str, target_role: str):
 
 
 @app.get("/get-top-candidates", response_model=List[CandidateScoreResponse])
-def get_top_candidates(target_role: str, num_of_profiles: int):
+def get_top_candidates(
+    target_role: str,
+    num_of_profiles: int,
+    country: Optional[str] = None
+):
     """Score all candidates and return the top N for a role.
 
     Args:
         target_role: Name of the role to score against.
         num_of_profiles: Number of top candidates to return.
+        country: Optional country filter (case-insensitive). Example: "Australia", "United States"
 
     Returns:
         List of CandidateScoreResponse sorted by score (descending).
@@ -116,7 +121,7 @@ def get_top_candidates(target_role: str, num_of_profiles: int):
     """
     try:
         top_candidates = scoring_service.get_top_candidates_for_role(
-            target_role, num_of_profiles
+            target_role, num_of_profiles, country=country
         )
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))

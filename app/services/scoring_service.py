@@ -1,6 +1,6 @@
 """Service for candidate scoring operations."""
 
-from typing import List
+from typing import List, Optional
 
 from app.models import LinkedInCandidate
 from app.scoring import score_candidate, ScoringResult
@@ -55,13 +55,15 @@ class ScoringService:
     def get_top_candidates_for_role(
         self,
         target_role: str,
-        num_candidates: int
+        num_candidates: int,
+        country: Optional[str] = None
     ) -> List[tuple[LinkedInCandidate, ScoringResult]]:
         """Score all candidates and return top N for a role.
 
         Args:
             target_role: Name of the role to score against.
             num_candidates: Number of top candidates to return.
+            country: Optional country filter (case-insensitive).
 
         Returns:
             List of (candidate, scoring_result) tuples sorted by score.
@@ -78,6 +80,13 @@ class ScoringService:
 
         for raw_candidate in all_profiles:
             candidate = db_row_to_candidate(raw_candidate)
+
+            # Filter by country if specified
+            if country:
+                candidate_country = candidate.location.country if candidate.location else None
+                if not candidate_country or candidate_country.lower() != country.lower():
+                    continue
+
             scoring_result = score_candidate(candidate, target_role)
             scored_candidates.append((candidate, scoring_result))
 

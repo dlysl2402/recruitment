@@ -38,6 +38,7 @@
     ],
     "relevant_title_keywords": ["network", "NDE"],
     "avoid_companies": ["early-stage startups"],
+    "avoid_title_keywords": ["manager"],
     "red_flags": [],
     "typical_salary_range": {
       "base_min": 150000,
@@ -83,7 +84,7 @@
           "Amazon Web Services (AWS)",
           "AWS"
         ],
-        "priority": 0.8,
+        "priority": 1,
         "min_tenure_years": 3.0,
         "max_tenure_years": 15.0,
         "required_titles": [
@@ -122,6 +123,10 @@
     ],
     "relevant_title_keywords": ["linux", "system", "devops", "sre", "infrastructure"],
     "avoid_companies": [],
+    "avoid_title_keywords": [
+      "manager",
+      "technical program"
+    ],
     "red_flags": [],
     "typical_salary_range": {
       "base_min": 150000,
