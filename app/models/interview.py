@@ -95,6 +95,7 @@ class InterviewProcess(BaseModel):
         candidate_id: ID of the candidate being interviewed.
         company_id: ID of the company (foreign key to companies table).
         company_name: Company name (kept for backward compatibility).
+        job_id: ID of the job (foreign key to jobs table).
         role_title: Role/position being interviewed for.
         status: Current status of the interview process.
         feeder_source: Which feeder pattern this came from (for conversion tracking).
@@ -109,6 +110,7 @@ class InterviewProcess(BaseModel):
     candidate_id: str
     company_id: Optional[str] = None
     company_name: str
+    job_id: Optional[str] = None
     role_title: str
     status: InterviewStatus = InterviewStatus.IN_PROGRESS
     feeder_source: Optional[str] = None

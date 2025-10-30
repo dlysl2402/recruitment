@@ -5,6 +5,7 @@ from datetime import date, datetime
 
 from app.repositories.interview_repository import InterviewRepository
 from app.services.company_service import CompanyService
+from app.services.job_service import JobService
 from app.models.interview import (
     InterviewProcess,
     InterviewStage,
@@ -27,6 +28,7 @@ class InterviewService:
     Attributes:
         interview_repository: Repository for interview data access.
         company_service: CompanyService for company operations.
+        job_service: JobService for job operations.
         feedback_service: Optional FeedbackService for processing outcomes.
     """
 
@@ -34,6 +36,7 @@ class InterviewService:
         self,
         interview_repository: InterviewRepository,
         company_service: CompanyService,
+        job_service: JobService,
         feedback_service: Optional["FeedbackService"] = None
     ):
         """Initialize the service with a repository.
@@ -41,10 +44,12 @@ class InterviewService:
         Args:
             interview_repository: InterviewRepository instance.
             company_service: CompanyService instance.
+            job_service: JobService instance.
             feedback_service: Optional FeedbackService for feedback loop.
         """
         self.interview_repository = interview_repository
         self.company_service = company_service
+        self.job_service = job_service
         self.feedback_service = feedback_service
 
     def create_interview_process(
@@ -76,10 +81,17 @@ class InterviewService:
         # Find or create company
         company = self.company_service.find_or_create_company(company_name)
 
+        # Find or create job
+        job = self.job_service.create_job(
+            company_id=company["id"],
+            role_title=role_title
+        )
+
         interview_data = {
             "candidate_id": candidate_id,
             "company_id": company["id"],
             "company_name": company_name,
+            "job_id": job["id"],
             "role_title": role_title,
             "status": InterviewStatus.IN_PROGRESS.value,
             "feeder_source": feeder_source,
@@ -354,6 +366,7 @@ class InterviewService:
             candidate_id=data["candidate_id"],
             company_id=data.get("company_id"),
             company_name=data["company_name"],
+            job_id=data.get("job_id"),
             role_title=data["role_title"],
             status=InterviewStatus(data["status"]),
             feeder_source=data.get("feeder_source"),

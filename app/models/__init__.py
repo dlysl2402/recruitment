@@ -21,6 +21,7 @@ from app.models.interview import (
     InterviewStage,
     InterviewProcess
 )
+from app.models.job import JobStatus, Job
 
 __all__ = [
     "DateInfo",
@@ -42,5 +43,7 @@ __all__ = [
     "StageOutcome",
     "OfferDetails",
     "InterviewStage",
-    "InterviewProcess"
+    "InterviewProcess",
+    "JobStatus",
+    "Job"
 ]

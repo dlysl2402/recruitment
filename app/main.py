@@ -5,16 +5,19 @@ from typing import List, Optional
 
 from app.models import LinkedInCandidate
 from app.models.interview import InterviewProcess, InterviewStage, InterviewStatus
+from app.models.job import Job, JobStatus
 from app.database.client import supabase
 from app.repositories.candidate_repository import CandidateRepository
 from app.repositories.interview_repository import InterviewRepository
 from app.repositories.company_repository import CompanyRepository
+from app.repositories.job_repository import JobRepository
 from app.services.scoring_service import ScoringService
 from app.services.scraping_service import ScrapingService
 from app.services.candidate_service import CandidateService
 from app.services.interview_service import InterviewService
 from app.services.feedback_service import FeedbackService
 from app.services.company_service import CompanyService
+from app.services.job_service import JobService
 from app.api.schemas.responses import CandidateScoreResponse, CandidateFilterResponse
 from app.api.schemas.requests import (
     CreateInterviewRequest,
@@ -26,6 +29,11 @@ from app.api.schemas.company_schemas import (
     CreateCompanyRequest,
     UpdateCompanyRequest
 )
+from app.api.schemas.job_schemas import (
+    CreateJobRequest,
+    UpdateJobRequest,
+    CloseJobRequest
+)
 
 
 app = FastAPI()
@@ -34,14 +42,16 @@ app = FastAPI()
 candidate_repository = CandidateRepository(supabase)
 interview_repository = InterviewRepository(supabase)
 company_repository = CompanyRepository(supabase)
+job_repository = JobRepository(supabase)
 candidate_service = CandidateService(candidate_repository)
 company_service = CompanyService(company_repository)
+job_service = JobService(job_repository)
 scoring_service = ScoringService(candidate_repository)
 scraping_service = ScrapingService(candidate_repository)
 
 # Initialize feedback service and interview service with feedback loop
-feedback_service = FeedbackService(interview_repository, candidate_service, company_service)
-interview_service = InterviewService(interview_repository, company_service, feedback_service)
+feedback_service = FeedbackService(interview_repository, candidate_service, company_service, job_service)
+interview_service = InterviewService(interview_repository, company_service, job_service, feedback_service)
 
 
 @app.get("/")
@@ -703,6 +713,143 @@ def delete_company(company_id: str):
     try:
         company_service.delete_company(company_id)
         return {"message": "Company deleted successfully"}
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+# Job Management endpoints
+
+@app.post("/jobs")
+def create_job(request: CreateJobRequest):
+    """Create a new job.
+
+    Args:
+        request: CreateJobRequest with job details.
+
+    Returns:
+        Created job record.
+    """
+    try:
+        return job_service.create_job(
+            company_id=request.company_id,
+            role_title=request.role_title,
+            department=request.department,
+            location=request.location,
+            internal_notes=request.internal_notes
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/jobs")
+def list_jobs(company_id: Optional[str] = None, status: Optional[JobStatus] = None):
+    """List all jobs with optional filters.
+
+    Args:
+        company_id: Filter by company.
+        status: Filter by status.
+
+    Returns:
+        List of job records.
+    """
+    try:
+        return job_service.list_jobs(company_id, status)
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/jobs/{job_id}")
+def get_job(job_id: str):
+    """Get a specific job by ID.
+
+    Args:
+        job_id: UUID of the job.
+
+    Returns:
+        Job record.
+    """
+    try:
+        return job_service.get_job(job_id)
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.put("/jobs/{job_id}")
+def update_job(job_id: str, request: UpdateJobRequest):
+    """Update a job.
+
+    Args:
+        job_id: UUID of the job.
+        request: UpdateJobRequest with fields to update.
+
+    Returns:
+        Updated job record.
+    """
+    try:
+        updates = {k: v for k, v in request.dict().items() if v is not None}
+        return job_service.update_job(job_id, updates)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.post("/jobs/{job_id}/close")
+def close_job(job_id: str, request: CloseJobRequest):
+    """Close a job (mark as filled or closed).
+
+    Args:
+        job_id: UUID of the job.
+        request: CloseJobRequest with optional filled_by_candidate_id.
+
+    Returns:
+        Updated job record.
+    """
+    try:
+        return job_service.close_job(job_id, request.filled_by_candidate_id)
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.post("/jobs/{job_id}/reopen")
+def reopen_job(job_id: str):
+    """Reopen a closed job.
+
+    Args:
+        job_id: UUID of the job.
+
+    Returns:
+        Updated job record.
+    """
+    try:
+        return job_service.reopen_job(job_id)
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.delete("/jobs/{job_id}")
+def delete_job(job_id: str):
+    """Delete a job.
+
+    Args:
+        job_id: UUID of the job.
+
+    Returns:
+        Success message.
+    """
+    try:
+        job_service.delete_job(job_id)
+        return {"message": "Job deleted successfully"}
     except ValueError as error:
         raise HTTPException(status_code=404, detail=str(error))
     except Exception as error:

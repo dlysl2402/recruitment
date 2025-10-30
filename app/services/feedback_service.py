@@ -7,6 +7,7 @@ from datetime import date
 from app.repositories.interview_repository import InterviewRepository
 from app.services.candidate_service import CandidateService
 from app.services.company_service import CompanyService
+from app.services.job_service import JobService
 from app.models.interview import InterviewStatus, InterviewProcess
 from app.models.candidate import PlacementRecord
 
@@ -21,6 +22,7 @@ class FeedbackService:
         interview_repository: Repository for interview data access.
         candidate_service: Service for candidate operations.
         company_service: Service for company operations.
+        job_service: Service for job operations.
         feeders_file_path: Path to feeders.json configuration file.
     """
 
@@ -29,6 +31,7 @@ class FeedbackService:
         interview_repository: InterviewRepository,
         candidate_service: CandidateService,
         company_service: CompanyService,
+        job_service: JobService,
         feeders_file_path: str = "app/feeders.json"
     ):
         """Initialize the feedback service.
@@ -37,11 +40,13 @@ class FeedbackService:
             interview_repository: InterviewRepository instance.
             candidate_service: CandidateService instance.
             company_service: CompanyService instance.
+            job_service: JobService instance.
             feeders_file_path: Path to feeders.json file.
         """
         self.interview_repository = interview_repository
         self.candidate_service = candidate_service
         self.company_service = company_service
+        self.job_service = job_service
         self.feeders_file_path = feeders_file_path
 
     def process_interview_outcome(self, interview_id: str) -> Dict[str, Any]:
@@ -52,7 +57,8 @@ class FeedbackService:
         1. Updates feeder conversion rates if feeder_source is tracked
         2. Adds placement record to candidate history if offer accepted
         3. Updates company metrics (candidates sent, placements, conversion rate)
-        4. Returns metrics for logging/analysis
+        4. Updates job metrics (candidates submitted, interviews started)
+        5. Returns metrics for logging/analysis
 
         Args:
             interview_id: ID of the completed interview process.
@@ -105,6 +111,11 @@ class FeedbackService:
         if interview_dict.get("company_id"):
             company_update = self._update_company_metrics(interview_dict["company_id"])
             result["updates"]["company"] = company_update
+
+        # Update job metrics if job_id exists
+        if interview_dict.get("job_id"):
+            job_update = self._update_job_metrics(interview_dict["job_id"])
+            result["updates"]["job"] = job_update
 
         return result
 
@@ -366,4 +377,46 @@ class FeedbackService:
             return {
                 "error": f"Failed to update company metrics: {str(error)}",
                 "company_id": company_id
+            }
+
+    def _update_job_metrics(self, job_id: str) -> Dict[str, Any]:
+        """Update job metrics based on all interviews for that job.
+
+        Args:
+            job_id: Job UUID.
+
+        Returns:
+            Dictionary with updated job metrics.
+        """
+        try:
+            # Query all interviews for this job
+            response = (
+                self.interview_repository.db_client.table("interview_processes")
+                .select("*")
+                .eq("job_id", job_id)
+                .execute()
+            )
+
+            interviews = response.data
+            total_submitted = len(interviews)
+            total_started = len(interviews)  # All submitted interviews are "started"
+
+            # Update job metrics
+            self.job_service.update_metrics_from_interviews(
+                job_id=job_id,
+                total_submitted=total_submitted,
+                total_started=total_started
+            )
+
+            return {
+                "job_id": job_id,
+                "total_candidates_submitted": total_submitted,
+                "total_interviews_started": total_started
+            }
+
+        except Exception as error:
+            # Log error but don't fail the feedback loop
+            return {
+                "error": f"Failed to update job metrics: {str(error)}",
+                "job_id": job_id
             }
