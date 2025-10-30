@@ -1,36 +1,75 @@
+"""Pydantic models for feeder patterns and role-based scoring configuration."""
+
 from pydantic import BaseModel
-from typing import List, Optional, Dict 
+from typing import List, Optional, Dict
+
 
 class FeederPattern(BaseModel):
-  company: str
-  company_aliases: List[str]
-  priority: int   # 1=primary, 2=secondary, etc.
-  min_tenure_years: float
-  max_tenure_years: float
-  required_titles: List[str] = [] # ["SRE", "Site Reliability Engineer"]
-  boost_keywords: List[str] = [] # ["low-latency", "kernel"]
-  score_boost: int # How many points to add
+    """Defines a company-based pattern for identifying strong candidates.
 
-  # Track performance
-  candidates_sourced: int = 0
-  candidates_placed: int = 0
-  conversion_rate: float = 0.0
-  last_updated: str
+    Feeder patterns represent companies that historically produce strong
+    candidates for specific roles (e.g., Amazon NDEs for HFT network roles).
+
+    Attributes:
+        company: Primary company name.
+        company_aliases: Alternative names for the same company.
+        priority: Pattern priority (1=primary, 2=secondary, etc.).
+        min_tenure_years: Minimum years at company to qualify.
+        max_tenure_years: Maximum years at company to qualify.
+        required_titles: Job titles that match this pattern.
+        boost_keywords: Keywords that boost the score if found in description.
+        score_boost: Points to add to candidate score if pattern matches.
+        candidates_sourced: Number of candidates sourced via this pattern.
+        candidates_placed: Number of successful placements.
+        conversion_rate: Placement success rate (0.0-1.0).
+        last_updated: Date this pattern was last updated (YYYY-MM-DD).
+    """
+    company: str
+    company_aliases: List[str]
+    priority: int
+    min_tenure_years: float
+    max_tenure_years: float
+    required_titles: List[str] = []
+    boost_keywords: List[str] = []
+    score_boost: int
+
+    # Performance tracking
+    candidates_sourced: int = 0
+    candidates_placed: int = 0
+    conversion_rate: float = 0.0
+    last_updated: str
+
 
 class RoleFeederConfig(BaseModel):
-  role_name: str # "network_engineer"
-  display_name: str # "Network Engineer"
+    """Complete configuration for scoring candidates for a specific role.
 
-  feeders: List[FeederPattern]
+    Defines all criteria for evaluating candidates including feeder patterns,
+    required/optional skills, and negative signals.
 
-  # Role-specific requirements
-  required_skills: List[str] = [] # ["TCP/IP", "BGP"]
-  nice_to_have_skills: List[str] = []
+    Attributes:
+        role_name: Machine-readable role identifier (e.g., "network_engineer").
+        display_name: Human-readable role name (e.g., "Network Engineer").
+        feeders: List of feeder patterns to match against.
+        required_skills: Skills that candidates must have.
+        nice_to_have_skills: Optional skills that boost the score.
+        avoid_companies: Companies that are red flags for this role.
+        red_flags: Other negative signals to watch for.
+        typical_salary_range: Salary range metadata for the role.
+        notes: Additional notes about this role configuration.
+    """
+    role_name: str
+    display_name: str
 
-  # Negative signals
-  avoid_companies: List[str] = []
-  red_flags: List[str] = [] # ["less than 1 year tenure"]
+    feeders: List[FeederPattern]
 
-  # Metadata
-  typical_salary_range: Optional[Dict] = None
-  notes: str = ""
+    # Role requirements
+    required_skills: List[str] = []
+    nice_to_have_skills: List[str] = []
+
+    # Negative signals
+    avoid_companies: List[str] = []
+    red_flags: List[str] = []
+
+    # Metadata
+    typical_salary_range: Optional[Dict] = None
+    notes: str = ""

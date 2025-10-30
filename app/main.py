@@ -1,290 +1,380 @@
+"""FastAPI application for recruitment candidate management and scoring."""
+
 import json
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional, Dict
+
 from app.feeder_models import RoleFeederConfig
 from app.scoring import score_candidate, load_feeder_configs
-from app.linkedin_scraper.profile_scraper import scrape_linkedin_profiles, extract_linkedin_username
-from app.linkedin_scraper.company_scraper import scrape_linkedin_company
-from app.helper.scraper_to_database import transform_scraped_profile, db_row_to_candidate
-
-from app.models import (
-  DateInfo,
-  Experience,
-  Education,
-  LinkedInCandidate
+from app.linkedin_scraper.profile_scraper import (
+    scrape_linkedin_profiles,
+    extract_linkedin_username
 )
+from app.linkedin_scraper.company_scraper import scrape_linkedin_company
+from app.helper.scraper_to_database import (
+    transform_scraped_profile,
+    db_row_to_candidate
+)
+from app.models import DateInfo, Experience, Education, LinkedInCandidate
 from app.database.queries import (
-  insert_candidate,
-  get_candidate_with_id,
-  get_all_candidates,
-  get_candidates_with_filters
+    insert_candidate,
+    get_candidate_with_id,
+    get_all_candidates,
+    get_candidates_with_filters
 )
 
 
 app = FastAPI()
 
+
 # API Response Models
 class CandidateScoreResponse(BaseModel):
-  linkedin_url: str
-  score: float
-  breakdown: Dict
+    """Response model for candidate scoring endpoints."""
+    linkedin_url: str
+    score: float
+    breakdown: Dict
+
 
 class CandidateFilterResponse(BaseModel):
-  first_name: str
-  last_name: str
-  linkedin_url: str
-  matched_skills: List[str]
+    """Response model for filtered candidate results."""
+    first_name: str
+    last_name: str
+    linkedin_url: str
+    matched_skills: List[str]
+
 
 @app.get("/")
 def root():
-  return {"status": "ok"}
+    """Health check endpoint.
+
+    Returns:
+        Dictionary with status indicator.
+    """
+    return {"status": "ok"}
 
 
-
+# Scoring endpoints
 @app.get("/score-candidate", response_model=CandidateScoreResponse)
-def score_candidate_endpoint(
-  candidate_id: str,
-  target_role: str
-):
-  """ Score a candidate using feeder configuration """
+def score_candidate_endpoint(candidate_id: str, target_role: str):
+    """Score a single candidate for a target role.
 
-  candidate = get_candidate_with_id(candidate_id)
+    Args:
+        candidate_id: Database ID of the candidate to score.
+        target_role: Name of the role to score against.
 
-  result = score_candidate(candidate, target_role)
+    Returns:
+        CandidateScoreResponse containing score and breakdown.
 
-  return CandidateScoreResponse(
-    linkedin_url=candidate.linkedin_url,
-    score=result.get('score', 0),
-    breakdown=result.get('breakdown', {})
-  )
+    Raises:
+        HTTPException: If candidate not found or role invalid.
+    """
+    candidate = get_candidate_with_id(candidate_id)
+
+    scoring_result = score_candidate(candidate, target_role)
+
+    return CandidateScoreResponse(
+        linkedin_url=candidate.linkedin_url,
+        score=scoring_result.get("score", 0),
+        breakdown=scoring_result.get("breakdown", {})
+    )
+
 
 @app.get("/get-top-candidates", response_model=List[CandidateScoreResponse])
-def get_top_candidates(
-  target_role: str,
-  num_of_profiles: int
-):
-  """
-  Scores all candidates in the database
-  Returns the top X candidates for the role
-  """
+def get_top_candidates(target_role: str, num_of_profiles: int):
+    """Score all candidates and return the top N for a role.
 
-  profiles = get_all_candidates().data
+    Args:
+        target_role: Name of the role to score against.
+        num_of_profiles: Number of top candidates to return.
 
-  results = []
+    Returns:
+        List of CandidateScoreResponse sorted by score (descending).
 
-  for prof in profiles:
-    candidate = db_row_to_candidate(prof)
+    Note:
+        This loads all candidates into memory. Consider pagination
+        for large datasets.
+    """
+    all_profiles = get_all_candidates().data
 
-    res = score_candidate(candidate, target_role)
+    results = []
 
-    results.append(CandidateScoreResponse(
-      linkedin_url=candidate.linkedin_url,
-      score=res.get("score", 0),
-      breakdown=res.get("breakdown", {})
-    ))
+    for raw_candidate in all_profiles:
+        candidate = db_row_to_candidate(raw_candidate)
 
-  sorted_list = sorted(results, key=lambda x: x.score, reverse=True)[:num_of_profiles]
+        scoring_result = score_candidate(candidate, target_role)
 
-  return sorted_list
+        results.append(CandidateScoreResponse(
+            linkedin_url=candidate.linkedin_url,
+            score=scoring_result.get("score", 0),
+            breakdown=scoring_result.get("breakdown", {})
+        ))
 
-  
+    sorted_results = sorted(results, key=lambda x: x.score, reverse=True)
+    return sorted_results[:num_of_profiles]
 
-"""
-========================================
-========== Database Functions ==========
-========================================
-"""
 
+# Database CRUD endpoints
 @app.post("/candidates")
 def create_candidate(candidate: LinkedInCandidate):
-  """ Add a new candidate to the database"""
-  result = insert_candidate(candidate.dict())
-  return {"message": "Candidate added", "id": result.data[0]['id']}
+    """Add a new candidate to the database.
+
+    Args:
+        candidate: LinkedInCandidate object with profile information.
+
+    Returns:
+        Dictionary with success message and inserted candidate ID.
+
+    Raises:
+        HTTPException: If insertion fails (e.g., duplicate).
+    """
+    result = insert_candidate(candidate.dict())
+    return {"message": "Candidate added", "id": result.data[0]["id"]}
+
 
 @app.get("/candidates")
 def list_candidates():
-  """ Get all candidates from database"""
-  result = get_all_candidates()
-  return result.data
+    """Get all candidates from database.
+
+    Returns:
+        List of all candidate records.
+
+    Note:
+        Returns raw database records. Consider pagination for production.
+    """
+    result = get_all_candidates()
+    return result.data
+
 
 @app.get("/candidates/id")
 def get_specific_candidate(candidate_id: str):
-  return get_candidate_with_id(candidate_id)
+    """Retrieve a single candidate by ID.
+
+    Args:
+        candidate_id: Database ID of the candidate.
+
+    Returns:
+        LinkedInCandidate object if found, None otherwise.
+    """
+    return get_candidate_with_id(candidate_id)
+
 
 @app.get("/candidates/filter", response_model=List[CandidateFilterResponse])
-def filter_candiates(
-  current_company: Optional[str] = None,
-  skills: Optional[str] = None
+def filter_candidates(
+    current_company: Optional[str] = None,
+    skills: Optional[str] = None
 ):
-  """ Filter candidates by company and/or skills """
+    """Filter candidates by company and/or skills.
 
-  # Build filter dict
-  filters = {}
-  if current_company:
-    filters['current_company'] = current_company
-  # Add other filters here
+    Args:
+        current_company: Company name to filter by (case-insensitive).
+        skills: Comma-separated list of skill names to filter by.
 
-  # Parse skills from comma-separated string
-  requested_skills = None
-  if skills:
-    requested_skills = {s.strip().lower() for s in skills.split(',') if s.strip()}
+    Returns:
+        List of CandidateFilterResponse with matched skills highlighted.
 
-  # Get filtered candidates
-  result = get_candidates_with_filters(filters=filters, skills=requested_skills)
+    Note:
+        Multiple skills use AND logic (candidate must have all).
+    """
+    query_filters = {}
+    if current_company:
+        query_filters["current_company"] = current_company
 
-  list_of_candidates = []
-  for candidate in result.data:
+    requested_skills = None
+    if skills:
+        requested_skills = {
+            skill.strip().lower()
+            for skill in skills.split(",")
+            if skill.strip()
+        }
 
-    candidate_skills = candidate.get('skills', [])
+    result = get_candidates_with_filters(
+        filters=query_filters,
+        skills=requested_skills
+    )
 
-    # Extract skill names from JSONB array of objects: [{"name": "Python"}, ...]
-    candidate_skill_names = {
-      skill['name'].lower() for skill in candidate_skills
-      if isinstance(skill, dict) and 'name' in skill
-    }
+    filtered_candidates = []
+    for candidate_data in result.data:
+        candidate_skills = candidate_data.get("skills", [])
 
-    # Find intersection: which requested skills does this candidate have?
-    matched_skills = [
-      skill for skill in requested_skills
-      if skill in candidate_skill_names
-    ] if requested_skills else []
+        # Extract skill names from JSONB array of objects
+        candidate_skill_names = {
+            skill["name"].lower()
+            for skill in candidate_skills
+            if isinstance(skill, dict) and "name" in skill
+        }
 
-    list_of_candidates.append(CandidateFilterResponse(
-      first_name=candidate.get('first_name', ''),
-      last_name=candidate.get('last_name', ''),
-      linkedin_url=candidate.get('linkedin_url', ''),
-      matched_skills=matched_skills
-    ))
+        # Find intersection of requested and candidate skills
+        matched_skills = [
+            skill
+            for skill in requested_skills
+            if skill in candidate_skill_names
+        ] if requested_skills else []
 
-  return list_of_candidates
+        filtered_candidates.append(CandidateFilterResponse(
+            first_name=candidate_data.get("first_name", ""),
+            last_name=candidate_data.get("last_name", ""),
+            linkedin_url=candidate_data.get("linkedin_url", ""),
+            matched_skills=matched_skills
+        ))
+
+    return filtered_candidates
 
 
-"""
-========================================
-=========== Linkedin Scraper ===========
-========================================
-"""
-
+# LinkedIn scraping endpoints
 @app.post("/linkedin-scrape-and-save-batch")
-def scrape_and_save_candidate_batch(profile_usernames):
-  """ 
-  Scrape a list of LinkedIn profile and save it directly to the database
-  separated by commas
-  """
+def scrape_and_save_candidate_batch(profile_usernames: str):
+    """Scrape LinkedIn profiles and save to database.
 
-  try:
-    # Split the urls delimited by ", "
-    usernames = [username.strip() for username in profile_usernames.split(",") if username.strip()]
-    if not usernames:
-      raise HTTPException(status_code=400, detail="No valid usernames provided")
+    Args:
+        profile_usernames: Comma-separated LinkedIn usernames to scrape.
 
+    Returns:
+        Dictionary with "success" and optional "failed" lists containing
+        processing results for each profile.
 
-    # Scrape linkedin profiles using Apify API
+    Raises:
+        HTTPException: If scraping fails or no valid usernames provided.
+
+    Note:
+        Duplicates are detected and skipped, reported in failed list.
+    """
     try:
-      results = scrape_linkedin_profiles(usernames)
-    except Exception as e:
-      raise HTTPException(status_code=500, detail=f"Scraping failed: {str(e)}")
+        usernames = [
+            username.strip()
+            for username in profile_usernames.split(",")
+            if username.strip()
+        ]
+        if not usernames:
+            raise HTTPException(
+                status_code=400,
+                detail="No valid usernames provided"
+            )
 
-    # This will be used to store results summary
-    success = []
-    failed = []
+        try:
+            scraped_results = scrape_linkedin_profiles(usernames)
+        except Exception as scraping_error:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Scraping failed: {str(scraping_error)}"
+            )
 
-    # For each profile in results, transform and store to database
+        success = []
+        failed = []
 
-    for username, profile_data in zip(usernames, results):
-      if not profile_data:
-        failed.append({
-          "username": username,
-          "error": "No data scraped",
-          "status": "scraping_failed"
-        })
-        continue
+        for username, profile_data in zip(usernames, scraped_results):
+            if not profile_data:
+                failed.append({
+                    "username": username,
+                    "error": "No data scraped",
+                    "status": "scraping_failed"
+                })
+                continue
 
-      try:
-        candidate = transform_scraped_profile(profile_data)
-        candidate_dict = candidate.dict()
+            try:
+                candidate = transform_scraped_profile(profile_data)
+                candidate_dict = candidate.dict()
 
-        # This may raise error 23505 on duplicate
-        db_result = insert_candidate(candidate_dict)
+                database_result = insert_candidate(candidate_dict)
 
-        if not db_result.data:
-          raise ValueError("Insert returned no data")
+                if not database_result.data:
+                    raise ValueError("Insert returned no data")
 
-        record = db_result.data[0]
-        success.append({
-          "id": record.get("id", ""),
-          "candidate_name": f"{candidate.first_name} {candidate.last_name}",
-          "current_company": candidate.current_company,
-          "status": "inserted"
-        })
+                record = database_result.data[0]
+                success.append({
+                    "id": record.get("id", ""),
+                    "candidate_name": f"{candidate.first_name} {candidate.last_name}",
+                    "current_company": candidate.current_company,
+                    "status": "inserted"
+                })
 
-      except Exception as e:
-        error_msg = str(e)
+            except Exception as processing_error:
+                error_message = str(processing_error)
 
-        # Detect duplicate
-        is_duplicate = any(
-          indicator in error_msg
-          for indicator in [
-            "23505",
-            "unique constraint",
-            "already exists",
-            "candidates_linkedin_url_key"
-          ]
+                # Detect duplicate constraint violations
+                is_duplicate = any(
+                    indicator in error_message
+                    for indicator in [
+                        "23505",
+                        "unique constraint",
+                        "already exists",
+                        "candidates_linkedin_url_key"
+                    ]
+                )
+
+                if is_duplicate:
+                    failed.append({
+                        "username": username,
+                        "error": "Duplicate profile (already exists)",
+                        "candidate_name": f"{candidate.first_name} {candidate.last_name}",
+                        "status": "skipped_duplicate"
+                    })
+                else:
+                    failed.append({
+                        "username": username,
+                        "error": f"Processing failed: {error_message}",
+                        "status": "failed"
+                    })
+
+        response = {"success": success}
+        if failed:
+            response["failed"] = failed
+
+        return response
+
+    except HTTPException:
+        raise
+    except Exception as batch_error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Batch processing failed: {str(batch_error)}"
         )
 
-        if is_duplicate:
-          failed.append({
-            "username": username, 
-            "error": "Duplicate profile (already exists)",
-            "candidate_name": f"{candidate.first_name} {candidate.last_name}",
-            "status": "skipped_duplicate"
-          })
-        else:
-          failed.append({
-            "username": username,
-            "error": f"Processing failed: {error_msg}",
-            "status": "failed"
-          })
-  
-    # Return both success and failed
-    response = {"success": success}
-    if failed:
-      response["failed"] = failed
-
-    return response
-  
-  except HTTPException:
-    raise
-  except Exception as e:
-    raise HTTPException(status_code=500, detail=f"Batch processing failed: {str(e)}")
-  
 
 @app.post("/linkedin-company-employees-scrape")
 def scrape_company_employees(
-  company_url: str, 
-  max_employees: Optional[int] = None, 
-  job_title: Optional[str] = None, 
-  batch_name: Optional[str] = None):
+    company_url: str,
+    max_employees: Optional[int] = None,
+    job_title: Optional[str] = None,
+    batch_name: Optional[str] = None
+):
+    """Scrape employees from a LinkedIn company page and save to database.
 
-  try:
-    # Fetch all employees in a company (within the parameters given)
-    results = scrape_linkedin_company(company_url, max_employees, job_title, batch_name)
+    Args:
+        company_url: LinkedIn company page URL.
+        max_employees: Maximum number of employees to scrape.
+        job_title: Filter employees by job title.
+        batch_name: Optional name for this scraping batch.
 
-    #  With every person in the list, add their username to a list ["person1", "person2", ... "personx"]
-    usernames = []
-    for person in results:
-      usernames.append(extract_linkedin_username(person.get("profile_url", "")))
+    Returns:
+        Same format as scrape_and_save_candidate_batch.
 
-    # Convering into a single string delimited by ", "
-    usernames_str = ", ".join(usernames)
+    Raises:
+        HTTPException: If company scraping fails.
+    """
+    try:
+        employee_results = scrape_linkedin_company(
+            company_url,
+            max_employees,
+            job_title,
+            batch_name
+        )
 
-    result = scrape_and_save_candidate_batch(usernames_str)
+        usernames = []
+        for employee in employee_results:
+            profile_url = employee.get("profile_url", "")
+            usernames.append(extract_linkedin_username(profile_url))
 
-    return result
-  
-  except HTTPException:
-    raise
-  except Exception as e:
-    raise HTTPException(status_code=500, detail=f"Company scraping failed: {str(e)}")
+        usernames_string = ", ".join(usernames)
 
+        result = scrape_and_save_candidate_batch(usernames_string)
+
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as company_error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Company scraping failed: {str(company_error)}"
+        )
