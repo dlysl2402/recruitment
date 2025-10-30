@@ -1,7 +1,6 @@
 """FastAPI application for recruitment candidate management and scoring."""
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from typing import List, Optional
 
 from app.models import LinkedInCandidate
@@ -10,6 +9,7 @@ from app.repositories.candidate_repository import CandidateRepository
 from app.services.scoring_service import ScoringService
 from app.services.scraping_service import ScrapingService
 from app.services.candidate_service import CandidateService
+from app.api.schemas.responses import CandidateScoreResponse, CandidateFilterResponse
 
 
 app = FastAPI()
@@ -19,22 +19,6 @@ candidate_repository = CandidateRepository(supabase)
 scoring_service = ScoringService(candidate_repository)
 scraping_service = ScrapingService(candidate_repository)
 candidate_service = CandidateService(candidate_repository)
-
-
-# API Response Models
-class CandidateScoreResponse(BaseModel):
-    """Response model for candidate scoring endpoints."""
-    linkedin_url: str
-    score: float
-    breakdown: Dict
-
-
-class CandidateFilterResponse(BaseModel):
-    """Response model for filtered candidate results."""
-    first_name: str
-    last_name: str
-    linkedin_url: str
-    matched_skills: List[str]
 
 
 @app.get("/")
