@@ -4,21 +4,32 @@ from fastapi import FastAPI, HTTPException
 from typing import List, Optional
 
 from app.models import LinkedInCandidate
+from app.models.interview import InterviewProcess, InterviewStage, InterviewStatus
 from app.database.client import supabase
 from app.repositories.candidate_repository import CandidateRepository
+from app.repositories.interview_repository import InterviewRepository
 from app.services.scoring_service import ScoringService
 from app.services.scraping_service import ScrapingService
 from app.services.candidate_service import CandidateService
+from app.services.interview_service import InterviewService
 from app.api.schemas.responses import CandidateScoreResponse, CandidateFilterResponse
+from app.api.schemas.requests import (
+    CreateInterviewRequest,
+    AddStageRequest,
+    UpdateStageOutcomeRequest,
+    CompleteInterviewRequest
+)
 
 
 app = FastAPI()
 
 # Initialize repository and services
 candidate_repository = CandidateRepository(supabase)
+interview_repository = InterviewRepository(supabase)
 scoring_service = ScoringService(candidate_repository)
 scraping_service = ScrapingService(candidate_repository)
 candidate_service = CandidateService(candidate_repository)
+interview_service = InterviewService(interview_repository)
 
 
 @app.get("/")
@@ -259,3 +270,250 @@ def scrape_company_employees(
             status_code=500,
             detail=f"Company scraping failed: {str(error)}"
         )
+
+
+# Interview Management endpoints
+
+@app.post("/interviews", response_model=InterviewProcess)
+def create_interview(request: CreateInterviewRequest):
+    """Create a new interview process for a candidate.
+
+    Args:
+        request: CreateInterviewRequest with candidate_id, company_name, role_title, etc.
+
+    Returns:
+        Created InterviewProcess object.
+
+    Raises:
+        HTTPException: If creation fails or validation errors.
+    """
+    try:
+        return interview_service.create_interview_process(
+            candidate_id=request.candidate_id,
+            company_name=request.company_name,
+            role_title=request.role_title,
+            feeder_source=request.feeder_source,
+            recruiter_name=request.recruiter_name
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Failed to create interview: {str(error)}")
+
+
+@app.get("/interviews/{interview_id}", response_model=InterviewProcess)
+def get_interview(interview_id: str):
+    """Get a specific interview process with all its stages.
+
+    Args:
+        interview_id: UUID of the interview process.
+
+    Returns:
+        InterviewProcess object with stages.
+
+    Raises:
+        HTTPException: If interview not found.
+    """
+    try:
+        interview = interview_service.get_interview_with_stages(interview_id)
+        if not interview:
+            raise HTTPException(status_code=404, detail=f"Interview {interview_id} not found")
+        return interview
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/interviews", response_model=List[InterviewProcess])
+def list_interviews(
+    candidate_id: Optional[str] = None,
+    company_name: Optional[str] = None,
+    status: Optional[InterviewStatus] = None
+):
+    """List all interviews with optional filters.
+
+    Args:
+        candidate_id: Filter by candidate ID.
+        company_name: Filter by company name.
+        status: Filter by interview status.
+
+    Returns:
+        List of InterviewProcess objects.
+
+    Note:
+        If both candidate_id and company_name provided, candidate_id takes precedence.
+    """
+    try:
+        if candidate_id:
+            return interview_service.get_candidate_interview_history(
+                candidate_id, include_stages=False
+            )
+        elif company_name:
+            return interview_service.get_company_interviews(
+                company_name, status_filter=status
+            )
+        else:
+            # Return all interviews (consider pagination for production)
+            raise HTTPException(
+                status_code=400,
+                detail="Must provide either candidate_id or company_name filter"
+            )
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/interviews/candidate/{candidate_id}", response_model=List[InterviewProcess])
+def get_candidate_interviews(candidate_id: str, include_stages: bool = True):
+    """Get all interviews for a specific candidate.
+
+    Args:
+        candidate_id: UUID of the candidate.
+        include_stages: If True, includes all stages for each interview.
+
+    Returns:
+        List of InterviewProcess objects for the candidate.
+    """
+    try:
+        return interview_service.get_candidate_interview_history(
+            candidate_id, include_stages=include_stages
+        )
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/interviews/company/{company_name}", response_model=List[InterviewProcess])
+def get_company_interviews_endpoint(
+    company_name: str,
+    status: Optional[InterviewStatus] = None
+):
+    """Get all interviews for a specific company.
+
+    Args:
+        company_name: Name of the company.
+        status: Optional status filter.
+
+    Returns:
+        List of InterviewProcess objects for the company.
+    """
+    try:
+        return interview_service.get_company_interviews(
+            company_name, status_filter=status
+        )
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.put("/interviews/{interview_id}", response_model=InterviewProcess)
+def complete_interview(interview_id: str, request: CompleteInterviewRequest):
+    """Complete an interview process and set final status.
+
+    Args:
+        interview_id: UUID of the interview process.
+        request: CompleteInterviewRequest with final_status, offer_details, etc.
+
+    Returns:
+        Updated InterviewProcess object.
+
+    Raises:
+        HTTPException: If interview not found or invalid status.
+    """
+    try:
+        return interview_service.complete_interview_process(
+            interview_id=interview_id,
+            final_status=request.final_status,
+            offer_details=request.offer_details,
+            final_outcome=request.final_outcome
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+# Interview Stage endpoints
+
+@app.post("/interviews/{interview_id}/stages", response_model=InterviewStage)
+def add_stage(interview_id: str, request: AddStageRequest):
+    """Add a new stage to an interview process.
+
+    Args:
+        interview_id: UUID of the interview process.
+        request: AddStageRequest with stage_name, stage_order, etc.
+
+    Returns:
+        Created InterviewStage object.
+
+    Raises:
+        HTTPException: If interview not found or stage_order invalid.
+    """
+    try:
+        return interview_service.add_interview_stage(
+            interview_id=interview_id,
+            stage_name=request.stage_name,
+            stage_order=request.stage_order,
+            scheduled_date=request.scheduled_date
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/interviews/{interview_id}/stages", response_model=List[InterviewStage])
+def get_interview_stages(interview_id: str):
+    """Get all stages for an interview process.
+
+    Args:
+        interview_id: UUID of the interview process.
+
+    Returns:
+        List of InterviewStage objects ordered by stage_order.
+    """
+    try:
+        interview = interview_service.get_interview_with_stages(interview_id)
+        if not interview:
+            raise HTTPException(status_code=404, detail=f"Interview {interview_id} not found")
+        return interview.stages
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.put("/interviews/stages/{stage_id}", response_model=InterviewStage)
+def update_stage_outcome(stage_id: str, request: UpdateStageOutcomeRequest):
+    """Update the outcome and feedback for an interview stage.
+
+    Args:
+        stage_id: UUID of the stage.
+        request: UpdateStageOutcomeRequest with outcome, ratings, feedback, etc.
+
+    Returns:
+        Updated InterviewStage object.
+
+    Raises:
+        HTTPException: If stage not found or ratings invalid.
+    """
+    try:
+        ratings = {
+            "overall_rating": request.overall_rating,
+            "technical_rating": request.technical_rating,
+            "culture_fit_rating": request.culture_fit_rating,
+            "communication_rating": request.communication_rating
+        }
+
+        return interview_service.update_stage_outcome(
+            stage_id=stage_id,
+            outcome=request.outcome,
+            ratings=ratings,
+            feedback=request.feedback_notes,
+            interviewer_names=request.interviewer_names,
+            next_steps=request.next_steps
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
