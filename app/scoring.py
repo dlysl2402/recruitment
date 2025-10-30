@@ -2,8 +2,10 @@
 
 import os
 import json
+import re
 from datetime import datetime
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Set, Tuple
+from dataclasses import dataclass, field
 
 from app.models import LinkedInCandidate, DateInfo, Experience
 from app.feeder_models import RoleFeederConfig, FeederPattern
@@ -12,6 +14,27 @@ from app.constants import FEEDER_CONFIG_FILE, MONTH_NAME_TO_NUMBER, DAYS_PER_YEA
 
 # Cache for feeder configs
 _FEEDER_CONFIGS = None
+
+
+@dataclass
+class ScoringResult:
+    """Result of scoring a candidate against a role.
+
+    Attributes:
+        score: Final score (floored at 0).
+        breakdown: Dictionary of scoring components and their values.
+        matched_feeder: Name of the feeder pattern that matched (if any).
+    """
+    score: float
+    breakdown: Dict[str, any] = field(default_factory=dict)
+    matched_feeder: Optional[str] = None
+
+    def to_dict(self) -> Dict:
+        """Convert to dictionary format for API responses."""
+        return {
+            "score": self.score,
+            "breakdown": self.breakdown
+        }
 
 
 def load_feeder_configs(filepath: str = FEEDER_CONFIG_FILE) -> Dict[str, RoleFeederConfig]:
@@ -53,7 +76,7 @@ def get_feeder_configs() -> Dict[str, RoleFeederConfig]:
     return _FEEDER_CONFIGS
 
 
-def score_candidate(candidate: LinkedInCandidate, target_role: str) -> Dict:
+def score_candidate(candidate: LinkedInCandidate, target_role: str) -> ScoringResult:
     """Score a candidate against a target role using feeder patterns.
 
     Scoring is based on multiple factors:
@@ -69,9 +92,7 @@ def score_candidate(candidate: LinkedInCandidate, target_role: str) -> Dict:
         target_role: The role name to score against (must exist in feeder configs).
 
     Returns:
-        Dictionary containing:
-            - score: Final score (floored at 0)
-            - breakdown: Dictionary of scoring components and their values
+        ScoringResult containing score, breakdown, and matched feeder.
 
     Raises:
         ValueError: If target_role doesn't exist in configurations.
@@ -85,42 +106,121 @@ def score_candidate(candidate: LinkedInCandidate, target_role: str) -> Dict:
         )
 
     role_config = feeder_configs[target_role]
+    total_score = 0
+    breakdown = {}
+    matched_feeder_name = None
+
+    # Score feeder pattern match (company, tenure, title, keywords)
+    feeder_score, feeder_breakdown, feeder_name = _score_feeder_match(
+        candidate, role_config
+    )
+    total_score += feeder_score
+    breakdown.update(feeder_breakdown)
+    matched_feeder_name = feeder_name
+
+    # Score required skills
+    required_score, required_breakdown = _score_required_skills(
+        candidate, role_config
+    )
+    total_score += required_score
+    breakdown.update(required_breakdown)
+
+    # Score nice-to-have skills
+    nice_score, nice_breakdown = _score_nice_to_have_skills(
+        candidate, role_config
+    )
+    total_score += nice_score
+    breakdown.update(nice_breakdown)
+
+    # Apply negative signals
+    negative_score, negative_breakdown = _apply_negative_signals(
+        candidate, role_config
+    )
+    total_score += negative_score
+    breakdown.update(negative_breakdown)
+
+    return ScoringResult(
+        score=max(0, total_score),
+        breakdown=breakdown,
+        matched_feeder=matched_feeder_name
+    )
+
+
+def _score_feeder_match(
+    candidate: LinkedInCandidate,
+    role_config: RoleFeederConfig
+) -> Tuple[int, Dict, Optional[str]]:
+    """Score candidate based on feeder pattern matching.
+
+    Includes company/tenure match, title match bonus, and keyword boosts.
+
+    Args:
+        candidate: The candidate to score.
+        role_config: Role configuration with feeder patterns.
+
+    Returns:
+        Tuple of (score, breakdown_dict, matched_feeder_name).
+    """
+    score = 0
+    breakdown = {}
+    matched_feeder = None
+
+    for feeder in role_config.feeders:
+        if not company_matches(candidate.current_company, feeder):
+            continue
+
+        tenure_years = calculate_tenure(candidate.current_start_date)
+
+        if not (feeder.min_tenure_years <= tenure_years <= feeder.max_tenure_years):
+            continue
+
+        # Company and tenure match
+        score += feeder.score_boost
+        breakdown["feeder_match"] = f"{feeder.company} ({tenure_years:.1f}y)"
+        matched_feeder = feeder.company
+
+        # Title match bonus
+        if feeder.required_titles and candidate.current_title:
+            if any(
+                title.lower() in candidate.current_title.lower()
+                for title in feeder.required_titles
+            ):
+                score += 10
+                breakdown["title_match"] = True
+
+        # Keyword boost
+        description = (candidate.current_description or "").lower()
+        matched_keywords = [
+            keyword
+            for keyword in feeder.boost_keywords
+            if keyword.lower() in description
+        ]
+        if matched_keywords:
+            keyword_score = min(len(matched_keywords) * 5, 15)
+            score += keyword_score
+            breakdown["keywords_matched"] = matched_keywords
+
+        break  # Only match one feeder
+
+    return score, breakdown, matched_feeder
+
+
+def _score_required_skills(
+    candidate: LinkedInCandidate,
+    role_config: RoleFeederConfig
+) -> Tuple[int, Dict]:
+    """Score candidate based on required skills coverage.
+
+    Args:
+        candidate: The candidate to score.
+        role_config: Role configuration with required skills.
+
+    Returns:
+        Tuple of (score, breakdown_dict).
+    """
     score = 0
     breakdown = {}
 
-    # Company & tenure match (primary signal)
-    for feeder in role_config.feeders:
-        if company_matches(candidate.current_company, feeder):
-            tenure_years = calculate_tenure(candidate.current_start_date)
-
-            if feeder.min_tenure_years <= tenure_years <= feeder.max_tenure_years:
-                score += feeder.score_boost
-                breakdown["feeder_match"] = f"{feeder.company} ({tenure_years:.1f}y)"
-
-                # Title match bonus
-                if feeder.required_titles and candidate.current_title:
-                    if any(
-                        title.lower() in candidate.current_title.lower()
-                        for title in feeder.required_titles
-                    ):
-                        score += 10
-                        breakdown["title_match"] = True
-
-                # Keyword boost
-                description = (candidate.current_description or "").lower()
-                matched_keywords = [
-                    keyword
-                    for keyword in feeder.boost_keywords
-                    if keyword.lower() in description
-                ]
-                if matched_keywords:
-                    keyword_score = min(len(matched_keywords) * 5, 15)
-                    score += keyword_score
-                    breakdown["keywords_matched"] = matched_keywords
-
-                break  # Only match one feeder
-
-    # Required skills (critical)
     candidate_skills = {skill.name.lower() for skill in candidate.skills}
     required_matched = [
         skill
@@ -136,17 +236,58 @@ def score_candidate(candidate: LinkedInCandidate, target_role: str) -> Dict:
         score -= missing_count * 5
         breakdown["missing_required_skills"] = missing_count
 
-    # Nice-to-have skills (bonus)
+    return score, breakdown
+
+
+def _score_nice_to_have_skills(
+    candidate: LinkedInCandidate,
+    role_config: RoleFeederConfig
+) -> Tuple[int, Dict]:
+    """Score candidate based on nice-to-have skills.
+
+    Args:
+        candidate: The candidate to score.
+        role_config: Role configuration with optional skills.
+
+    Returns:
+        Tuple of (score, breakdown_dict).
+    """
+    score = 0
+    breakdown = {}
+
+    candidate_skills = {skill.name.lower() for skill in candidate.skills}
     nice_to_have_matched = [
         skill
         for skill in role_config.nice_to_have_skills
         if skill.lower() in candidate_skills
     ]
+
     if nice_to_have_matched:
         score += len(nice_to_have_matched) * 3
         breakdown["nice_to_have_matched"] = nice_to_have_matched
 
-    # Negative signals
+    return score, breakdown
+
+
+def _apply_negative_signals(
+    candidate: LinkedInCandidate,
+    role_config: RoleFeederConfig
+) -> Tuple[int, Dict]:
+    """Apply penalties for negative signals.
+
+    Includes avoid companies and job hopping penalties.
+
+    Args:
+        candidate: The candidate to score.
+        role_config: Role configuration with negative signals.
+
+    Returns:
+        Tuple of (score_adjustment, breakdown_dict).
+    """
+    score = 0
+    breakdown = {}
+
+    # Avoid companies penalty
     if candidate.current_company in role_config.avoid_companies:
         score -= 20
         breakdown["avoid_company"] = True
@@ -158,10 +299,7 @@ def score_candidate(candidate: LinkedInCandidate, target_role: str) -> Dict:
             score -= 15
             breakdown["job_hopper"] = average_tenure
 
-    return {
-        "score": max(0, score),
-        "breakdown": breakdown
-    }
+    return score, breakdown
 
 
 def company_matches(candidate_company: str, feeder: FeederPattern) -> bool:
@@ -220,30 +358,40 @@ def calculate_average_tenure(experiences: List[Experience]) -> float:
     for experience in experiences:
         if experience.duration:
             years = parse_duration_to_years(experience.duration)
-            tenures.append(years)
+            if years > 0:
+                tenures.append(years)
 
     return sum(tenures) / len(tenures) if tenures else 0.0
 
 
 def parse_duration_to_years(duration: str) -> float:
-    """Parse LinkedIn duration string to years.
+    """Parse LinkedIn duration string to years using regex.
 
-    Examples:
-        "2 yrs 3 mos" -> 2.25
-        "6 mos" -> 0.5
-        "1 yr" -> 1.0
+    Handles various formats robustly:
+    - "2 yrs 3 mos" -> 2.25
+    - "6 mos" -> 0.5
+    - "1 yr" -> 1.0
+    - "3 years 2 months" -> 3.17
 
     Args:
         duration: Duration string from LinkedIn profile.
 
     Returns:
-        Duration in years as a float.
+        Duration in years as a float. Returns 0.0 if parsing fails.
     """
+    if not duration:
+        return 0.0
+
     years = 0.0
-    if "yr" in duration:
-        years += int(duration.split("yr")[0].strip().split()[-1])
-    if "mo" in duration:
-        months = int(duration.split("mo")[0].strip().split()[-1])
-        years += months / MONTHS_PER_YEAR
+
+    # Match year patterns: "2 yrs", "2 years", "1 yr", "1 year"
+    year_match = re.search(r'(\d+)\s*(?:yrs?|years?)', duration, re.IGNORECASE)
+    if year_match:
+        years += float(year_match.group(1))
+
+    # Match month patterns: "3 mos", "3 months", "3 mo", "3 month"
+    month_match = re.search(r'(\d+)\s*(?:mos?|months?)', duration, re.IGNORECASE)
+    if month_match:
+        years += float(month_match.group(1)) / MONTHS_PER_YEAR
 
     return years
