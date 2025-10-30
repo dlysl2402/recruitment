@@ -49,6 +49,10 @@
     },
     "notes": "All of my network engineer placements come from Amazon"
   },
+  
+  
+  
+  
   "linux_engineer": {
     "role_name": "linux_engineer",
     "display_name": "Linux Engineer",
@@ -60,6 +64,32 @@
         "min_tenure_years": 3.0,
         "max_tenure_years": 15.0,
         "required_titles": [
+          "Linux Engineer", 
+          "Linux System Administrator", 
+          "DevOps Engineer", 
+          "Site Reliability Engineer"
+        ],
+        "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
+        "multiplier": 1.0,
+        "candidates_sourced": 0,
+        "candidates_placed": 0,
+        "conversion_rate": 0,
+        "last_updated": "2025-10-30"
+      },
+      {
+        "company": "Amazon",
+        "company_aliases": [
+          "Amazon Web Services",
+          "Amazon Web Services (AWS)",
+          "AWS"
+        ],
+        "priority": 0.8,
+        "min_tenure_years": 3.0,
+        "max_tenure_years": 15.0,
+        "required_titles": [
+          "Systems Development Engineer",
+          "System Development Engineer",
+          "SDE",
           "Linux Engineer", 
           "Linux System Administrator", 
           "DevOps Engineer", 
