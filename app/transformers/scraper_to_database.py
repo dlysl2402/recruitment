@@ -4,6 +4,7 @@ from typing import Optional, Dict, Any, List
 
 from app.models import (
     DateInfo,
+    CompanyReference,
     Location,
     Experience,
     Education,
@@ -49,10 +50,14 @@ def transform_scraped_experience(scraped_data: Dict[str, Any]) -> List[Experienc
     transformed_experiences = []
 
     for experience_entry in scraped_data.get("experience", []):
+        # Create CompanyReference (ID will be matched later)
+        company_name = experience_entry.get("company", "")
+        company_ref = CompanyReference(name=company_name, id=None)
+
         transformed_experiences.append(
             Experience(
                 title=experience_entry.get("title", ""),
-                company=experience_entry.get("company", ""),
+                company=company_ref,
                 start_date=safe_date_info(experience_entry.get("start_date")),
                 end_date=safe_date_info(experience_entry.get("end_date")),
                 duration=experience_entry.get("duration", ""),
@@ -229,7 +234,10 @@ def transform_scraped_profile(scraped_data: Dict[str, Any]) -> LinkedInCandidate
 
         # Current position
         current_title=current_experience.get("title", ""),
-        current_company=current_experience.get("company", ""),
+        current_company=CompanyReference(
+            name=current_experience.get("company", ""),
+            id=None
+        ) if current_experience.get("company") else None,
         current_description=current_experience.get("description", ""),
         current_start_date=safe_date_info(current_experience.get("start_date")),
 

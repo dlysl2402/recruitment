@@ -2,6 +2,7 @@
 
 from app.models.candidate import (
     DateInfo,
+    CompanyReference,
     Location,
     Experience,
     Education,
@@ -23,6 +24,7 @@ from app.models.interview import (
 
 __all__ = [
     "DateInfo",
+    "CompanyReference",
     "Location",
     "Experience",
     "Education",

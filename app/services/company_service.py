@@ -3,6 +3,7 @@
 from typing import List, Dict, Optional, Any
 
 from app.repositories.company_repository import CompanyRepository
+from app.models.candidate import CompanyReference
 
 
 class CompanyService:
@@ -244,4 +245,33 @@ class CompanyService:
             candidates_sent=total_sent,
             placements=total_placed,
             placement_rate=placement_rate
+        )
+
+    def match_company_reference(self, company_ref: CompanyReference) -> CompanyReference:
+        """Match a CompanyReference to companies table and populate ID.
+
+        Searches by name (including aliases) and adds company_id if found.
+        If not found, creates the company.
+
+        Args:
+            company_ref: CompanyReference with name (and possibly ID already set).
+
+        Returns:
+            CompanyReference with ID populated.
+        """
+        # Already has ID, return as-is
+        if company_ref.id:
+            return company_ref
+
+        # Try to find existing company
+        company = self.company_repository.get_by_name(company_ref.name)
+
+        # If not found, create it
+        if not company:
+            company = self.find_or_create_company(company_ref.name)
+
+        # Return reference with ID
+        return CompanyReference(
+            name=company_ref.name,
+            id=company["id"]
         )

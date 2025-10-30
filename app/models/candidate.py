@@ -16,6 +16,17 @@ class DateInfo(BaseModel):
     year: Optional[int] = None
 
 
+class CompanyReference(BaseModel):
+    """Reference to a company with optional link to companies table.
+
+    Attributes:
+        id: UUID of company in companies table (if matched).
+        name: Company name (always present).
+    """
+    id: Optional[str] = None
+    name: str
+
+
 class Location(BaseModel):
     """Represents a geographic location.
 
@@ -34,7 +45,7 @@ class Experience(BaseModel):
 
     Attributes:
         title: Job title.
-        company: Company name.
+        company: Company reference (name + optional ID).
         company_linkedin_url: Optional LinkedIn company page URL.
         start_date: Employment start date.
         end_date: Employment end date (None if current position).
@@ -43,7 +54,7 @@ class Experience(BaseModel):
         skills: List of skills used in this role.
     """
     title: str
-    company: str
+    company: CompanyReference
     company_linkedin_url: Optional[str] = None
     start_date: DateInfo
     end_date: Optional[DateInfo] = None
@@ -187,7 +198,7 @@ class LinkedInCandidate(BaseModel):
 
     # Current position
     current_title: Optional[str] = None
-    current_company: Optional[str] = None
+    current_company: Optional[CompanyReference] = None
     current_description: Optional[str] = None
     current_start_date: Optional[DateInfo] = None
 
