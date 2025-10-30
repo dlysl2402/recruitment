@@ -151,6 +151,48 @@ class CompanyRepository:
         except Exception as error:
             raise Exception(f"Failed to delete company: {str(error)}")
 
+    def find_by_name_or_alias(self, company_name: str) -> Optional[Dict[str, Any]]:
+        """Find a company by exact name or alias match (case-insensitive).
+
+        Used for auto-linking candidates to companies during import.
+
+        Args:
+            company_name: Exact company name to match (e.g., "Amazon", "AWS").
+
+        Returns:
+            Company record if found, None otherwise.
+        """
+        try:
+            # First, try exact name match (case-insensitive)
+            name_match = (
+                self.db_client.table("companies")
+                .select("*")
+                .ilike("name", company_name)
+                .limit(1)
+                .execute()
+            )
+
+            if name_match.data:
+                return name_match.data[0]
+
+            # If no name match, check if it matches any alias
+            # We need to fetch all companies and check aliases manually since
+            # Supabase doesn't support case-insensitive array contains
+            all_companies = self.get_all()
+
+            for company in all_companies:
+                aliases = company.get("aliases", [])
+                if aliases:
+                    # Case-insensitive check if company_name is in aliases
+                    aliases_lower = [alias.lower() for alias in aliases]
+                    if company_name.lower() in aliases_lower:
+                        return company
+
+            return None
+
+        except Exception as error:
+            raise Exception(f"Failed to find company by name or alias: {str(error)}")
+
     def search_by_name_or_alias(self, search_term: str) -> List[Dict[str, Any]]:
         """Find companies by name or any alias.
 

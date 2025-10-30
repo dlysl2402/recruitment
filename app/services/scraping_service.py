@@ -58,15 +58,18 @@ class ScrapingService:
 
     Attributes:
         candidate_repository: Repository for candidate data storage.
+        company_service: Optional CompanyService for auto-matching companies.
     """
 
-    def __init__(self, candidate_repository: CandidateRepository):
+    def __init__(self, candidate_repository: CandidateRepository, company_service=None):
         """Initialize the scraping service.
 
         Args:
             candidate_repository: Repository for storing candidates.
+            company_service: Optional CompanyService for auto-matching companies.
         """
         self.candidate_repository = candidate_repository
+        self.company_service = company_service
 
     @staticmethod
     def _is_duplicate_error(error_message: str) -> bool:
@@ -130,7 +133,22 @@ class ScrapingService:
         try:
             # Transform and validate profile data
             candidate = transform_scraped_profile(profile_data)
-            candidate_dict = candidate.dict()
+
+            # Auto-match companies if company_service is available
+            if self.company_service:
+                # Match current_company
+                if candidate.current_company:
+                    candidate.current_company = self.company_service.match_company_reference_no_create(
+                        candidate.current_company
+                    )
+
+                # Match all experience companies
+                for experience in candidate.experience:
+                    experience.company = self.company_service.match_company_reference_no_create(
+                        experience.company
+                    )
+
+            candidate_dict = candidate.model_dump()
 
             # Save to database
             database_result = self.candidate_repository.insert(candidate_dict)

@@ -43,11 +43,11 @@ candidate_repository = CandidateRepository(supabase)
 interview_repository = InterviewRepository(supabase)
 company_repository = CompanyRepository(supabase)
 job_repository = JobRepository(supabase)
-candidate_service = CandidateService(candidate_repository)
 company_service = CompanyService(company_repository)
 job_service = JobService(job_repository)
+candidate_service = CandidateService(candidate_repository, company_service)
 scoring_service = ScoringService(candidate_repository)
-scraping_service = ScrapingService(candidate_repository)
+scraping_service = ScrapingService(candidate_repository, company_service)
 
 # Initialize feedback service and interview service with feedback loop
 feedback_service = FeedbackService(interview_repository, candidate_service, company_service, job_service)
@@ -185,6 +185,28 @@ def get_specific_candidate(candidate_id: str):
         return candidate_service.get_candidate_by_id(candidate_id)
     except ValueError as error:
         raise HTTPException(status_code=404, detail=str(error))
+
+
+@app.delete("/candidates/{candidate_id}")
+def delete_candidate(candidate_id: str):
+    """Delete a candidate by ID.
+
+    Args:
+        candidate_id: UUID of the candidate to delete.
+
+    Returns:
+        Dictionary with success message.
+
+    Raises:
+        HTTPException: If candidate not found (404) or deletion fails (500).
+    """
+    try:
+        result = candidate_service.delete_candidate(candidate_id)
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete candidate: {str(e)}")
 
 
 @app.get("/candidates/filter", response_model=List[CandidateFilterResponse])
@@ -687,7 +709,7 @@ def update_company(company_id: str, request: UpdateCompanyRequest):
     """
     try:
         # Convert request to dict, excluding None values
-        updates = {k: v for k, v in request.dict().items() if v is not None}
+        updates = {k: v for k, v in request.model_dump().items() if v is not None}
         return company_service.update_company(company_id, updates)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
@@ -790,7 +812,7 @@ def update_job(job_id: str, request: UpdateJobRequest):
         Updated job record.
     """
     try:
-        updates = {k: v for k, v in request.dict().items() if v is not None}
+        updates = {k: v for k, v in request.model_dump().items() if v is not None}
         return job_service.update_job(job_id, updates)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))

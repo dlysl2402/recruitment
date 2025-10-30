@@ -110,3 +110,26 @@ class CandidateRepository:
 
         response = query.execute()
         return response.data
+
+    def delete(self, candidate_id: str) -> bool:
+        """Delete a candidate from the database.
+
+        Args:
+            candidate_id: The unique identifier of the candidate to delete.
+
+        Returns:
+            True if deletion was successful.
+
+        Raises:
+            Exception: If deletion fails or candidate not found.
+        """
+        try:
+            response = (
+                self.db_client.table("candidates")
+                .delete()
+                .eq("id", candidate_id)
+                .execute()
+            )
+            return True
+        except Exception as error:
+            raise Exception(f"Failed to delete candidate: {str(error)}")

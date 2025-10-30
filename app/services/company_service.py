@@ -269,3 +269,34 @@ class CompanyService:
             name=company_ref.name,
             id=company["id"]
         )
+
+    def match_company_reference_no_create(self, company_ref: CompanyReference) -> CompanyReference:
+        """Match a CompanyReference to companies table without auto-creation.
+
+        Searches by exact name or alias match (case-insensitive).
+        If not found, returns the reference with empty ID.
+
+        Args:
+            company_ref: CompanyReference with name (and possibly ID already set).
+
+        Returns:
+            CompanyReference with ID populated if match found, empty string otherwise.
+        """
+        # Already has ID, return as-is
+        if company_ref.id:
+            return company_ref
+
+        # Try to find existing company by name or alias
+        company = self.company_repository.find_by_name_or_alias(company_ref.name)
+
+        # If found, populate ID; otherwise keep empty
+        if company:
+            return CompanyReference(
+                name=company_ref.name,
+                id=company["id"]
+            )
+        else:
+            return CompanyReference(
+                name=company_ref.name,
+                id=""
+            )

@@ -1,9 +1,13 @@
 """Service for candidate CRUD operations."""
 
-from typing import List, Dict, Set, Optional, Any
+from typing import List, Dict, Set, Optional, Any, TYPE_CHECKING
 
 from app.models import LinkedInCandidate, PlacementRecord
 from app.repositories.candidate_repository import CandidateRepository
+
+# Avoid circular import
+if TYPE_CHECKING:
+    from app.services.company_service import CompanyService
 
 
 class CandidateService:
@@ -13,18 +17,28 @@ class CandidateService:
 
     Attributes:
         candidate_repository: Repository for candidate data access.
+        company_service: Optional CompanyService for auto-matching companies.
     """
 
-    def __init__(self, candidate_repository: CandidateRepository):
+    def __init__(
+        self,
+        candidate_repository: CandidateRepository,
+        company_service: Optional["CompanyService"] = None
+    ):
         """Initialize the candidate service.
 
         Args:
             candidate_repository: Repository for candidate operations.
+            company_service: Optional CompanyService for auto-matching companies.
         """
         self.candidate_repository = candidate_repository
+        self.company_service = company_service
 
     def create_candidate(self, candidate: LinkedInCandidate) -> Dict[str, Any]:
         """Create a new candidate in the database.
+
+        Auto-matches companies in experience and current_company to existing
+        companies in the database (by name or alias) if company_service is configured.
 
         Args:
             candidate: LinkedInCandidate object to create.
@@ -35,7 +49,21 @@ class CandidateService:
         Raises:
             ValueError: If candidate creation fails or duplicate exists.
         """
-        result = self.candidate_repository.insert(candidate.dict())
+        # Auto-match companies if company_service is available
+        if self.company_service:
+            # Match current_company
+            if candidate.current_company:
+                candidate.current_company = self.company_service.match_company_reference_no_create(
+                    candidate.current_company
+                )
+
+            # Match all experience companies
+            for experience in candidate.experience:
+                experience.company = self.company_service.match_company_reference_no_create(
+                    experience.company
+                )
+
+        result = self.candidate_repository.insert(candidate.model_dump())
 
         if not result.data:
             raise ValueError("Failed to insert candidate")
@@ -71,6 +99,31 @@ class CandidateService:
             List of candidate records.
         """
         return self.candidate_repository.get_all()
+
+    def delete_candidate(self, candidate_id: str) -> Dict[str, Any]:
+        """Delete a candidate by ID.
+
+        Args:
+            candidate_id: Database ID of the candidate to delete.
+
+        Returns:
+            Dictionary with success message.
+
+        Raises:
+            ValueError: If candidate not found or deletion fails.
+        """
+        # Verify candidate exists first
+        candidate = self.candidate_repository.get_by_id(candidate_id)
+        if candidate is None:
+            raise ValueError(f"Candidate with ID '{candidate_id}' not found")
+
+        # Delete the candidate
+        self.candidate_repository.delete(candidate_id)
+
+        return {
+            "message": "Candidate deleted successfully",
+            "id": candidate_id
+        }
 
     def filter_candidates(
         self,
@@ -156,7 +209,7 @@ class CandidateService:
         candidate.placement_history.append(placement)
 
         # Update in database
-        update_data = {"placement_history": [p.dict() for p in candidate.placement_history]}
+        update_data = {"placement_history": [p.model_dump() for p in candidate.placement_history]}
 
         try:
             response = (
