@@ -2,7 +2,7 @@
 
 from typing import List, Dict, Set, Optional, Any
 
-from app.models import LinkedInCandidate
+from app.models import LinkedInCandidate, PlacementRecord
 from app.repositories.candidate_repository import CandidateRepository
 
 
@@ -129,3 +129,48 @@ class CandidateService:
             })
 
         return filtered_candidates
+
+    def add_placement_to_history(
+        self,
+        candidate_id: str,
+        placement: PlacementRecord
+    ) -> LinkedInCandidate:
+        """Add a placement record to candidate's placement history.
+
+        Args:
+            candidate_id: Database ID of the candidate.
+            placement: PlacementRecord to add to history.
+
+        Returns:
+            Updated LinkedInCandidate object.
+
+        Raises:
+            ValueError: If candidate not found or update fails.
+        """
+        # Get current candidate
+        candidate = self.candidate_repository.get_by_id(candidate_id)
+        if not candidate:
+            raise ValueError(f"Candidate with ID '{candidate_id}' not found")
+
+        # Add placement to history
+        candidate.placement_history.append(placement)
+
+        # Update in database
+        update_data = {"placement_history": [p.dict() for p in candidate.placement_history]}
+
+        try:
+            response = (
+                self.candidate_repository.db_client.table("candidates")
+                .update(update_data)
+                .eq("id", candidate_id)
+                .execute()
+            )
+
+            if not response.data:
+                raise ValueError(f"Failed to update candidate {candidate_id}")
+
+            # Return updated candidate
+            return self.candidate_repository.get_by_id(candidate_id)
+
+        except Exception as error:
+            raise ValueError(f"Failed to add placement to history: {str(error)}")

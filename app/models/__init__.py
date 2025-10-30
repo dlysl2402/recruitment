@@ -9,6 +9,7 @@ from app.models.candidate import (
     Project,
     Certification,
     Skills,
+    PlacementRecord,
     LinkedInCandidate
 )
 from app.models.feeder import WeightedSkill, PedigreeCompany, FeederPattern, RoleFeederConfig
@@ -29,6 +30,7 @@ __all__ = [
     "Project",
     "Certification",
     "Skills",
+    "PlacementRecord",
     "LinkedInCandidate",
     "WeightedSkill",
     "PedigreeCompany",

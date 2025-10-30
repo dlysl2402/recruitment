@@ -1,6 +1,6 @@
 """Service layer for interview process management and business logic."""
 
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, TYPE_CHECKING
 from datetime import date, datetime
 
 from app.repositories.interview_repository import InterviewRepository
@@ -12,6 +12,10 @@ from app.models.interview import (
     OfferDetails
 )
 
+# Avoid circular import
+if TYPE_CHECKING:
+    from app.services.feedback_service import FeedbackService
+
 
 class InterviewService:
     """Service for managing interview processes with business logic.
@@ -21,15 +25,22 @@ class InterviewService:
 
     Attributes:
         interview_repository: Repository for interview data access.
+        feedback_service: Optional FeedbackService for processing outcomes.
     """
 
-    def __init__(self, interview_repository: InterviewRepository):
+    def __init__(
+        self,
+        interview_repository: InterviewRepository,
+        feedback_service: Optional["FeedbackService"] = None
+    ):
         """Initialize the service with a repository.
 
         Args:
             interview_repository: InterviewRepository instance.
+            feedback_service: Optional FeedbackService for feedback loop.
         """
         self.interview_repository = interview_repository
+        self.feedback_service = feedback_service
 
     def create_interview_process(
         self,
@@ -223,6 +234,15 @@ class InterviewService:
             updates["offer_details"] = offer_details.model_dump()
 
         result = self.interview_repository.update_interview(interview_id, updates)
+
+        # Trigger feedback loop if feedback_service is configured
+        if self.feedback_service:
+            try:
+                self.feedback_service.process_interview_outcome(interview_id)
+            except Exception as error:
+                # Log error but don't fail the interview completion
+                print(f"Warning: Feedback loop failed for interview {interview_id}: {error}")
+
         return self._dict_to_interview_process(result)
 
     def get_candidate_interview_history(

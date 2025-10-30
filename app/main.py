@@ -12,6 +12,7 @@ from app.services.scoring_service import ScoringService
 from app.services.scraping_service import ScrapingService
 from app.services.candidate_service import CandidateService
 from app.services.interview_service import InterviewService
+from app.services.feedback_service import FeedbackService
 from app.api.schemas.responses import CandidateScoreResponse, CandidateFilterResponse
 from app.api.schemas.requests import (
     CreateInterviewRequest,
@@ -26,10 +27,13 @@ app = FastAPI()
 # Initialize repository and services
 candidate_repository = CandidateRepository(supabase)
 interview_repository = InterviewRepository(supabase)
+candidate_service = CandidateService(candidate_repository)
 scoring_service = ScoringService(candidate_repository)
 scraping_service = ScrapingService(candidate_repository)
-candidate_service = CandidateService(candidate_repository)
-interview_service = InterviewService(interview_repository)
+
+# Initialize feedback service and interview service with feedback loop
+feedback_service = FeedbackService(interview_repository, candidate_service)
+interview_service = InterviewService(interview_repository, feedback_service)
 
 
 @app.get("/")
@@ -515,5 +519,55 @@ def update_stage_outcome(stage_id: str, request: UpdateStageOutcomeRequest):
         )
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+# Analytics & Feedback Loop endpoints
+
+@app.get("/analytics/feeder/{feeder_source}")
+def get_feeder_performance(feeder_source: str):
+    """Get comprehensive performance report for a feeder pattern.
+
+    Args:
+        feeder_source: Name of the feeder pattern (e.g., "Amazon", "Google").
+
+    Returns:
+        Dictionary with performance metrics including:
+        - Total candidates sourced
+        - Placement rate
+        - Outcome breakdown
+        - Stage-by-stage performance
+
+    Raises:
+        HTTPException: If feeder not found or query fails.
+    """
+    try:
+        return feedback_service.get_feeder_performance_report(feeder_source)
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.post("/feedback/process-interview/{interview_id}")
+def trigger_feedback_loop(interview_id: str):
+    """Manually trigger feedback loop for an interview.
+
+    This endpoint allows manual triggering of the feedback loop,
+    which updates feeder conversion rates and placement history.
+
+    Args:
+        interview_id: UUID of the interview process.
+
+    Returns:
+        Dictionary with processing results and updated metrics.
+
+    Raises:
+        HTTPException: If interview not found or processing fails.
+    """
+    try:
+        result = feedback_service.process_interview_outcome(interview_id)
+        return result
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))

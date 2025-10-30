@@ -2,6 +2,7 @@
 
 from pydantic import BaseModel
 from typing import List, Optional, Dict
+from datetime import date
 
 
 class DateInfo(BaseModel):
@@ -134,6 +135,27 @@ class Skills(BaseModel):
     endorsement_count: int
 
 
+class PlacementRecord(BaseModel):
+    """Represents a successful job placement for a candidate.
+
+    Attributes:
+        company: Company where candidate was placed.
+        role: Role/position title.
+        placement_date: Date when offer was accepted.
+        base_salary: Base annual salary.
+        total_comp: Total compensation including bonuses/equity.
+        feeder_source: Which feeder pattern sourced this placement.
+        interview_id: ID of the interview process that led to placement.
+    """
+    company: str
+    role: str
+    placement_date: date
+    base_salary: Optional[float] = None
+    total_comp: Optional[float] = None
+    feeder_source: Optional[str] = None
+    interview_id: Optional[str] = None
+
+
 class LinkedInCandidate(BaseModel):
     """Complete LinkedIn candidate profile with all sections.
 
@@ -178,6 +200,9 @@ class LinkedInCandidate(BaseModel):
 
     # Scoring
     benchmark_scores: Dict[str, float] = {}
+
+    # Placement tracking
+    placement_history: List[PlacementRecord] = []
 
     class Config:
         """Pydantic configuration."""
