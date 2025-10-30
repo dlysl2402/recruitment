@@ -58,18 +58,26 @@ class ScrapingService:
 
     Attributes:
         candidate_repository: Repository for candidate data storage.
+        candidate_service: CandidateService for duplicate detection and storage.
         company_service: Optional CompanyService for auto-matching companies.
     """
 
-    def __init__(self, candidate_repository: CandidateRepository, company_service=None):
+    def __init__(
+        self,
+        candidate_repository: CandidateRepository,
+        company_service=None,
+        candidate_service=None
+    ):
         """Initialize the scraping service.
 
         Args:
-            candidate_repository: Repository for storing candidates.
+            candidate_repository: Repository for storing candidates (legacy).
             company_service: Optional CompanyService for auto-matching companies.
+            candidate_service: Optional CandidateService for duplicate detection.
         """
         self.candidate_repository = candidate_repository
         self.company_service = company_service
+        self.candidate_service = candidate_service
 
     @staticmethod
     def _is_duplicate_error(error_message: str) -> bool:
@@ -134,36 +142,75 @@ class ScrapingService:
             # Transform and validate profile data
             candidate = transform_scraped_profile(profile_data)
 
-            # Auto-match companies if company_service is available
-            if self.company_service:
-                # Match current_company
-                if candidate.current_company:
-                    candidate.current_company = self.company_service.match_company_reference_no_create(
-                        candidate.current_company
-                    )
+            # Use candidate_service for duplicate detection if available
+            if self.candidate_service:
+                # Check for duplicates
+                auto_match_id, manual_review = self.candidate_service.find_potential_duplicates(candidate)
 
-                # Match all experience companies
-                for experience in candidate.experience:
-                    experience.company = self.company_service.match_company_reference_no_create(
-                        experience.company
-                    )
+                if auto_match_id:
+                    # Auto-merge exact match
+                    result = self.candidate_service.merge_candidate(auto_match_id, candidate)
+                    return {
+                        "id": result["id"],
+                        "candidate_name": f"{candidate.first_name} {candidate.last_name}",
+                        "current_company": candidate.current_company.name if candidate.current_company else "Unknown",
+                        "status": "auto_merged",
+                        "success": True
+                    }
+                elif manual_review:
+                    # Name matches but experience doesn't - needs manual review
+                    return {
+                        "username": username,
+                        "candidate_name": f"{candidate.first_name} {candidate.last_name}",
+                        "current_company": candidate.current_company.name if candidate.current_company else "Unknown",
+                        "status": "manual_review_required",
+                        "potential_duplicates": manual_review,
+                        "candidate_data": candidate.model_dump(),
+                        "success": False
+                    }
+                else:
+                    # No duplicates, create new
+                    result = self.candidate_service.create_candidate(candidate)
+                    return {
+                        "id": result["id"],
+                        "candidate_name": f"{candidate.first_name} {candidate.last_name}",
+                        "current_company": candidate.current_company.name if candidate.current_company else "Unknown",
+                        "status": "created",
+                        "success": True
+                    }
 
-            candidate_dict = candidate.model_dump()
+            # Fallback to old behavior if candidate_service not available
+            else:
+                # Auto-match companies if company_service is available
+                if self.company_service:
+                    # Match current_company
+                    if candidate.current_company:
+                        candidate.current_company = self.company_service.match_company_reference_no_create(
+                            candidate.current_company
+                        )
 
-            # Save to database
-            database_result = self.candidate_repository.insert(candidate_dict)
+                    # Match all experience companies
+                    for experience in candidate.experience:
+                        experience.company = self.company_service.match_company_reference_no_create(
+                            experience.company
+                        )
 
-            if not database_result.data:
-                raise ValueError("Insert returned no data")
+                candidate_dict = candidate.model_dump()
 
-            record = database_result.data[0]
-            return {
-                "id": record.get("id", ""),
-                "candidate_name": f"{candidate.first_name} {candidate.last_name}",
-                "current_company": candidate.current_company,
-                "status": "inserted",
-                "success": True
-            }
+                # Save to database
+                database_result = self.candidate_repository.insert(candidate_dict)
+
+                if not database_result.data:
+                    raise ValueError("Insert returned no data")
+
+                record = database_result.data[0]
+                return {
+                    "id": record.get("id", ""),
+                    "candidate_name": f"{candidate.first_name} {candidate.last_name}",
+                    "current_company": candidate.current_company,
+                    "status": "inserted",
+                    "success": True
+                }
 
         except Exception as processing_error:
             error_message = str(processing_error)
@@ -211,34 +258,62 @@ class ScrapingService:
     def scrape_and_save_profiles(
         self,
         usernames: List[str]
-    ) -> Dict[str, List[Dict[str, Any]]]:
-        """Scrape LinkedIn profiles and save to database.
+    ) -> Dict[str, Any]:
+        """Scrape LinkedIn profiles and save to database with duplicate detection.
 
         Args:
             usernames: List of LinkedIn usernames to scrape.
 
         Returns:
-            Dictionary with "success" and "failed" lists.
+            Dictionary with categorized results:
+                - created: New candidates created
+                - auto_merged: Existing candidates updated (exact match)
+                - manual_review: Require user decision (name match, different experience)
+                - failed: Scraping or processing failures
+                - summary: Counts for each category
 
         Raises:
             Exception: If scraping API call fails.
         """
         scraped_results = scrape_linkedin_profiles(usernames)
 
-        success = []
+        created = []
+        auto_merged = []
+        manual_review = []
         failed = []
 
         for username, profile_data in zip(usernames, scraped_results):
             result = self._process_single_profile(username, profile_data)
 
+            status = result.get("status", "")
+
             if result.get("success"):
                 result.pop("success")
-                success.append(result)
+                if status == "created":
+                    created.append(result)
+                elif status == "auto_merged":
+                    auto_merged.append(result)
             else:
-                result.pop("success")
-                failed.append(result)
+                result.pop("success", None)
+                if status == "manual_review_required":
+                    manual_review.append(result)
+                else:
+                    failed.append(result)
 
-        response = {"success": success}
+        response = {
+            "created": created,
+            "auto_merged": auto_merged,
+            "summary": {
+                "total": len(usernames),
+                "created": len(created),
+                "auto_merged": len(auto_merged),
+                "manual_review": len(manual_review),
+                "failed": len(failed)
+            }
+        }
+
+        if manual_review:
+            response["manual_review"] = manual_review
         if failed:
             response["failed"] = failed
 

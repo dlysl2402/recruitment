@@ -47,7 +47,7 @@ company_service = CompanyService(company_repository)
 job_service = JobService(job_repository)
 candidate_service = CandidateService(candidate_repository, company_service)
 scoring_service = ScoringService(candidate_repository)
-scraping_service = ScrapingService(candidate_repository, company_service)
+scraping_service = ScrapingService(candidate_repository, company_service, candidate_service)
 
 # Initialize feedback service and interview service with feedback loop
 feedback_service = FeedbackService(interview_repository, candidate_service, company_service, job_service)
@@ -134,7 +134,100 @@ def get_top_candidates(target_role: str, num_of_profiles: int):
 # Database CRUD endpoints
 @app.post("/candidates")
 def create_candidate(candidate: LinkedInCandidate):
-    """Add a new candidate to the database.
+    """Add a new candidate to the database with duplicate detection.
+
+    Checks for duplicates by name and previous experience. If exact match found
+    (same name + matching previous experience), auto-updates existing record.
+    If name matches but experience differs, returns 409 with manual review needed.
+
+    Args:
+        candidate: LinkedInCandidate object with profile information.
+
+    Returns:
+        Dictionary with success message and candidate ID.
+
+    Raises:
+        HTTPException: 409 if manual review needed, 500 if insertion fails.
+    """
+    try:
+        # Check for potential duplicates
+        auto_match_id, manual_review = candidate_service.find_potential_duplicates(candidate)
+
+        # If exact match found, auto-merge
+        if auto_match_id:
+            result = candidate_service.merge_candidate(auto_match_id, candidate)
+            result["auto_merged"] = True
+            return result
+
+        # If name matches but experience doesn't match, require manual review
+        if manual_review:
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "status": "manual_review_required",
+                    "message": f"Found {len(manual_review)} candidate(s) with same name",
+                    "new_candidate": {
+                        "name": f"{candidate.first_name} {candidate.last_name}",
+                        "current_company": candidate.current_company.name if candidate.current_company else "Unknown",
+                        "current_title": candidate.experience[0].title if candidate.experience else "Unknown",
+                        "experience": [
+                            {
+                                "company": exp.company.name,
+                                "title": exp.title,
+                                "start_date": exp.start_date.model_dump() if exp.start_date else None,
+                                "end_date": exp.end_date.model_dump() if exp.end_date else None
+                            }
+                            for exp in candidate.experience[:5]
+                        ]
+                    },
+                    "potential_duplicates": manual_review
+                }
+            )
+
+        # No duplicates, create new candidate
+        return candidate_service.create_candidate(candidate)
+
+    except HTTPException:
+        raise
+    except ValueError as error:
+        error_message = str(error)
+        if "Failed to insert" in error_message:
+            raise HTTPException(status_code=500, detail=error_message)
+        raise HTTPException(status_code=409, detail=error_message)
+
+
+@app.put("/candidates/{candidate_id}/merge")
+def merge_candidate(candidate_id: str, candidate: LinkedInCandidate):
+    """Merge new candidate data into an existing candidate.
+
+    Updates the existing candidate with new current position and experience.
+    Use this after manual review to confirm a duplicate match.
+
+    Args:
+        candidate_id: Database ID of existing candidate to update.
+        candidate: New LinkedInCandidate data to merge.
+
+    Returns:
+        Dictionary with success message and candidate ID.
+
+    Raises:
+        HTTPException: If candidate not found (404) or merge fails (500).
+    """
+    try:
+        return candidate_service.merge_candidate(candidate_id, candidate)
+    except ValueError as error:
+        error_message = str(error)
+        if "not found" in error_message.lower():
+            raise HTTPException(status_code=404, detail=error_message)
+        raise HTTPException(status_code=500, detail=error_message)
+
+
+@app.post("/candidates/force-create")
+def force_create_candidate(candidate: LinkedInCandidate):
+    """Create a new candidate without duplicate checking.
+
+    Bypasses duplicate detection. Use after manual review confirms
+    this is a different person despite name match.
 
     Args:
         candidate: LinkedInCandidate object with profile information.
@@ -143,16 +236,12 @@ def create_candidate(candidate: LinkedInCandidate):
         Dictionary with success message and inserted candidate ID.
 
     Raises:
-        HTTPException: If insertion fails (e.g., duplicate).
+        HTTPException: If insertion fails (500).
     """
     try:
         return candidate_service.create_candidate(candidate)
     except ValueError as error:
-        error_message = str(error)
-        if "Failed to insert" in error_message:
-            raise HTTPException(status_code=500, detail=error_message)
-        # Duplicate or other validation errors
-        raise HTTPException(status_code=409, detail=error_message)
+        raise HTTPException(status_code=500, detail=str(error))
 
 
 @app.get("/candidates")
@@ -244,20 +333,25 @@ def filter_candidates(
 # LinkedIn scraping endpoints
 @app.post("/linkedin-scrape-and-save-batch")
 def scrape_and_save_candidate_batch(profile_usernames: str):
-    """Scrape LinkedIn profiles and save to database.
+    """Scrape LinkedIn profiles and save to database with duplicate detection.
 
     Args:
         profile_usernames: Comma-separated LinkedIn usernames to scrape.
 
     Returns:
-        Dictionary with "success" and optional "failed" lists containing
-        processing results for each profile.
+        Dictionary with categorized results:
+            - created: New candidates created
+            - auto_merged: Existing candidates auto-updated (exact match)
+            - manual_review: Candidates requiring manual review (name match only)
+            - failed: Scraping/processing failures
+            - summary: Counts for each category
 
     Raises:
         HTTPException: If scraping fails or no valid usernames provided.
 
     Note:
-        Duplicates are detected and skipped, reported in failed list.
+        Exact duplicates (name + previous experience match) are auto-merged.
+        Name matches with different experience require manual review.
     """
     try:
         usernames = [

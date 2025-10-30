@@ -410,7 +410,9 @@ def _apply_negative_signals(
     breakdown = {}
 
     # Avoid companies penalty
-    if candidate.current_company in role_config.avoid_companies:
+    from app.models import CompanyReference
+    current_company_name = candidate.current_company.name if isinstance(candidate.current_company, CompanyReference) else candidate.current_company
+    if current_company_name and current_company_name in role_config.avoid_companies:
         score -= 20
         breakdown["avoid_company"] = True
 
@@ -424,17 +426,26 @@ def _apply_negative_signals(
     return score, breakdown
 
 
-def company_matches(candidate_company: str, feeder: FeederPattern) -> bool:
+def company_matches(candidate_company, feeder: FeederPattern) -> bool:
     """Check if candidate's company matches the feeder company or its aliases.
 
     Args:
-        candidate_company: The company name from the candidate's profile.
+        candidate_company: The company from the candidate's profile (str or CompanyReference).
         feeder: The feeder pattern containing company name and aliases.
 
     Returns:
         True if the candidate's company matches, False otherwise.
     """
-    candidate_lower = candidate_company.lower().strip()
+    # Handle CompanyReference objects (extract name) or plain strings
+    from app.models import CompanyReference
+    if isinstance(candidate_company, CompanyReference):
+        candidate_name = candidate_company.name
+    elif isinstance(candidate_company, str):
+        candidate_name = candidate_company
+    else:
+        return False
+
+    candidate_lower = candidate_name.lower().strip()
 
     all_companies = [feeder.company] + feeder.company_aliases
 

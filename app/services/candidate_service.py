@@ -1,9 +1,10 @@
 """Service for candidate CRUD operations."""
 
-from typing import List, Dict, Set, Optional, Any, TYPE_CHECKING
+from typing import List, Dict, Set, Optional, Any, TYPE_CHECKING, Tuple
 
 from app.models import LinkedInCandidate, PlacementRecord
 from app.repositories.candidate_repository import CandidateRepository
+from app.utils.duplicate_detection import previous_experience_matches
 
 # Avoid circular import
 if TYPE_CHECKING:
@@ -227,3 +228,162 @@ class CandidateService:
 
         except Exception as error:
             raise ValueError(f"Failed to add placement to history: {str(error)}")
+
+    def find_potential_duplicates(
+        self,
+        candidate: LinkedInCandidate
+    ) -> Tuple[Optional[str], List[Dict[str, Any]]]:
+        """Find potential duplicate candidates by name and experience match.
+
+        Checks for candidates with matching name. If found, compares previous
+        experience (excluding current position). If previous experience matches,
+        returns the ID for auto-update. Otherwise, returns all name matches
+        for manual review.
+
+        Args:
+            candidate: LinkedInCandidate to check for duplicates.
+
+        Returns:
+            Tuple of (auto_match_id, manual_review_candidates):
+                - auto_match_id: ID of exact match found (None if no match)
+                - manual_review_candidates: List of potential duplicates for review
+
+        Raises:
+            ValueError: If company_service not configured.
+        """
+        if not self.company_service:
+            raise ValueError("Company service required for duplicate detection")
+
+        # Search for candidates with same name
+        full_name = f"{candidate.first_name} {candidate.last_name}".strip()
+        name_matches = self.candidate_repository.get_with_filters(
+            filters={"first_name": candidate.first_name, "last_name": candidate.last_name}
+        )
+
+        if not name_matches:
+            return None, []
+
+        # Extract previous experience (skip current position at index 0)
+        new_prev_exp = candidate.experience[1:] if len(candidate.experience) > 1 else []
+
+        auto_match_id = None
+        manual_review = []
+
+        for match in name_matches:
+            # Get full candidate object
+            existing_candidate = self.candidate_repository.get_by_id(match["id"])
+            if not existing_candidate:
+                continue
+
+            # Extract previous experience
+            existing_prev_exp = (
+                existing_candidate.experience[1:]
+                if len(existing_candidate.experience) > 1
+                else []
+            )
+
+            # Check if previous experience matches
+            if previous_experience_matches(
+                new_prev_exp,
+                existing_prev_exp,
+                self.company_service.company_repository
+            ):
+                # Found exact match - return for auto-update
+                auto_match_id = match["id"]
+                break
+
+            # Add to manual review list
+            manual_review.append({
+                "id": match["id"],
+                "name": f"{match.get('first_name', '')} {match.get('last_name', '')}".strip(),
+                "current_company": match.get("current_company", {}).get("name", "Unknown"),
+                "current_title": (
+                    existing_candidate.experience[0].title
+                    if existing_candidate.experience
+                    else "Unknown"
+                ),
+                "previous_experience": [
+                    {
+                        "company": exp.company.name,
+                        "title": exp.title,
+                        "start_date": exp.start_date.model_dump() if exp.start_date else None,
+                        "end_date": exp.end_date.model_dump() if exp.end_date else None
+                    }
+                    for exp in existing_prev_exp[:3]  # Show up to 3 previous positions
+                ]
+            })
+
+        return auto_match_id, manual_review
+
+    def merge_candidate(
+        self,
+        existing_id: str,
+        new_candidate: LinkedInCandidate
+    ) -> Dict[str, Any]:
+        """Merge new candidate data into existing candidate record.
+
+        Updates the existing candidate with new current position and appends
+        any new previous experience entries.
+
+        Args:
+            existing_id: Database ID of existing candidate.
+            new_candidate: New candidate data to merge.
+
+        Returns:
+            Dictionary with success message and updated candidate ID.
+
+        Raises:
+            ValueError: If existing candidate not found or update fails.
+        """
+        # Get existing candidate
+        existing_candidate = self.candidate_repository.get_by_id(existing_id)
+        if not existing_candidate:
+            raise ValueError(f"Candidate with ID '{existing_id}' not found")
+
+        # Auto-match companies if company_service is available
+        if self.company_service:
+            if new_candidate.current_company:
+                new_candidate.current_company = self.company_service.match_company_reference_no_create(
+                    new_candidate.current_company
+                )
+            for experience in new_candidate.experience:
+                experience.company = self.company_service.match_company_reference_no_create(
+                    experience.company
+                )
+
+        # Update current company and position
+        update_data = {
+            "current_company": new_candidate.current_company.model_dump(),
+            "headline": new_candidate.headline or existing_candidate.headline,
+            "location": new_candidate.location.model_dump() if new_candidate.location else None,
+        }
+
+        # Merge experience: replace with new experience (includes current + all previous)
+        update_data["experience"] = [exp.model_dump() for exp in new_candidate.experience]
+
+        # Update education, skills, certifications if provided
+        if new_candidate.education:
+            update_data["education"] = [edu.model_dump() for edu in new_candidate.education]
+        if new_candidate.skills:
+            update_data["skills"] = [skill.model_dump() for skill in new_candidate.skills]
+        if new_candidate.certifications:
+            update_data["certifications"] = [cert.model_dump() for cert in new_candidate.certifications]
+
+        try:
+            response = (
+                self.candidate_repository.db_client.table("candidates")
+                .update(update_data)
+                .eq("id", existing_id)
+                .execute()
+            )
+
+            if not response.data:
+                raise ValueError(f"Failed to update candidate {existing_id}")
+
+            return {
+                "message": "Candidate merged successfully",
+                "id": existing_id
+            }
+
+        except Exception as error:
+            raise ValueError(f"Failed to merge candidate: {str(error)}")
