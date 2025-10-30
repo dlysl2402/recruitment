@@ -4,6 +4,7 @@ from typing import List, Optional, Dict, Any, TYPE_CHECKING
 from datetime import date, datetime
 
 from app.repositories.interview_repository import InterviewRepository
+from app.services.company_service import CompanyService
 from app.models.interview import (
     InterviewProcess,
     InterviewStage,
@@ -25,21 +26,25 @@ class InterviewService:
 
     Attributes:
         interview_repository: Repository for interview data access.
+        company_service: CompanyService for company operations.
         feedback_service: Optional FeedbackService for processing outcomes.
     """
 
     def __init__(
         self,
         interview_repository: InterviewRepository,
+        company_service: CompanyService,
         feedback_service: Optional["FeedbackService"] = None
     ):
         """Initialize the service with a repository.
 
         Args:
             interview_repository: InterviewRepository instance.
+            company_service: CompanyService instance.
             feedback_service: Optional FeedbackService for feedback loop.
         """
         self.interview_repository = interview_repository
+        self.company_service = company_service
         self.feedback_service = feedback_service
 
     def create_interview_process(
@@ -68,8 +73,12 @@ class InterviewService:
         if not candidate_id or not company_name or not role_title:
             raise ValueError("candidate_id, company_name, and role_title are required")
 
+        # Find or create company
+        company = self.company_service.find_or_create_company(company_name)
+
         interview_data = {
             "candidate_id": candidate_id,
+            "company_id": company["id"],
             "company_name": company_name,
             "role_title": role_title,
             "status": InterviewStatus.IN_PROGRESS.value,
@@ -343,6 +352,7 @@ class InterviewService:
         return InterviewProcess(
             id=data.get("id"),
             candidate_id=data["candidate_id"],
+            company_id=data.get("company_id"),
             company_name=data["company_name"],
             role_title=data["role_title"],
             status=InterviewStatus(data["status"]),

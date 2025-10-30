@@ -93,7 +93,8 @@ class InterviewProcess(BaseModel):
     Attributes:
         id: Unique process identifier (UUID from database).
         candidate_id: ID of the candidate being interviewed.
-        company_name: Company conducting the interview.
+        company_id: ID of the company (foreign key to companies table).
+        company_name: Company name (kept for backward compatibility).
         role_title: Role/position being interviewed for.
         status: Current status of the interview process.
         feeder_source: Which feeder pattern this came from (for conversion tracking).
@@ -106,6 +107,7 @@ class InterviewProcess(BaseModel):
     """
     id: Optional[str] = None
     candidate_id: str
+    company_id: Optional[str] = None
     company_name: str
     role_title: str
     status: InterviewStatus = InterviewStatus.IN_PROGRESS

@@ -8,17 +8,23 @@ from app.models.interview import InterviewProcess, InterviewStage, InterviewStat
 from app.database.client import supabase
 from app.repositories.candidate_repository import CandidateRepository
 from app.repositories.interview_repository import InterviewRepository
+from app.repositories.company_repository import CompanyRepository
 from app.services.scoring_service import ScoringService
 from app.services.scraping_service import ScrapingService
 from app.services.candidate_service import CandidateService
 from app.services.interview_service import InterviewService
 from app.services.feedback_service import FeedbackService
+from app.services.company_service import CompanyService
 from app.api.schemas.responses import CandidateScoreResponse, CandidateFilterResponse
 from app.api.schemas.requests import (
     CreateInterviewRequest,
     AddStageRequest,
     UpdateStageOutcomeRequest,
     CompleteInterviewRequest
+)
+from app.api.schemas.company_schemas import (
+    CreateCompanyRequest,
+    UpdateCompanyRequest
 )
 
 
@@ -27,13 +33,15 @@ app = FastAPI()
 # Initialize repository and services
 candidate_repository = CandidateRepository(supabase)
 interview_repository = InterviewRepository(supabase)
+company_repository = CompanyRepository(supabase)
 candidate_service = CandidateService(candidate_repository)
+company_service = CompanyService(company_repository)
 scoring_service = ScoringService(candidate_repository)
 scraping_service = ScrapingService(candidate_repository)
 
 # Initialize feedback service and interview service with feedback loop
-feedback_service = FeedbackService(interview_repository, candidate_service)
-interview_service = InterviewService(interview_repository, feedback_service)
+feedback_service = FeedbackService(interview_repository, candidate_service, company_service)
+interview_service = InterviewService(interview_repository, company_service, feedback_service)
 
 
 @app.get("/")
@@ -567,6 +575,134 @@ def trigger_feedback_loop(interview_id: str):
     try:
         result = feedback_service.process_interview_outcome(interview_id)
         return result
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+# Company Management endpoints
+
+@app.post("/companies")
+def create_company(request: CreateCompanyRequest):
+    """Create a new company.
+
+    Args:
+        request: CreateCompanyRequest with company details.
+
+    Returns:
+        Created company record.
+
+    Raises:
+        HTTPException: If creation fails or company already exists.
+    """
+    try:
+        return company_service.create_company(
+            name=request.name,
+            aliases=request.aliases,
+            industry=request.industry,
+            headquarters_city=request.headquarters_city,
+            headquarters_country=request.headquarters_country,
+            primary_contact_name=request.primary_contact_name,
+            primary_contact_email=request.primary_contact_email,
+            internal_notes=request.internal_notes
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/companies")
+def list_companies():
+    """Get all companies.
+
+    Returns:
+        List of all company records.
+    """
+    try:
+        return company_service.list_companies()
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/companies/{company_id}")
+def get_company(company_id: str):
+    """Get a specific company by ID.
+
+    Args:
+        company_id: UUID of the company.
+
+    Returns:
+        Company record.
+
+    Raises:
+        HTTPException: If company not found.
+    """
+    try:
+        return company_service.get_company(company_id)
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.get("/companies/search/{search_term}")
+def search_companies(search_term: str):
+    """Search companies by name or alias.
+
+    Args:
+        search_term: Term to search for (e.g., "SIG", "Citadel").
+
+    Returns:
+        List of matching company records.
+    """
+    try:
+        return company_service.search_companies(search_term)
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.put("/companies/{company_id}")
+def update_company(company_id: str, request: UpdateCompanyRequest):
+    """Update a company.
+
+    Args:
+        company_id: UUID of the company.
+        request: UpdateCompanyRequest with fields to update.
+
+    Returns:
+        Updated company record.
+
+    Raises:
+        HTTPException: If company not found or invalid data.
+    """
+    try:
+        # Convert request to dict, excluding None values
+        updates = {k: v for k, v in request.dict().items() if v is not None}
+        return company_service.update_company(company_id, updates)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.delete("/companies/{company_id}")
+def delete_company(company_id: str):
+    """Delete a company.
+
+    Args:
+        company_id: UUID of the company.
+
+    Returns:
+        Success message.
+
+    Raises:
+        HTTPException: If company not found.
+    """
+    try:
+        company_service.delete_company(company_id)
+        return {"message": "Company deleted successfully"}
     except ValueError as error:
         raise HTTPException(status_code=404, detail=str(error))
     except Exception as error:

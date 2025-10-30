@@ -6,6 +6,7 @@ from datetime import date
 
 from app.repositories.interview_repository import InterviewRepository
 from app.services.candidate_service import CandidateService
+from app.services.company_service import CompanyService
 from app.models.interview import InterviewStatus, InterviewProcess
 from app.models.candidate import PlacementRecord
 
@@ -19,6 +20,7 @@ class FeedbackService:
     Attributes:
         interview_repository: Repository for interview data access.
         candidate_service: Service for candidate operations.
+        company_service: Service for company operations.
         feeders_file_path: Path to feeders.json configuration file.
     """
 
@@ -26,6 +28,7 @@ class FeedbackService:
         self,
         interview_repository: InterviewRepository,
         candidate_service: CandidateService,
+        company_service: CompanyService,
         feeders_file_path: str = "app/feeders.json"
     ):
         """Initialize the feedback service.
@@ -33,10 +36,12 @@ class FeedbackService:
         Args:
             interview_repository: InterviewRepository instance.
             candidate_service: CandidateService instance.
+            company_service: CompanyService instance.
             feeders_file_path: Path to feeders.json file.
         """
         self.interview_repository = interview_repository
         self.candidate_service = candidate_service
+        self.company_service = company_service
         self.feeders_file_path = feeders_file_path
 
     def process_interview_outcome(self, interview_id: str) -> Dict[str, Any]:
@@ -46,7 +51,8 @@ class FeedbackService:
         reaches a terminal state (offer_accepted, rejected, etc.), this method:
         1. Updates feeder conversion rates if feeder_source is tracked
         2. Adds placement record to candidate history if offer accepted
-        3. Returns metrics for logging/analysis
+        3. Updates company metrics (candidates sent, placements, conversion rate)
+        4. Returns metrics for logging/analysis
 
         Args:
             interview_id: ID of the completed interview process.
@@ -94,6 +100,11 @@ class FeedbackService:
         if interview_dict["status"] == InterviewStatus.OFFER_ACCEPTED.value:
             placement_update = self._add_placement_to_candidate(interview_dict)
             result["updates"]["placement"] = placement_update
+
+        # Update company metrics if company_id exists
+        if interview_dict.get("company_id"):
+            company_update = self._update_company_metrics(interview_dict["company_id"])
+            result["updates"]["company"] = company_update
 
         return result
 
@@ -309,4 +320,50 @@ class FeedbackService:
             return {
                 "error": f"Failed to add placement to candidate: {str(error)}",
                 "candidate_id": interview_dict.get("candidate_id")
+            }
+
+    def _update_company_metrics(self, company_id: str) -> Dict[str, Any]:
+        """Update company metrics based on all interviews for that company.
+
+        Args:
+            company_id: Company UUID.
+
+        Returns:
+            Dictionary with updated company metrics.
+        """
+        try:
+            # Query all interviews for this company
+            response = (
+                self.interview_repository.db_client.table("interview_processes")
+                .select("*")
+                .eq("company_id", company_id)
+                .execute()
+            )
+
+            interviews = response.data
+            total_sent = len(interviews)
+            total_placed = sum(
+                1 for interview in interviews
+                if interview["status"] == InterviewStatus.OFFER_ACCEPTED.value
+            )
+
+            # Update company metrics
+            self.company_service.update_metrics_from_interviews(
+                company_id=company_id,
+                total_sent=total_sent,
+                total_placed=total_placed
+            )
+
+            return {
+                "company_id": company_id,
+                "total_candidates_sent": total_sent,
+                "total_placements": total_placed,
+                "placement_rate": round(total_placed / total_sent, 4) if total_sent > 0 else 0
+            }
+
+        except Exception as error:
+            # Log error but don't fail the feedback loop
+            return {
+                "error": f"Failed to update company metrics: {str(error)}",
+                "company_id": company_id
             }
