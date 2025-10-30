@@ -447,19 +447,36 @@ def _apply_negative_signals(
         breakdown["avoid_company"] = True
 
     # Avoid title keywords penalty (non-hands-on roles and irrelevant backgrounds)
-    if role_config.avoid_title_keywords:
+    # Use weighted penalties if configured, otherwise fall back to simple list
+    if role_config.avoid_title_keyword_penalties or role_config.avoid_title_keywords:
         matched_titles = []
+
+        # Build penalty lookup (weighted system or default to 1000)
+        penalty_weights = role_config.avoid_title_keyword_penalties or {}
+        if not penalty_weights and role_config.avoid_title_keywords:
+            # Backward compatibility: use fixed -1000 for old configs
+            penalty_weights = {kw: 1000 for kw in role_config.avoid_title_keywords}
 
         # Check current title
         if candidate.current_title:
             current_title_lower = candidate.current_title.lower()
-            for keyword in role_config.avoid_title_keywords:
+            for keyword, multiplier in penalty_weights.items():
                 if keyword.lower() in current_title_lower:
-                    score -= 1000
+                    # Calculate years in current role
+                    years = calculate_tenure(candidate.current_start_date) if candidate.current_start_date else 0
+                    if years == 0:
+                        # No duration data - eliminate profile
+                        penalty = 1000
+                    else:
+                        penalty = int(multiplier * years)
+
+                    score -= penalty
                     matched_titles.append({
                         "title": candidate.current_title,
                         "company": candidate.current_company.name if isinstance(candidate.current_company, CompanyReference) else str(candidate.current_company),
                         "keyword": keyword,
+                        "years": round(years, 1),
+                        "penalty": penalty,
                         "is_current": True
                     })
                     break  # Only count current role once
@@ -469,13 +486,23 @@ def _apply_negative_signals(
             if not experience.title:
                 continue
             exp_title_lower = experience.title.lower()
-            for keyword in role_config.avoid_title_keywords:
+            for keyword, multiplier in penalty_weights.items():
                 if keyword.lower() in exp_title_lower:
-                    score -= 1000
+                    # Calculate years from duration string
+                    years = parse_duration_to_years(experience.duration) if experience.duration else 0
+                    if years == 0:
+                        # No duration data - eliminate profile
+                        penalty = 1000
+                    else:
+                        penalty = int(multiplier * years)
+
+                    score -= penalty
                     matched_titles.append({
                         "title": experience.title,
                         "company": experience.company.name if hasattr(experience.company, "name") else str(experience.company),
                         "keyword": keyword,
+                        "years": round(years, 1),
+                        "penalty": penalty,
                         "is_current": False
                     })
                     break  # Only count each experience once

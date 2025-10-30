@@ -39,6 +39,15 @@
     "relevant_title_keywords": ["network", "NDE"],
     "avoid_companies": ["early-stage startups"],
     "avoid_title_keywords": ["manager"],
+    "avoid_title_keyword_penalties": {
+      "Manager": 10.0,
+      "Engineering Manager": 10.0,
+      "Director": 10.0,
+      "VP": 15.0,
+      "Vice President": 15.0,
+      "Head of": 12.0,
+      "Chief": 15.0
+    },
     "red_flags": [],
     "typical_salary_range": {
       "base_min": 150000,
@@ -125,8 +134,20 @@
     "avoid_companies": [],
     "avoid_title_keywords": [
       "manager",
-      "technical program"
+      "technical program",
+      "network"
     ],
+    "avoid_title_keyword_penalties": {
+      "Manager": 10.0,
+      "Engineering Manager": 10.0,
+      "Technical Program": 10.0,
+      "Director": 10.0,
+      "VP": 15.0,
+      "Vice President": 15.0,
+      "Head of": 12.0,
+      "Chief": 15.0,
+      "Network": 3.0
+    },
     "red_flags": [],
     "typical_salary_range": {
       "base_min": 150000,
