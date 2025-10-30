@@ -30,8 +30,6 @@ class CompanyService:
         industry: Optional[str] = None,
         headquarters_city: Optional[str] = None,
         headquarters_country: Optional[str] = None,
-        primary_contact_name: Optional[str] = None,
-        primary_contact_email: Optional[str] = None,
         internal_notes: Optional[str] = None
     ) -> Dict[str, Any]:
         """Create a new company.
@@ -42,8 +40,6 @@ class CompanyService:
             industry: Industry classification.
             headquarters_city: HQ city.
             headquarters_country: HQ country.
-            primary_contact_name: Primary contact person.
-            primary_contact_email: Primary contact email.
             internal_notes: Internal notes about the company.
 
         Returns:
@@ -66,8 +62,6 @@ class CompanyService:
             "industry": industry,
             "headquarters_city": headquarters_city,
             "headquarters_country": headquarters_country,
-            "primary_contact_name": primary_contact_name,
-            "primary_contact_email": primary_contact_email,
             "internal_notes": internal_notes,
             "total_candidates_sent": 0,
             "total_placements": 0,

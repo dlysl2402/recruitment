@@ -11,8 +11,6 @@ class CreateCompanyRequest(BaseModel):
     industry: Optional[str] = None
     headquarters_city: Optional[str] = None
     headquarters_country: Optional[str] = None
-    primary_contact_name: Optional[str] = None
-    primary_contact_email: Optional[str] = None
     internal_notes: Optional[str] = None
 
 
@@ -23,6 +21,4 @@ class UpdateCompanyRequest(BaseModel):
     industry: Optional[str] = None
     headquarters_city: Optional[str] = None
     headquarters_country: Optional[str] = None
-    primary_contact_name: Optional[str] = None
-    primary_contact_email: Optional[str] = None
     internal_notes: Optional[str] = None

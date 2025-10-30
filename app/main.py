@@ -613,8 +613,6 @@ def create_company(request: CreateCompanyRequest):
             industry=request.industry,
             headquarters_city=request.headquarters_city,
             headquarters_country=request.headquarters_country,
-            primary_contact_name=request.primary_contact_name,
-            primary_contact_email=request.primary_contact_email,
             internal_notes=request.internal_notes
         )
     except ValueError as error:
