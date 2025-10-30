@@ -1,14 +1,54 @@
 """Service for LinkedIn profile scraping operations."""
 
+import logging
+import json
+import os
+from datetime import datetime
+from pathlib import Path
 from typing import List, Dict, Any
 
 from app.scrapers.profile_scraper import (
     scrape_linkedin_profiles,
-    extract_linkedin_username
+    extract_linkedin_username,
+    is_error_response
 )
 from app.scrapers.company_scraper import scrape_linkedin_company
 from app.transformers.scraper_to_database import transform_scraped_profile
 from app.repositories.candidate_repository import CandidateRepository
+
+
+# Setup structured logging for scraping errors
+def setup_scraping_logger() -> logging.Logger:
+    """Configure and return logger for scraping errors.
+
+    Creates logs directory if it doesn't exist and sets up JSON-formatted logging.
+
+    Returns:
+        Configured logger instance.
+    """
+    logs_dir = Path("logs")
+    logs_dir.mkdir(exist_ok=True)
+
+    logger = logging.getLogger("scraping_service")
+    logger.setLevel(logging.INFO)
+
+    # Avoid duplicate handlers if logger already configured
+    if not logger.handlers:
+        file_handler = logging.FileHandler(logs_dir / "scraping_errors.log")
+        file_handler.setLevel(logging.ERROR)
+
+        # Use basic format for now, could be enhanced with JSON formatter
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+
+    return logger
+
+
+# Initialize logger
+scraping_logger = setup_scraping_logger()
 
 
 class ScrapingService:
@@ -60,18 +100,39 @@ class ScrapingService:
         Returns:
             Dictionary with processing result (success or failure info).
         """
+        # Check if profile data is empty
         if not profile_data:
-            return {
+            error_details = {
                 "username": username,
-                "error": "No data scraped",
-                "status": "scraping_failed",
-                "success": False
+                "error": "No data returned from scraper",
+                "error_type": "scraping_failed",
+                "status": "failed"
             }
+            scraping_logger.error(
+                f"Scraping failed - {json.dumps(error_details)}"
+            )
+            return {**error_details, "success": False}
+
+        # Check if Apify returned an error response
+        is_error, error_message = is_error_response(profile_data)
+        if is_error:
+            error_details = {
+                "username": username,
+                "error": error_message,
+                "error_type": "profile_not_found",
+                "status": "failed"
+            }
+            scraping_logger.error(
+                f"Profile not found - {json.dumps(error_details)}"
+            )
+            return {**error_details, "success": False}
 
         try:
+            # Transform and validate profile data
             candidate = transform_scraped_profile(profile_data)
             candidate_dict = candidate.dict()
 
+            # Save to database
             database_result = self.candidate_repository.insert(candidate_dict)
 
             if not database_result.data:
@@ -89,21 +150,45 @@ class ScrapingService:
         except Exception as processing_error:
             error_message = str(processing_error)
 
+            # Check if error is duplicate constraint violation
             if self._is_duplicate_error(error_message):
-                return {
+                error_details = {
                     "username": username,
                     "error": "Duplicate profile (already exists)",
                     "candidate_name": f"{candidate.first_name} {candidate.last_name}",
-                    "status": "skipped_duplicate",
-                    "success": False
+                    "error_type": "duplicate",
+                    "status": "skipped"
                 }
+                scraping_logger.info(
+                    f"Duplicate profile skipped - {json.dumps(error_details)}"
+                )
+                return {**error_details, "success": False}
+
+            # Check if error is validation failure
+            elif "validation error" in error_message.lower():
+                error_details = {
+                    "username": username,
+                    "error": f"Validation failed: {error_message}",
+                    "error_type": "validation_failed",
+                    "status": "failed"
+                }
+                scraping_logger.error(
+                    f"Validation failed - {json.dumps(error_details)}"
+                )
+                return {**error_details, "success": False}
+
+            # Generic processing failure
             else:
-                return {
+                error_details = {
                     "username": username,
                     "error": f"Processing failed: {error_message}",
-                    "status": "failed",
-                    "success": False
+                    "error_type": "processing_failed",
+                    "status": "failed"
                 }
+                scraping_logger.error(
+                    f"Processing failed - {json.dumps(error_details)}"
+                )
+                return {**error_details, "success": False}
 
     def scrape_and_save_profiles(
         self,

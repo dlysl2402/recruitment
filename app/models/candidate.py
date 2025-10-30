@@ -66,6 +66,19 @@ class Education(BaseModel):
     end_year: Optional[int] = None
 
 
+class MediaItem(BaseModel):
+    """Represents a media item (image, video) from a LinkedIn project.
+
+    Attributes:
+        title: Media item title/filename.
+        url: Optional URL to the media file.
+        thumbnail: Optional thumbnail URL.
+    """
+    title: str
+    url: Optional[str] = None
+    thumbnail: Optional[str] = None
+
+
 class Project(BaseModel):
     """Represents a project entry from a LinkedIn profile.
 
@@ -76,7 +89,7 @@ class Project(BaseModel):
         description: Project description.
         associated_company: Company associated with the project.
         project_urls: List of URLs related to the project.
-        media_items: List of media item URLs.
+        media_items: List of media items with title and thumbnail info.
     """
     name: str
     start_date: Optional[str] = None
@@ -84,7 +97,7 @@ class Project(BaseModel):
     description: Optional[str] = None
     associated_company: Optional[str] = None
     project_urls: Optional[List[str]] = []
-    media_items: Optional[List[str]] = []
+    media_items: Optional[List[MediaItem]] = []
 
 
 class Certification(BaseModel):
@@ -154,7 +167,7 @@ class LinkedInCandidate(BaseModel):
     current_title: Optional[str] = None
     current_company: Optional[str] = None
     current_description: Optional[str] = None
-    current_start_date: DateInfo
+    current_start_date: Optional[DateInfo] = None
 
     # Full history
     experience: List[Experience] = []

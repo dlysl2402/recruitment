@@ -51,6 +51,35 @@ def extract_linkedin_username(url: str) -> str:
     raise ValueError(f"Not a LinkedIn /in/ profile URL: {url}")
 
 
+def is_error_response(scraped_data: Dict[str, Any]) -> tuple[bool, str]:
+    """Check if the scraped data is an error response from Apify.
+
+    Args:
+        scraped_data: Dictionary from Apify scraper.
+
+    Returns:
+        Tuple of (is_error, error_message).
+        If is_error is True, error_message contains the error description.
+        If is_error is False, error_message is empty string.
+
+    Examples:
+        >>> is_error_response({"error": "No profile found"})
+        (True, "No profile found")
+        >>> is_error_response({"basic_info": {...}})
+        (False, "")
+    """
+    # Check if response explicitly contains an error field
+    if "error" in scraped_data:
+        return (True, scraped_data["error"])
+
+    # Check if response is missing required profile structure
+    if "basic_info" not in scraped_data:
+        return (True, "No profile found or invalid username")
+
+    # Valid profile data
+    return (False, "")
+
+
 def scrape_linkedin_profiles(
     profile_usernames: List[str],
     batch_name: str = "batch"

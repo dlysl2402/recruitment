@@ -324,16 +324,16 @@ def company_matches(candidate_company: str, feeder: FeederPattern) -> bool:
     return False
 
 
-def calculate_tenure(start_date: DateInfo) -> float:
+def calculate_tenure(start_date: Optional[DateInfo]) -> float:
     """Calculate years of tenure from start date to present.
 
     Args:
-        start_date: The start date containing year and optional month.
+        start_date: The start date containing year and optional month, or None.
 
     Returns:
-        Years of tenure as a float. Returns 0.0 if start_date has no year.
+        Years of tenure as a float. Returns 0.0 if start_date is None or has no year.
     """
-    if not start_date.year:
+    if not start_date or not start_date.year:
         return 0.0
 
     month_num = MONTH_NAME_TO_NUMBER.get(start_date.month, 1) if start_date.month else 1

@@ -7,6 +7,7 @@ from app.models import (
     Location,
     Experience,
     Education,
+    MediaItem,
     Project,
     Certification,
     Skills,
@@ -87,6 +88,38 @@ def transform_scraped_education(scraped_data: Dict[str, Any]) -> List[Education]
     return transformed_educations
 
 
+def safe_media_items(media_data: Optional[List[Any]]) -> List[MediaItem]:
+    """Safely parse media items from raw data.
+
+    Handles both dictionary format (with title, url, thumbnail) and legacy string format.
+
+    Args:
+        media_data: List of media items (dicts or strings).
+
+    Returns:
+        List of MediaItem objects.
+    """
+    if not media_data:
+        return []
+
+    media_items = []
+    for item in media_data:
+        if isinstance(item, dict):
+            # LinkedIn scraper returns dictionaries with title, url, thumbnail
+            media_items.append(
+                MediaItem(
+                    title=item.get("title", ""),
+                    url=item.get("url"),
+                    thumbnail=item.get("thumbnail")
+                )
+            )
+        elif isinstance(item, str):
+            # Legacy format: just strings (URLs or titles)
+            media_items.append(MediaItem(title=item))
+
+    return media_items
+
+
 def parse_projects(scraped_data: Dict[str, Any]) -> List[Project]:
     """Transform raw project data from LinkedIn scraper to Project models.
 
@@ -107,7 +140,7 @@ def parse_projects(scraped_data: Dict[str, Any]) -> List[Project]:
                 description=project_entry.get("description", ""),
                 associated_company=project_entry.get("associated_company", None),
                 project_urls=project_entry.get("project_urls", []),
-                media_items=project_entry.get("media_items", [])
+                media_items=safe_media_items(project_entry.get("media_items"))
             )
         )
 
