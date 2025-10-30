@@ -11,11 +11,11 @@
           "AWS"
         ],
         "priority": 1,
-        "min_tenure_years": 2.0,
+        "min_tenure_years": 3.0,
         "max_tenure_years": 15.0,
         "required_titles": ["Network Engineer", "Network Development Engineer", "NDE"],
         "boost_keywords": ["multicast", "IGMP", "PIM", "UDP", "low-latency"],
-        "score_boost": 30,
+        "multiplier": 1.0,
         "candidates_sourced": 0,
         "candidates_placed": 0,
         "conversion_rate": 0,
@@ -33,7 +33,7 @@
       {
         "company": "Google",
         "company_aliases": ["Google LLC", "Alphabet"],
-        "points_per_year": 3.0
+        "multiplier": 1.0
       }
     ],
     "relevant_title_keywords": ["network", "NDE"],

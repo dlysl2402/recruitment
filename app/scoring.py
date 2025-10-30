@@ -188,9 +188,10 @@ def _score_feeder_match(
         if not (feeder.min_tenure_years <= tenure_years <= feeder.max_tenure_years):
             continue
 
-        # Company and tenure match
-        score += feeder.score_boost
-        breakdown["feeder_match"] = f"{feeder.company} ({tenure_years:.1f}y)"
+        # Company and tenure match - calculate S-curve score
+        base_score = calculate_pedigree_s_curve(tenure_years, feeder.multiplier)
+        score += base_score
+        breakdown["feeder_match"] = f"{feeder.company} ({tenure_years:.1f}y, +{base_score})"
         matched_feeder = feeder.company
 
         # Title match bonus
@@ -307,16 +308,19 @@ def _score_nice_to_have_skills(
 
 def _score_pedigree(
     candidate: LinkedInCandidate,
-    role_config: RoleFeederConfig,
-    max_tenure_per_company: float = 4.0
+    role_config: RoleFeederConfig
 ) -> Tuple[int, Dict]:
     """Score candidate based on career pedigree from prestigious companies.
 
-    Iterates through all work experiences and awards points for time spent
-    at prestigious companies. Multiple prestigious companies stack.
+    Iterates through all work experiences and awards points using S-curve
+    based on tenure at prestigious companies. Multiple companies stack.
 
-    Tenure is capped per company to prevent over-weighting very long tenures.
-    Getting hired at a prestigious company is the signal, not staying forever.
+    S-curve rewards commitment:
+    - 0-3 years: No points (too early to exit)
+    - 3-5 years: Slow growth (proving commitment)
+    - 5-9 years: Fast exponential growth (proven performers)
+    - 9-15 years: Slow growth (diminishing returns)
+    - 15+ years: Capped at max points
 
     Title relevance is validated if relevant_title_keywords is configured.
     Only awards points if the title at that company was relevant to the role.
@@ -324,7 +328,6 @@ def _score_pedigree(
     Args:
         candidate: The candidate to score.
         role_config: Role configuration with pedigree companies and title keywords.
-        max_tenure_per_company: Maximum years counted per company (default: 4).
 
     Returns:
         Tuple of (score, breakdown_dict).
@@ -367,20 +370,17 @@ def _score_pedigree(
                         tenure_years = calculate_tenure(experience.start_date)
 
                 if tenure_years > 0:
-                    # Cap tenure to prevent over-weighting long tenures
-                    capped_tenure = min(tenure_years, max_tenure_per_company)
-                    points = capped_tenure * pedigree_company.points_per_year
-                    score += int(points)
+                    # Calculate points using S-curve with company multiplier
+                    points = calculate_pedigree_s_curve(
+                        tenure_years,
+                        pedigree_company.multiplier
+                    )
+                    score += points
 
-                    # Show actual vs capped in breakdown
-                    if tenure_years > max_tenure_per_company:
-                        pedigree_details.append(
-                            f"{pedigree_company.company} ({tenure_years:.1f}y→{capped_tenure:.1f}y cap, +{int(points)})"
-                        )
-                    else:
-                        pedigree_details.append(
-                            f"{pedigree_company.company} ({tenure_years:.1f}y, +{int(points)})"
-                        )
+                    # Add to breakdown with tenure and points
+                    pedigree_details.append(
+                        f"{pedigree_company.company} ({tenure_years:.1f}y, +{points})"
+                    )
 
                 # Only match one pedigree company per experience
                 break
@@ -444,6 +444,65 @@ def company_matches(candidate_company: str, feeder: FeederPattern) -> bool:
             return True
 
     return False
+
+
+def calculate_pedigree_s_curve(tenure_years: float, multiplier: float = 1.0) -> int:
+    """Calculate pedigree points using S-curve based on tenure.
+
+    S-curve design:
+    - 0-3 years: 0 points (too early to exit, no signal)
+    - 3-5 years: Slow linear growth (0 to 8 points, proving commitment)
+    - 5-9 years: Fast exponential growth (8 to 40 points, proven performer)
+    - 9-15 years: Slow logarithmic growth (40 to 50 points, diminishing returns)
+    - 15+ years: Capped at 50 points
+
+    Args:
+        tenure_years: Years of tenure at the company.
+        multiplier: Company prestige multiplier (1.0 for top tier, 0.8-0.9 for high tier).
+
+    Returns:
+        Pedigree points as integer.
+
+    Examples:
+        >>> calculate_pedigree_s_curve(2.5, 1.0)
+        0  # Too early
+        >>> calculate_pedigree_s_curve(4.0, 1.0)
+        4  # Slow growth phase
+        >>> calculate_pedigree_s_curve(8.0, 1.0)
+        36  # Fast growth phase
+        >>> calculate_pedigree_s_curve(15.0, 1.0)
+        50  # Capped
+        >>> calculate_pedigree_s_curve(8.0, 0.8)
+        29  # High tier company (80% of 36)
+    """
+    if tenure_years < 3.0:
+        # Too early to exit - no signal
+        base_points = 0.0
+
+    elif tenure_years < 5.0:
+        # Years 3-5: Slow linear growth (0 to 8 points)
+        progress = (tenure_years - 3.0) / 2.0  # 0.0 to 1.0
+        base_points = progress * 8.0
+
+    elif tenure_years < 9.0:
+        # Years 5-9: Fast exponential growth (8 to 40 points)
+        years_in_range = tenure_years - 5.0  # 0.0 to 4.0
+        progress = years_in_range / 4.0  # 0.0 to 1.0
+        # Exponential curve: 8 + (32 * progress^1.5)
+        base_points = 8.0 + (32.0 * (progress ** 1.5))
+
+    elif tenure_years <= 15.0:
+        # Years 9-15: Slow logarithmic growth (40 to 50 points)
+        years_in_range = tenure_years - 9.0  # 0.0 to 6.0
+        progress = years_in_range / 6.0  # 0.0 to 1.0
+        # Logarithmic slow growth: 40 + (10 * sqrt(progress))
+        base_points = 40.0 + (10.0 * (progress ** 0.5))
+
+    else:
+        # Cap at 15 years
+        base_points = 50.0
+
+    return int(base_points * multiplier)
 
 
 def calculate_tenure(start_date: Optional[DateInfo]) -> float:

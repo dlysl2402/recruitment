@@ -26,12 +26,12 @@ class PedigreeCompany(BaseModel):
     Attributes:
         company: Primary company name.
         company_aliases: Alternative names for the same company.
-        points_per_year: Points awarded per year of tenure at this company.
-                         Accounts for different prestige levels.
+        multiplier: Prestige multiplier applied to S-curve points (default: 1.0).
+                    Top tier (Google/Meta) = 1.0, High tier (Microsoft) = 0.8-0.9.
     """
     company: str
     company_aliases: List[str] = []
-    points_per_year: float = 2.0
+    multiplier: float = 1.0
 
 
 class FeederPattern(BaseModel):
@@ -48,7 +48,7 @@ class FeederPattern(BaseModel):
         max_tenure_years: Maximum years at company to qualify.
         required_titles: Job titles that match this pattern.
         boost_keywords: Keywords that boost the score if found in description.
-        score_boost: Points to add to candidate score if pattern matches.
+        multiplier: S-curve multiplier for tenure-based scoring (default: 1.0).
         candidates_sourced: Number of candidates sourced via this pattern.
         candidates_placed: Number of successful placements.
         conversion_rate: Placement success rate (0.0-1.0).
@@ -61,7 +61,7 @@ class FeederPattern(BaseModel):
     max_tenure_years: float
     required_titles: List[str] = []
     boost_keywords: List[str] = []
-    score_boost: int
+    multiplier: float = 1.0
 
     # Performance tracking
     candidates_sourced: int = 0
