@@ -11,6 +11,7 @@ from app.models import LinkedInCandidate, DateInfo, Experience
 from app.feeder_models import RoleFeederConfig, FeederPattern, PedigreeCompany
 from app.constants import FEEDER_CONFIG_FILE, MONTH_NAME_TO_NUMBER, DAYS_PER_YEAR, MONTHS_PER_YEAR
 from app.utils.company_matcher import CompanyMatcher
+from app.utils.penalty_calculator import PenaltyCalculator
 
 
 # Cache for feeder configs
@@ -484,10 +485,7 @@ def _apply_negative_signals(
                 if CompanyMatcher.matches(experience.company, avoid_company):
                     # Calculate years at this company
                     years = parse_duration_to_years(experience.duration) if experience.duration else 0
-                    if years == 0:
-                        penalty = 1000  # No duration data, apply large penalty
-                    else:
-                        penalty = int(avoid_company.multiplier * years)
+                    penalty = PenaltyCalculator.calculate(years, avoid_company.multiplier)
 
                     score -= penalty
                     avoid_company_penalties.append(
@@ -510,11 +508,7 @@ def _apply_negative_signals(
                 if keyword.lower() in current_title_lower:
                     # Calculate years in current role
                     years = calculate_tenure(candidate.current_start_date) if candidate.current_start_date else 0
-                    if years == 0:
-                        # No duration data - eliminate profile
-                        penalty = 1000
-                    else:
-                        penalty = int(multiplier * years)
+                    penalty = PenaltyCalculator.calculate(years, multiplier)
 
                     score -= penalty
                     matched_titles.append({
@@ -536,11 +530,7 @@ def _apply_negative_signals(
                 if keyword.lower() in exp_title_lower:
                     # Calculate years from duration string
                     years = parse_duration_to_years(experience.duration) if experience.duration else 0
-                    if years == 0:
-                        # No duration data - eliminate profile
-                        penalty = 1000
-                    else:
-                        penalty = int(multiplier * years)
+                    penalty = PenaltyCalculator.calculate(years, multiplier)
 
                     score -= penalty
                     matched_titles.append({
