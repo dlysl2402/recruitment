@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from app.models import LinkedInCandidate, DateInfo, Experience
 from app.feeder_models import RoleFeederConfig, FeederPattern, PedigreeCompany
 from app.constants import FEEDER_CONFIG_FILE, MONTH_NAME_TO_NUMBER, DAYS_PER_YEAR, MONTHS_PER_YEAR
+from app.utils.company_matcher import CompanyMatcher
 
 
 # Cache for feeder configs
@@ -174,7 +175,7 @@ def _score_feeder_match(
     matched_feeder = None
 
     for feeder in role_config.feeders:
-        if not company_matches(candidate.current_company, feeder):
+        if not CompanyMatcher.matches(candidate.current_company, feeder):
             continue
 
         # Calculate consecutive tenure at current company (handles internal moves)
@@ -347,7 +348,7 @@ def _score_pedigree(
     for i, experience in enumerate(candidate.experience):
         for pedigree_company in role_config.pedigree_companies:
             # Check if this experience matches a pedigree company
-            if company_matches(experience.company, pedigree_company):
+            if CompanyMatcher.matches(experience.company, pedigree_company):
                 # Skip if we already processed this pedigree company
                 company_key = pedigree_company.company.lower()
                 if company_key in processed_companies:
@@ -371,7 +372,7 @@ def _score_pedigree(
                 # Look ahead for more consecutive roles at same company
                 for j in range(i + 1, len(candidate.experience)):
                     next_exp = candidate.experience[j]
-                    if company_matches(next_exp.company, pedigree_company):
+                    if CompanyMatcher.matches(next_exp.company, pedigree_company):
                         # Update earliest/latest dates
                         if next_exp.start_date and earliest_start:
                             if _date_is_earlier(next_exp.start_date, earliest_start):
@@ -467,7 +468,7 @@ def _apply_negative_signals(
 
         for experience in candidate.experience:
             for avoid_company in role_config.avoid_companies:
-                if company_matches(experience.company, avoid_company):
+                if CompanyMatcher.matches(experience.company, avoid_company):
                     # Calculate years at this company
                     years = parse_duration_to_years(experience.duration) if experience.duration else 0
                     if years == 0:
@@ -558,37 +559,6 @@ def _apply_negative_signals(
             breakdown["job_hopper_stints"] = short_stints
 
     return score, breakdown
-
-
-def company_matches(candidate_company, feeder: FeederPattern) -> bool:
-    """Check if candidate's company matches the feeder company or its aliases.
-
-    Args:
-        candidate_company: The company from the candidate's profile (str or CompanyReference).
-        feeder: The feeder pattern containing company name and aliases.
-
-    Returns:
-        True if the candidate's company matches, False otherwise.
-    """
-    # Handle CompanyReference objects (extract name) or plain strings
-    from app.models import CompanyReference
-    if isinstance(candidate_company, CompanyReference):
-        candidate_name = candidate_company.name
-    elif isinstance(candidate_company, str):
-        candidate_name = candidate_company
-    else:
-        return False
-
-    candidate_lower = candidate_name.lower().strip()
-
-    all_companies = [feeder.company] + feeder.company_aliases
-
-    for company_name in all_companies:
-        company_lower = company_name.lower().strip()
-        if candidate_lower == company_lower or company_lower in candidate_lower:
-            return True
-
-    return False
 
 
 def calculate_pedigree_s_curve(tenure_years: float, multiplier: float = 1.0) -> int:
@@ -714,7 +684,7 @@ def calculate_consecutive_company_tenure(
 
     for experience in experiences:
         # Check if this experience is at the current company
-        if company_matches(experience.company, feeder):
+        if CompanyMatcher.matches(experience.company, feeder):
             found_matching_experiences = True
 
             # Track earliest start date
