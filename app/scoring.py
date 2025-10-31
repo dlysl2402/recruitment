@@ -160,7 +160,7 @@ def _score_feeder_match(
 ) -> Tuple[int, Dict, Optional[str]]:
     """Score candidate based on feeder pattern matching.
 
-    Includes company/tenure match, title match bonus, and keyword boosts.
+    Includes company/tenure match and title match bonus.
 
     Args:
         candidate: The candidate to score.
@@ -202,18 +202,6 @@ def _score_feeder_match(
             ):
                 score += 10
                 breakdown["title_match"] = True
-
-        # Keyword boost
-        description = (candidate.current_description or "").lower()
-        matched_keywords = [
-            keyword
-            for keyword in feeder.boost_keywords
-            if keyword.lower() in description
-        ]
-        if matched_keywords:
-            keyword_score = min(len(matched_keywords) * 5, 15)
-            score += keyword_score
-            breakdown["keywords_matched"] = matched_keywords
 
         break  # Only match one feeder
 
@@ -274,10 +262,10 @@ def _score_nice_to_have_skills(
     candidate: LinkedInCandidate,
     role_config: RoleFeederConfig
 ) -> Tuple[int, Dict]:
-    """Score candidate based on weighted nice-to-have skills.
+    """Score candidate based on weighted nice-to-have skills coverage.
 
-    Each matched skill contributes points equal to its weight.
-    Higher weight skills are worth more points.
+    Uses proportional coverage: (matched weights / total weights) × 20.
+    Higher coverage = higher score.
 
     Args:
         candidate: The candidate to score.
@@ -293,15 +281,25 @@ def _score_nice_to_have_skills(
         return score, breakdown
 
     candidate_skills = {skill.name.lower() for skill in candidate.skills}
+
+    # Calculate total weight and matched weight
+    total_weight = sum(skill.weight for skill in role_config.nice_to_have_skills)
+    matched_weight = 0.0
     matched_skills = []
 
     for skill in role_config.nice_to_have_skills:
         if skill.name.lower() in candidate_skills:
-            score += int(skill.weight)
-            matched_skills.append(f"{skill.name} (+{skill.weight:.1f})")
+            matched_weight += skill.weight
+            matched_skills.append(f"{skill.name} (w:{skill.weight})")
 
-    if matched_skills:
-        breakdown["nice_to_have_matched"] = matched_skills
+    # Calculate coverage percentage and score
+    if total_weight > 0:
+        coverage = matched_weight / total_weight
+        score = int(coverage * 20)  # Max 20 points
+
+        breakdown["nice_to_have_coverage"] = f"{coverage*100:.1f}%"
+        if matched_skills:
+            breakdown["nice_to_have_matched"] = matched_skills
 
     return score, breakdown
 
@@ -321,6 +319,9 @@ def _score_pedigree(
     - 5-9 years: Fast exponential growth (proven performers)
     - 9-15 years: Slow growth (diminishing returns)
     - 15+ years: Capped at max points
+
+    Exponential time decay applied: more recent experience weighs heavier.
+    Decay multiplier = 0.95^years_ago.
 
     Title relevance is validated if relevant_title_keywords is configured.
     Only awards points if the title at that company was relevant to the role.
@@ -396,16 +397,36 @@ def _score_pedigree(
                         tenure_years = abs(start_tenure - end_tenure)
 
                 if tenure_years > 0:
-                    # Calculate points using S-curve with company multiplier
-                    points = calculate_pedigree_s_curve(
+                    # Calculate years_ago for exponential decay
+                    years_ago = 0.0
+                    if latest_end is None:
+                        # Current role - no decay
+                        years_ago = 0.0
+                    else:
+                        # Use end_date to calculate how long ago this ended
+                        # If next experience exists, use its start date as proxy
+                        if i > 0 and candidate.experience[i - 1].start_date:
+                            next_start = candidate.experience[i - 1].start_date
+                            years_ago = calculate_tenure(next_start) - calculate_tenure(latest_end)
+                            years_ago = max(0.0, years_ago)
+                        else:
+                            # Use end_date tenure from today
+                            years_ago = calculate_tenure(latest_end)
+
+                    # Apply exponential decay: 0.95^years_ago
+                    decay_multiplier = 0.95 ** years_ago
+
+                    # Calculate points using S-curve with company multiplier and time decay
+                    base_points = calculate_pedigree_s_curve(
                         tenure_years,
                         pedigree_company.multiplier
                     )
+                    points = int(base_points * decay_multiplier)
                     score += points
 
-                    # Add to breakdown with tenure and points
+                    # Add to breakdown with tenure, years_ago, decay, and points
                     pedigree_details.append(
-                        f"{pedigree_company.company} ({tenure_years:.1f}y, +{points})"
+                        f"{pedigree_company.company} ({tenure_years:.1f}y, {years_ago:.1f}y ago, decay={decay_multiplier:.2f}, +{points})"
                     )
 
                     # Mark this company as processed
@@ -439,12 +460,29 @@ def _apply_negative_signals(
     score = 0
     breakdown = {}
 
-    # Avoid companies penalty
+    # Avoid companies penalty (multiplier × years)
     from app.models import CompanyReference
-    current_company_name = candidate.current_company.name if isinstance(candidate.current_company, CompanyReference) else candidate.current_company
-    if current_company_name and current_company_name in role_config.avoid_companies:
-        score -= 20
-        breakdown["avoid_company"] = True
+    if role_config.avoid_companies:
+        avoid_company_penalties = []
+
+        for experience in candidate.experience:
+            for avoid_company in role_config.avoid_companies:
+                if company_matches(experience.company, avoid_company):
+                    # Calculate years at this company
+                    years = parse_duration_to_years(experience.duration) if experience.duration else 0
+                    if years == 0:
+                        penalty = 1000  # No duration data, apply large penalty
+                    else:
+                        penalty = int(avoid_company.multiplier * years)
+
+                    score -= penalty
+                    avoid_company_penalties.append(
+                        f"{avoid_company.company} ({years:.1f}y, -{penalty})"
+                    )
+                    break  # Only match one avoid company per experience
+
+        if avoid_company_penalties:
+            breakdown["avoid_companies"] = avoid_company_penalties
 
     # Avoid title keywords penalty (non-hands-on roles and irrelevant backgrounds)
     if role_config.avoid_title_keyword_penalties:
@@ -504,12 +542,20 @@ def _apply_negative_signals(
         if matched_titles:
             breakdown["avoid_title_matches"] = matched_titles
 
-    # Job hopping penalty
+    # Job hopping penalty: 3+ stints under 3 years
     if len(candidate.experience) >= 3:
-        average_tenure = calculate_average_tenure(candidate.experience)
-        if average_tenure < 1.5:
-            score -= 15
-            breakdown["job_hopper"] = average_tenure
+        short_stints = []
+        for experience in candidate.experience:
+            years = parse_duration_to_years(experience.duration) if experience.duration else 0
+            if 0 < years < 3.0:
+                short_stints.append({
+                    "company": experience.company.name if hasattr(experience.company, "name") else str(experience.company),
+                    "years": round(years, 1)
+                })
+
+        if len(short_stints) >= 3:
+            score -= 1000  # Elimination penalty
+            breakdown["job_hopper_stints"] = short_stints
 
     return score, breakdown
 
@@ -550,10 +596,10 @@ def calculate_pedigree_s_curve(tenure_years: float, multiplier: float = 1.0) -> 
 
     S-curve design:
     - 0-3 years: 0 points (too early to exit, no signal)
-    - 3-5 years: Slow linear growth (0 to 8 points, proving commitment)
-    - 5-9 years: Fast exponential growth (8 to 40 points, proven performer)
-    - 9-15 years: Slow logarithmic growth (40 to 50 points, diminishing returns)
-    - 15+ years: Capped at 50 points
+    - 3-5 years: Slow linear growth (0 to 6 points, proving commitment)
+    - 5-9 years: Fast exponential growth (6 to 32 points, proven performer)
+    - 9-15 years: Slow logarithmic growth (32 to 40 points, diminishing returns)
+    - 15+ years: Capped at 40 points
 
     Args:
         tenure_years: Years of tenure at the company.
@@ -579,27 +625,27 @@ def calculate_pedigree_s_curve(tenure_years: float, multiplier: float = 1.0) -> 
         base_points = 0.0
 
     elif tenure_years < 5.0:
-        # Years 3-5: Slow linear growth (0 to 8 points)
+        # Years 3-5: Slow linear growth (0 to 6 points)
         progress = (tenure_years - 3.0) / 2.0  # 0.0 to 1.0
-        base_points = progress * 8.0
+        base_points = progress * 6.0
 
     elif tenure_years < 9.0:
-        # Years 5-9: Fast exponential growth (8 to 40 points)
+        # Years 5-9: Fast exponential growth (6 to 32 points)
         years_in_range = tenure_years - 5.0  # 0.0 to 4.0
         progress = years_in_range / 4.0  # 0.0 to 1.0
-        # Exponential curve: 8 + (32 * progress^1.5)
-        base_points = 8.0 + (32.0 * (progress ** 1.5))
+        # Exponential curve: 6 + (26 * progress^1.5)
+        base_points = 6.0 + (26.0 * (progress ** 1.5))
 
     elif tenure_years <= 15.0:
-        # Years 9-15: Slow logarithmic growth (40 to 50 points)
+        # Years 9-15: Slow logarithmic growth (32 to 40 points)
         years_in_range = tenure_years - 9.0  # 0.0 to 6.0
         progress = years_in_range / 6.0  # 0.0 to 1.0
-        # Logarithmic slow growth: 40 + (10 * sqrt(progress))
-        base_points = 40.0 + (10.0 * (progress ** 0.5))
+        # Logarithmic slow growth: 32 + (8 * sqrt(progress))
+        base_points = 32.0 + (8.0 * (progress ** 0.5))
 
     else:
         # Cap at 15 years
-        base_points = 50.0
+        base_points = 40.0
 
     return int(base_points * multiplier)
 

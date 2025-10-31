@@ -37,7 +37,13 @@
       }
     ],
     "relevant_title_keywords": ["network", "NDE"],
-    "avoid_companies": ["early-stage startups"],
+    "avoid_companies": [
+      {
+        "company": "early-stage startups",
+        "company_aliases": [],
+        "multiplier": 10.0
+      }
+    ],
     "avoid_title_keyword_penalties": {
       "Manager": 10.0,
       "Engineering Manager": 10.0,
@@ -106,28 +112,6 @@
         ],
         "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
         "multiplier": 1.0,
-        "candidates_sourced": 0,
-        "candidates_placed": 0,
-        "conversion_rate": 0,
-        "last_updated": "2025-10-30"
-      },
-      {
-        "company": "ServiceNow",
-        "company_aliases": [],
-        "priority": 1,
-        "min_tenure_years": 3.0,
-        "max_tenure_years": 15.0,
-        "required_titles": [
-          "Site Reliability Engineer",
-          "Linux Engineer",
-          "Linux Systems Engineer",
-          "Linux Administrator", 
-          "Linux System Administrator", 
-          "DevOps Engineer", 
-          "SRE"
-        ],
-        "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
-        "multiplier": 0.8,
         "candidates_sourced": 0,
         "candidates_placed": 0,
         "conversion_rate": 0,

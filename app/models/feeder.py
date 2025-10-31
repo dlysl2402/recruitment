@@ -34,6 +34,20 @@ class PedigreeCompany(BaseModel):
     multiplier: float = 1.0
 
 
+class AvoidCompany(BaseModel):
+    """Represents a company to avoid with penalty configuration.
+
+    Attributes:
+        company: Primary company name.
+        company_aliases: Alternative names for the same company.
+        multiplier: Penalty multiplier applied to years of experience (default: 10.0).
+                    Penalty = multiplier × years at company.
+    """
+    company: str
+    company_aliases: List[str] = []
+    multiplier: float = 10.0
+
+
 class FeederPattern(BaseModel):
     """Defines a company-based pattern for identifying strong candidates.
 
@@ -103,7 +117,7 @@ class RoleFeederConfig(BaseModel):
     relevant_title_keywords: List[str] = []  # Required keywords in title for pedigree to count
 
     # Negative signals
-    avoid_companies: List[str] = []
+    avoid_companies: List[AvoidCompany] = []
     avoid_title_keyword_penalties: Dict[str, float] = {}
     red_flags: List[str] = []
 
