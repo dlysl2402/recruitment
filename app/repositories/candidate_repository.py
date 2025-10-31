@@ -7,16 +7,18 @@ from supabase import Client
 
 from app.models import LinkedInCandidate
 from app.transformers.scraper_to_database import db_row_to_candidate
+from app.repositories.base_repository import BaseRepository
 
 
-class CandidateRepository:
+class CandidateRepository(BaseRepository):
     """Repository for managing candidate data persistence.
 
-    Encapsulates all database operations for candidates, providing
-    a clean interface for data access without exposing database details.
+    Extends BaseRepository to provide candidate-specific operations
+    while inheriting common CRUD functionality.
 
     Attributes:
         db_client: Supabase client instance for database operations.
+        table_name: Set to "candidates" for this repository.
     """
 
     def __init__(self, db_client: Client):
@@ -25,7 +27,7 @@ class CandidateRepository:
         Args:
             db_client: Supabase client instance.
         """
-        self.db_client = db_client
+        super().__init__(db_client, "candidates")
 
     def insert(self, candidate_data: Dict[str, Any]):
         """Insert a new candidate into the database.
@@ -40,20 +42,7 @@ class CandidateRepository:
         Raises:
             Exception: If insertion fails (e.g., duplicate linkedin_url).
         """
-        return self.db_client.table("candidates").insert(candidate_data).execute()
-
-    def get_all(self) -> List[Dict[str, Any]]:
-        """Retrieve all candidates from the database.
-
-        Returns:
-            List of candidate records as dictionaries.
-
-        Note:
-            This loads all candidates into memory. Consider pagination for
-            large datasets.
-        """
-        response = self.db_client.table("candidates").select("*").execute()
-        return response.data
+        return self.db_client.table(self.table_name).insert(candidate_data).execute()
 
     def get_by_id(self, candidate_id: str) -> Optional[LinkedInCandidate]:
         """Retrieve a single candidate by their database ID.
@@ -64,18 +53,12 @@ class CandidateRepository:
         Returns:
             LinkedInCandidate object if found, None otherwise.
         """
-        response = (
-            self.db_client.table("candidates")
-            .select("*")
-            .eq("id", candidate_id)
-            .limit(1)
-            .execute()
-        )
+        # Use inherited get_by_id() and convert to LinkedInCandidate
+        database_row = super().get_by_id(candidate_id)
 
-        if not response.data:
+        if not database_row:
             return None
 
-        database_row = response.data[0]
         return db_row_to_candidate(database_row)
 
     def get_with_filters(
@@ -97,7 +80,7 @@ class CandidateRepository:
         Note:
             Multiple skills are combined with AND logic (all must match).
         """
-        query = self.db_client.table("candidates").select("*")
+        query = self.db_client.table(self.table_name).select("*")
 
         if filters:
             for field, value in filters.items():
@@ -111,29 +94,6 @@ class CandidateRepository:
         response = query.execute()
         return response.data
 
-    def delete(self, candidate_id: str) -> bool:
-        """Delete a candidate from the database.
-
-        Args:
-            candidate_id: The unique identifier of the candidate to delete.
-
-        Returns:
-            True if deletion was successful.
-
-        Raises:
-            Exception: If deletion fails or candidate not found.
-        """
-        try:
-            response = (
-                self.db_client.table("candidates")
-                .delete()
-                .eq("id", candidate_id)
-                .execute()
-            )
-            return True
-        except Exception as error:
-            raise Exception(f"Failed to delete candidate: {str(error)}")
-
     def get_by_name(self, first_name: str, last_name: str) -> List[Dict[str, Any]]:
         """Retrieve candidates by full name (case-insensitive).
 
@@ -145,7 +105,7 @@ class CandidateRepository:
             List of candidate records matching the name.
         """
         response = (
-            self.db_client.table("candidates")
+            self.db_client.table(self.table_name)
             .select("*")
             .ilike("first_name", first_name)
             .ilike("last_name", last_name)
