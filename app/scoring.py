@@ -209,6 +209,61 @@ def _score_feeder_match(
     return score, breakdown, matched_feeder
 
 
+def _calculate_skills_coverage_score(
+    candidate_skills: Set[str],
+    role_skills: List,
+    max_points: int,
+    breakdown_prefix: str,
+    track_missing: bool = False
+) -> Tuple[int, Dict]:
+    """Calculate weighted skills coverage score.
+
+    Uses proportional coverage: (matched weights / total weights) × max_points.
+    Higher weight skills have more impact on the final score.
+
+    Args:
+        candidate_skills: Set of candidate skill names (lowercase).
+        role_skills: List of WeightedSkill objects from role config.
+        max_points: Maximum points for 100% coverage.
+        breakdown_prefix: Prefix for breakdown keys (e.g., "required_skills", "nice_to_have").
+        track_missing: If True, includes missing skills in breakdown.
+
+    Returns:
+        Tuple of (score, breakdown_dict).
+    """
+    score = 0
+    breakdown = {}
+
+    if not role_skills:
+        return score, breakdown
+
+    # Calculate total weight and matched weight
+    total_weight = sum(skill.weight for skill in role_skills)
+    matched_weight = 0.0
+    matched_skills = []
+    missing_skills = []
+
+    for skill in role_skills:
+        if skill.name.lower() in candidate_skills:
+            matched_weight += skill.weight
+            matched_skills.append(f"{skill.name} (w:{skill.weight})")
+        elif track_missing:
+            missing_skills.append(f"{skill.name} (w:{skill.weight})")
+
+    # Calculate coverage percentage and score
+    if total_weight > 0:
+        coverage = matched_weight / total_weight
+        score = int(coverage * max_points)
+
+        breakdown[f"{breakdown_prefix}_coverage"] = f"{coverage*100:.1f}%"
+        if matched_skills:
+            breakdown[f"matched_{breakdown_prefix}"] = matched_skills
+        if missing_skills:
+            breakdown[f"missing_{breakdown_prefix}"] = missing_skills
+
+    return score, breakdown
+
+
 def _score_required_skills(
     candidate: LinkedInCandidate,
     role_config: RoleFeederConfig
@@ -225,38 +280,15 @@ def _score_required_skills(
     Returns:
         Tuple of (score, breakdown_dict).
     """
-    score = 0
-    breakdown = {}
-
-    if not role_config.required_skills:
-        return score, breakdown
-
     candidate_skills = {skill.name.lower() for skill in candidate.skills}
 
-    # Calculate total weight and matched weight
-    total_weight = sum(skill.weight for skill in role_config.required_skills)
-    matched_weight = 0.0
-    matched_skills = []
-    missing_skills = []
-
-    for skill in role_config.required_skills:
-        if skill.name.lower() in candidate_skills:
-            matched_weight += skill.weight
-            matched_skills.append(f"{skill.name} (w:{skill.weight})")
-        else:
-            missing_skills.append(f"{skill.name} (w:{skill.weight})")
-
-    # Calculate coverage percentage and score
-    coverage = matched_weight / total_weight if total_weight > 0 else 0.0
-    score = int(coverage * 20)  # Max 20 points
-
-    breakdown["required_skills_coverage"] = f"{coverage*100:.1f}%"
-    if matched_skills:
-        breakdown["matched_required_skills"] = matched_skills
-    if missing_skills:
-        breakdown["missing_required_skills"] = missing_skills
-
-    return score, breakdown
+    return _calculate_skills_coverage_score(
+        candidate_skills=candidate_skills,
+        role_skills=role_config.required_skills,
+        max_points=20,
+        breakdown_prefix="required_skills",
+        track_missing=True
+    )
 
 
 def _score_nice_to_have_skills(
@@ -275,34 +307,15 @@ def _score_nice_to_have_skills(
     Returns:
         Tuple of (score, breakdown_dict).
     """
-    score = 0
-    breakdown = {}
-
-    if not role_config.nice_to_have_skills:
-        return score, breakdown
-
     candidate_skills = {skill.name.lower() for skill in candidate.skills}
 
-    # Calculate total weight and matched weight
-    total_weight = sum(skill.weight for skill in role_config.nice_to_have_skills)
-    matched_weight = 0.0
-    matched_skills = []
-
-    for skill in role_config.nice_to_have_skills:
-        if skill.name.lower() in candidate_skills:
-            matched_weight += skill.weight
-            matched_skills.append(f"{skill.name} (w:{skill.weight})")
-
-    # Calculate coverage percentage and score
-    if total_weight > 0:
-        coverage = matched_weight / total_weight
-        score = int(coverage * 20)  # Max 20 points
-
-        breakdown["nice_to_have_coverage"] = f"{coverage*100:.1f}%"
-        if matched_skills:
-            breakdown["nice_to_have_matched"] = matched_skills
-
-    return score, breakdown
+    return _calculate_skills_coverage_score(
+        candidate_skills=candidate_skills,
+        role_skills=role_config.nice_to_have_skills,
+        max_points=20,
+        breakdown_prefix="nice_to_have",
+        track_missing=False
+    )
 
 
 def _score_pedigree(
