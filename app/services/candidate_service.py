@@ -35,6 +35,34 @@ class CandidateService:
         self.candidate_repository = candidate_repository
         self.company_service = company_service
 
+    def _auto_match_candidate_companies(self, candidate: LinkedInCandidate) -> None:
+        """Auto-match all company references in candidate data to existing companies.
+
+        Updates candidate.current_company and all candidate.experience companies
+        by matching them to existing companies in the database (by name or alias).
+
+        Args:
+            candidate: LinkedInCandidate with company references to match.
+
+        Note:
+            Modifies the candidate object in-place. Only runs if company_service
+            is configured.
+        """
+        if not self.company_service:
+            return
+
+        # Match current_company
+        if candidate.current_company:
+            candidate.current_company = self.company_service.match_company_reference_no_create(
+                candidate.current_company
+            )
+
+        # Match all experience companies
+        for experience in candidate.experience:
+            experience.company = self.company_service.match_company_reference_no_create(
+                experience.company
+            )
+
     def create_candidate(self, candidate: LinkedInCandidate) -> Dict[str, Any]:
         """Create a new candidate in the database.
 
@@ -51,18 +79,7 @@ class CandidateService:
             ValueError: If candidate creation fails or duplicate exists.
         """
         # Auto-match companies if company_service is available
-        if self.company_service:
-            # Match current_company
-            if candidate.current_company:
-                candidate.current_company = self.company_service.match_company_reference_no_create(
-                    candidate.current_company
-                )
-
-            # Match all experience companies
-            for experience in candidate.experience:
-                experience.company = self.company_service.match_company_reference_no_create(
-                    experience.company
-                )
+        self._auto_match_candidate_companies(candidate)
 
         result = self.candidate_repository.insert(candidate.model_dump())
 
@@ -361,15 +378,7 @@ class CandidateService:
             raise ValueError(f"Candidate with ID '{existing_id}' not found")
 
         # Auto-match companies if company_service is available
-        if self.company_service:
-            if new_candidate.current_company:
-                new_candidate.current_company = self.company_service.match_company_reference_no_create(
-                    new_candidate.current_company
-                )
-            for experience in new_candidate.experience:
-                experience.company = self.company_service.match_company_reference_no_create(
-                    experience.company
-                )
+        self._auto_match_candidate_companies(new_candidate)
 
         # Update current company and position
         update_data = {
