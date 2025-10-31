@@ -1,6 +1,7 @@
 """FastAPI application for recruitment candidate management and scoring."""
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from typing import List, Optional
 
 from app.models import LinkedInCandidate
@@ -37,6 +38,55 @@ from app.api.schemas.job_schemas import (
 
 
 app = FastAPI()
+
+
+# Global exception handlers
+@app.exception_handler(ValueError)
+async def value_error_handler(request: Request, exc: ValueError):
+    """Convert ValueError to appropriate HTTP exception.
+
+    Automatically handles common patterns:
+    - "not found" → 404 Not Found
+    - "duplicate" or "already exists" → 409 Conflict
+    - Everything else → 400 Bad Request
+    """
+    error_msg = str(exc).lower()
+
+    if "not found" in error_msg:
+        status_code = 404
+    elif "duplicate" in error_msg or "already exists" in error_msg:
+        status_code = 409
+    else:
+        status_code = 400
+
+    return JSONResponse(
+        status_code=status_code,
+        content={"detail": str(exc)}
+    )
+
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception):
+    """Convert generic exceptions to 500 Internal Server Error.
+
+    This catches all unhandled exceptions and returns a clean error response.
+    Prevents stack traces from being exposed to clients.
+    """
+    error_msg = str(exc).lower()
+
+    # Check if it's actually a "not found" error from database
+    if "not found" in error_msg or "invalid input syntax for type uuid" in error_msg:
+        status_code = 404
+        detail = "Resource not found"
+    else:
+        status_code = 500
+        detail = f"Internal server error: {str(exc)}"
+
+    return JSONResponse(
+        status_code=status_code,
+        content={"detail": detail}
+    )
+
 
 # Initialize repository and services
 candidate_repository = CandidateRepository(supabase)
@@ -76,18 +126,13 @@ def score_candidate_endpoint(candidate_id: str, target_role: str):
     Returns:
         CandidateScoreResponse containing score and breakdown.
 
-    Raises:
-        HTTPException: If candidate not found or role invalid.
+    Note:
+        ValueError exceptions are automatically converted to appropriate
+        HTTP status codes by the global exception handler.
     """
-    try:
-        candidate, scoring_result = scoring_service.score_single_candidate(
-            candidate_id, target_role
-        )
-    except ValueError as error:
-        if "not found" in str(error):
-            raise HTTPException(status_code=404, detail=str(error))
-        else:
-            raise HTTPException(status_code=400, detail=str(error))
+    candidate, scoring_result = scoring_service.score_single_candidate(
+        candidate_id, target_role
+    )
 
     return CandidateScoreResponse(
         linkedin_url=candidate.linkedin_url,
@@ -112,19 +157,13 @@ def get_top_candidates(
     Returns:
         List of CandidateScoreResponse sorted by score (descending).
 
-    Raises:
-        HTTPException: If validation fails or role invalid.
-
     Note:
         This loads all candidates into memory. Consider pagination
         for large datasets.
     """
-    try:
-        top_candidates = scoring_service.get_top_candidates_for_role(
-            target_role, num_of_profiles, country=country
-        )
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
+    top_candidates = scoring_service.get_top_candidates_for_role(
+        target_role, num_of_profiles, country=country
+    )
 
     return [
         CandidateScoreResponse(
@@ -271,14 +310,8 @@ def get_specific_candidate(candidate_id: str):
 
     Returns:
         LinkedInCandidate object if found.
-
-    Raises:
-        HTTPException: If candidate not found.
     """
-    try:
-        return candidate_service.get_candidate_by_id(candidate_id)
-    except ValueError as error:
-        raise HTTPException(status_code=404, detail=str(error))
+    return candidate_service.get_candidate_by_id(candidate_id)
 
 
 @app.get("/candidates/by-name")
@@ -291,14 +324,8 @@ def get_candidates_by_name(first_name: str, last_name: str):
 
     Returns:
         List of LinkedInCandidate objects matching the name.
-
-    Raises:
-        HTTPException: If no candidates found with that name.
     """
-    try:
-        return candidate_service.get_candidates_by_name(first_name, last_name)
-    except ValueError as error:
-        raise HTTPException(status_code=404, detail=str(error))
+    return candidate_service.get_candidates_by_name(first_name, last_name)
 
 
 @app.delete("/candidates/{candidate_id}")
@@ -310,17 +337,8 @@ def delete_candidate(candidate_id: str):
 
     Returns:
         Dictionary with success message.
-
-    Raises:
-        HTTPException: If candidate not found (404) or deletion fails (500).
     """
-    try:
-        result = candidate_service.delete_candidate(candidate_id)
-        return result
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to delete candidate: {str(e)}")
+    return candidate_service.delete_candidate(candidate_id)
 
 
 @app.get("/candidates/filter", response_model=List[CandidateFilterResponse])
@@ -784,16 +802,8 @@ def get_company(company_id: str):
 
     Returns:
         Company record.
-
-    Raises:
-        HTTPException: If company not found.
     """
-    try:
-        return company_service.get_company(company_id)
-    except ValueError as error:
-        raise HTTPException(status_code=404, detail=str(error))
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error))
+    return company_service.get_company(company_id)
 
 
 @app.get("/companies/search/{search_term}")
@@ -806,10 +816,7 @@ def search_companies(search_term: str):
     Returns:
         List of matching company records.
     """
-    try:
-        return company_service.search_companies(search_term)
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error))
+    return company_service.search_companies(search_term)
 
 
 @app.put("/companies/{company_id}")
@@ -845,17 +852,9 @@ def delete_company(company_id: str):
 
     Returns:
         Success message.
-
-    Raises:
-        HTTPException: If company not found.
     """
-    try:
-        company_service.delete_company(company_id)
-        return {"message": "Company deleted successfully"}
-    except ValueError as error:
-        raise HTTPException(status_code=404, detail=str(error))
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error))
+    company_service.delete_company(company_id)
+    return {"message": "Company deleted successfully"}
 
 
 # Job Management endpoints
@@ -911,12 +910,7 @@ def get_job(job_id: str):
     Returns:
         Job record.
     """
-    try:
-        return job_service.get_job(job_id)
-    except ValueError as error:
-        raise HTTPException(status_code=404, detail=str(error))
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error))
+    return job_service.get_job(job_id)
 
 
 @app.put("/jobs/{job_id}")
@@ -986,10 +980,5 @@ def delete_job(job_id: str):
     Returns:
         Success message.
     """
-    try:
-        job_service.delete_job(job_id)
-        return {"message": "Job deleted successfully"}
-    except ValueError as error:
-        raise HTTPException(status_code=404, detail=str(error))
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error))
+    job_service.delete_job(job_id)
+    return {"message": "Job deleted successfully"}
