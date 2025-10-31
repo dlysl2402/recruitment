@@ -447,15 +447,9 @@ def _apply_negative_signals(
         breakdown["avoid_company"] = True
 
     # Avoid title keywords penalty (non-hands-on roles and irrelevant backgrounds)
-    # Use weighted penalties if configured, otherwise fall back to simple list
-    if role_config.avoid_title_keyword_penalties or role_config.avoid_title_keywords:
+    if role_config.avoid_title_keyword_penalties:
         matched_titles = []
-
-        # Build penalty lookup (weighted system or default to 1000)
-        penalty_weights = role_config.avoid_title_keyword_penalties or {}
-        if not penalty_weights and role_config.avoid_title_keywords:
-            # Backward compatibility: use fixed -1000 for old configs
-            penalty_weights = {kw: 1000 for kw in role_config.avoid_title_keywords}
+        penalty_weights = role_config.avoid_title_keyword_penalties
 
         # Check current title
         if candidate.current_title:
