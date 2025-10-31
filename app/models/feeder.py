@@ -1,7 +1,19 @@
 """Pydantic models for feeder patterns and role-based scoring configuration."""
 
+from enum import Enum
 from pydantic import BaseModel
 from typing import List, Optional, Dict
+
+
+class FeederScope(str, Enum):
+    """Defines the scope of a feeder configuration.
+
+    Attributes:
+        GENERAL: Universal feeders that work across all trading firms.
+        FIRM_SPECIFIC: Feeders specific to a particular trading firm.
+    """
+    GENERAL = "general"
+    FIRM_SPECIFIC = "firm_specific"
 
 
 class WeightedSkill(BaseModel):
@@ -67,6 +79,8 @@ class FeederPattern(BaseModel):
         candidates_placed: Number of successful placements.
         conversion_rate: Placement success rate (0.0-1.0).
         last_updated: Date this pattern was last updated (YYYY-MM-DD).
+        sample_size: Number of HFT employees analyzed (from optimization).
+        confidence_score: Statistical confidence (0.0-1.0) based on sample size.
     """
     company: str
     company_aliases: List[str]
@@ -83,6 +97,10 @@ class FeederPattern(BaseModel):
     conversion_rate: float = 0.0
     last_updated: str
 
+    # Optimization metadata (optional)
+    sample_size: Optional[int] = None
+    confidence_score: Optional[float] = None
+
 
 class RoleFeederConfig(BaseModel):
     """Complete configuration for scoring candidates for a specific role.
@@ -93,6 +111,8 @@ class RoleFeederConfig(BaseModel):
     Attributes:
         role_name: Machine-readable role identifier (e.g., "network_engineer").
         display_name: Human-readable role name (e.g., "Network Engineer").
+        scope: Whether this is a general or firm-specific configuration.
+        target_firm: The specific firm this config targets (None for general).
         feeders: List of feeder patterns to match against.
         required_skills: Weighted skills that candidates must have.
         nice_to_have_skills: Weighted optional skills that boost the score.
@@ -102,9 +122,12 @@ class RoleFeederConfig(BaseModel):
         red_flags: Other negative signals to watch for.
         typical_salary_range: Salary range metadata for the role.
         notes: Additional notes about this role configuration.
+        last_optimized: Timestamp when feeders were last optimized (ISO format).
     """
     role_name: str
     display_name: str
+    scope: FeederScope = FeederScope.GENERAL
+    target_firm: Optional[str] = None
 
     feeders: List[FeederPattern]
 
@@ -124,3 +147,4 @@ class RoleFeederConfig(BaseModel):
     # Metadata
     typical_salary_range: Optional[Dict] = None
     notes: str = ""
+    last_optimized: Optional[str] = None  # Timestamp of last optimization (ISO format)

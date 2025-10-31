@@ -4,7 +4,7 @@ import os
 import json
 import re
 from datetime import datetime
-from typing import Dict, Optional, List, Set, Tuple
+from typing import Dict, Optional, List, Set, Tuple, Any
 from dataclasses import dataclass, field
 
 from app.models import LinkedInCandidate, DateInfo, Experience
@@ -28,7 +28,7 @@ class ScoringResult:
         matched_feeder: Name of the feeder pattern that matched (if any).
     """
     score: float
-    breakdown: Dict[str, any] = field(default_factory=dict)
+    breakdown: Dict[str, Any] = field(default_factory=dict)
     matched_feeder: Optional[str] = None
 
     def to_dict(self) -> Dict:
@@ -109,6 +109,24 @@ def score_candidate(candidate: LinkedInCandidate, target_role: str) -> ScoringRe
         )
 
     role_config = feeder_configs[target_role]
+    return score_candidate_with_config(candidate, role_config)
+
+
+def score_candidate_with_config(
+    candidate: LinkedInCandidate, role_config: RoleFeederConfig
+) -> ScoringResult:
+    """Score a candidate using a specific role configuration.
+
+    This is a variant of score_candidate that accepts a RoleFeederConfig directly
+    instead of loading from file. Useful for weighted scoring with multiple configs.
+
+    Args:
+        candidate: The candidate to score.
+        role_config: The role configuration to use for scoring.
+
+    Returns:
+        ScoringResult containing score, breakdown, and matched feeder.
+    """
     total_score = 0
     breakdown = {}
     matched_feeder_name = None

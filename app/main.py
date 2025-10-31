@@ -7,6 +7,7 @@ from typing import List, Optional
 from app.models import LinkedInCandidate
 from app.models.interview import InterviewProcess, InterviewStage, InterviewStatus
 from app.models.job import Job, JobStatus
+from app.models.optimization import OptimizationRequest, OptimizationResponse
 from app.database.client import supabase
 from app.repositories.candidate_repository import CandidateRepository
 from app.repositories.interview_repository import InterviewRepository
@@ -19,6 +20,7 @@ from app.services.interview_service import InterviewService
 from app.services.feedback_service import FeedbackService
 from app.services.company_service import CompanyService
 from app.services.job_service import JobService
+from app.services.feeder_optimization_service import FeederOptimizationService
 from app.api.schemas.responses import CandidateScoreResponse, CandidateFilterResponse
 from app.api.schemas.requests import (
     CreateInterviewRequest,
@@ -103,6 +105,9 @@ scraping_service = ScrapingService(candidate_repository, company_service, candid
 feedback_service = FeedbackService(interview_repository, candidate_service, company_service, job_service)
 interview_service = InterviewService(interview_repository, company_service, job_service, feedback_service)
 
+# Initialize feeder optimization service
+feeder_optimization_service = FeederOptimizationService(candidate_repository, company_repository)
+
 
 @app.get("/")
 def root():
@@ -116,23 +121,46 @@ def root():
 
 # Scoring endpoints
 @app.get("/score-candidate", response_model=CandidateScoreResponse)
-def score_candidate_endpoint(candidate_id: str, target_role: str):
+def score_candidate_endpoint(
+    candidate_id: str,
+    target_role: str,
+    target_firm: Optional[str] = None,
+    general_weight: float = 0.6,
+):
     """Score a single candidate for a target role.
+
+    Supports both general scoring (feeders_general.json) and weighted scoring
+    that combines general + firm-specific feeders when target_firm is provided.
 
     Args:
         candidate_id: Database ID of the candidate to score.
         target_role: Name of the role to score against.
+        target_firm: Optional HFT firm for firm-specific scoring (e.g., "Citadel").
+                    If provided, uses weighted average of general + firm-specific.
+        general_weight: Weight for general score (0.0-1.0), default 0.6.
+                       Only used when target_firm is provided.
 
     Returns:
         CandidateScoreResponse containing score and breakdown.
+
+    Example:
+        GET /score-candidate?candidate_id=123&target_role=network_engineer
+        GET /score-candidate?candidate_id=123&target_role=network_engineer&target_firm=Citadel
 
     Note:
         ValueError exceptions are automatically converted to appropriate
         HTTP status codes by the global exception handler.
     """
-    candidate, scoring_result = scoring_service.score_single_candidate(
-        candidate_id, target_role
-    )
+    if target_firm:
+        # Use weighted scoring with general + firm-specific feeders
+        candidate, scoring_result = scoring_service.score_candidate_for_firm(
+            candidate_id, target_role, target_firm, general_weight
+        )
+    else:
+        # Use standard scoring with general feeders only
+        candidate, scoring_result = scoring_service.score_single_candidate(
+            candidate_id, target_role
+        )
 
     return CandidateScoreResponse(
         linkedin_url=candidate.linkedin_url,
@@ -416,40 +444,6 @@ def scrape_and_save_candidate_batch(profile_usernames: str):
         raise HTTPException(
             status_code=500,
             detail=f"Scraping failed: {str(error)}"
-        )
-
-
-@app.post("/linkedin-company-employees-scrape")
-def scrape_company_employees(
-    company_url: str,
-    max_employees: Optional[int] = None,
-    job_title: Optional[str] = None,
-    batch_name: Optional[str] = None
-):
-    """Scrape employees from a LinkedIn company page and save to database.
-
-    Args:
-        company_url: LinkedIn company page URL.
-        max_employees: Maximum number of employees to scrape.
-        job_title: Filter employees by job title.
-        batch_name: Optional name for this scraping batch.
-
-    Returns:
-        Same format as scrape_and_save_candidate_batch.
-
-    Raises:
-        HTTPException: If company scraping fails.
-    """
-    try:
-        return scraping_service.scrape_company_employees_and_save(
-            company_url, max_employees, job_title, batch_name or "batch"
-        )
-    except HTTPException:
-        raise
-    except Exception as error:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Company scraping failed: {str(error)}"
         )
 
 
@@ -748,6 +742,123 @@ def trigger_feedback_loop(interview_id: str):
         raise HTTPException(status_code=404, detail=str(error))
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error))
+
+
+@app.post("/analytics/optimize-feeders", response_model=OptimizationResponse)
+def optimize_general_feeders(request: OptimizationRequest):
+    """Analyzes ALL HFT employees to discover general feeder patterns.
+
+    This endpoint performs lookback analysis across ALL HFT firms to find
+    universal feeder patterns. Analyzes employees at HFT firms, classifies
+    them by job function, and extracts common previous companies. Results
+    are saved to feeders_general.json.
+
+    Args:
+        request: OptimizationRequest with analysis parameters:
+            - job_function: Optional filter for specific function
+            - min_sample_size: Minimum candidates to qualify feeder (default: 15)
+            - hft_companies: Optional list of HFT companies to analyze
+            - update_feeders: Whether to update feeders_general.json (default: True)
+            - create_backup: Whether to backup before updating (default: True)
+
+    Returns:
+        OptimizationResponse with:
+        - success: Whether analysis completed
+        - message: Status message
+        - report: Detailed FeederAnalysisReport with metrics and comparisons
+        - errors: List of errors (if any)
+
+    Raises:
+        HTTPException: If analysis fails, no candidates found, or invalid parameters.
+
+    Example:
+        POST /analytics/optimize-feeders
+        {
+            "job_function": "network_engineer",
+            "min_sample_size": 15,
+            "update_feeders": true
+        }
+    """
+    try:
+        report = feeder_optimization_service.analyze_general_feeders(
+            job_function=request.job_function,
+            min_sample_size=request.min_sample_size,
+            hft_companies=request.hft_companies,
+            update_feeders=request.update_feeders,
+            create_backup=request.create_backup,
+        )
+
+        return OptimizationResponse(
+            success=True,
+            message=f"General feeder optimization completed. Analyzed {report.total_candidates_analyzed} HFT employees across {len(report.job_function_metrics)} job functions.",
+            report=report,
+            errors=[],
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"General feeder optimization failed: {str(error)}"
+        )
+
+
+@app.post("/analytics/optimize-firm-feeders/{firm_name}", response_model=OptimizationResponse)
+def optimize_firm_feeders(firm_name: str, request: OptimizationRequest):
+    """Analyzes ONE specific HFT firm's employees to discover firm-specific feeders.
+
+    This endpoint performs lookback analysis on employees at a single firm to find
+    feeders unique to that firm's hiring patterns. Results are saved to
+    feeders_{firm}.json for firm-specific targeting.
+
+    Args:
+        firm_name: Name of the HFT firm to analyze (e.g., "Citadel", "Jane Street").
+        request: OptimizationRequest with analysis parameters:
+            - job_function: Optional filter for specific function
+            - min_sample_size: Minimum candidates to qualify feeder (default: 15)
+            - update_feeders: Whether to update feeders_{firm}.json (default: True)
+            - create_backup: Whether to backup before updating (default: True)
+
+    Returns:
+        OptimizationResponse with:
+        - success: Whether analysis completed
+        - message: Status message
+        - report: Detailed FeederAnalysisReport with firm-specific metrics
+        - errors: List of errors (if any)
+
+    Raises:
+        HTTPException: If analysis fails, no employees found at firm, or invalid parameters.
+
+    Example:
+        POST /analytics/optimize-firm-feeders/Citadel
+        {
+            "job_function": "network_engineer",
+            "min_sample_size": 15,
+            "update_feeders": true
+        }
+    """
+    try:
+        report = feeder_optimization_service.analyze_firm_specific_feeders(
+            firm_name=firm_name,
+            job_function=request.job_function,
+            min_sample_size=request.min_sample_size,
+            update_feeders=request.update_feeders,
+            create_backup=request.create_backup,
+        )
+
+        return OptimizationResponse(
+            success=True,
+            message=f"Firm-specific feeder optimization for {firm_name} completed. Analyzed {report.total_candidates_analyzed} employees across {len(report.job_function_metrics)} job functions.",
+            report=report,
+            errors=[],
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Firm-specific feeder optimization failed: {str(error)}"
+        )
 
 
 # Company Management endpoints

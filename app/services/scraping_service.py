@@ -12,7 +12,6 @@ from app.scrapers.profile_scraper import (
     extract_linkedin_username,
     is_error_response
 )
-from app.scrapers.company_scraper import scrape_linkedin_company
 from app.transformers.scraper_to_database import transform_scraped_profile
 from app.repositories.candidate_repository import CandidateRepository
 
@@ -318,38 +317,3 @@ class ScrapingService:
             response["failed"] = failed
 
         return response
-
-    def scrape_company_employees_and_save(
-        self,
-        company_url: str,
-        max_employees: int = None,
-        job_title: str = None,
-        batch_name: str = "batch"
-    ) -> Dict[str, List[Dict[str, Any]]]:
-        """Scrape company employees and save to database.
-
-        Args:
-            company_url: LinkedIn company page URL.
-            max_employees: Maximum number of employees to scrape.
-            job_title: Filter by job title.
-            batch_name: Name for this scraping batch.
-
-        Returns:
-            Dictionary with "success" and "failed" lists.
-
-        Raises:
-            Exception: If scraping fails.
-        """
-        employee_results = scrape_linkedin_company(
-            company_url,
-            max_employees,
-            job_title,
-            batch_name
-        )
-
-        usernames = []
-        for employee in employee_results:
-            profile_url = employee.get("profile_url", "")
-            usernames.append(extract_linkedin_username(profile_url))
-
-        return self.scrape_and_save_profiles(usernames)

@@ -1,0 +1,184 @@
+{
+  "network_engineer": {
+    "role_name": "network_engineer",
+    "display_name": "Network Engineer",
+    "feeders": [
+      {
+        "company": "Amazon",
+        "company_aliases": [
+          "Amazon Web Services",
+          "Amazon Web Services (AWS)",
+          "AWS"
+        ],
+        "priority": 1,
+        "min_tenure_years": 3.0,
+        "max_tenure_years": 15.0,
+        "required_titles": ["Network Engineer", "Network Development Engineer", "NDE"],
+        "boost_keywords": ["multicast", "IGMP", "PIM", "UDP", "low-latency"],
+        "multiplier": 1.0,
+        "candidates_sourced": 0,
+        "candidates_placed": 0,
+        "conversion_rate": 0,
+        "last_updated": "2025-10-29"
+      }
+    ],
+    "required_skills": [],
+    "nice_to_have_skills": [
+      {"name": "Multicast", "weight": 10.0},
+      {"name": "IGMP", "weight": 5.0},
+      {"name": "User Datagram Protocol (UDP)", "weight": 3.0},
+      {"name": "Wireshark", "weight": 2.0}
+    ],
+    "pedigree_companies": [
+      {
+        "company": "Google",
+        "company_aliases": ["Google LLC", "Alphabet"],
+        "multiplier": 1.0
+      }
+    ],
+    "relevant_title_keywords": ["network", "NDE"],
+    "avoid_companies": [
+      {
+        "company": "early-stage startups",
+        "company_aliases": [],
+        "multiplier": 10.0
+      }
+    ],
+    "avoid_title_keyword_penalties": {
+      "Manager": 10.0,
+      "Engineering Manager": 10.0,
+      "Director": 10.0,
+      "VP": 15.0,
+      "Vice President": 15.0,
+      "Head of": 12.0,
+      "Chief": 15.0
+    },
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 150000,
+      "base_max": 250000,
+      "total_comp_min": 200000,
+      "total_comp_max": 550000,
+      "currency": "AUD",
+      "note": "Top HFT firms pay 30%-50% higher"
+    },
+    "notes": "All of my network engineer placements come from Amazon"
+  },
+  
+  
+  
+  
+  "linux_engineer": {
+    "role_name": "linux_engineer",
+    "display_name": "Linux Engineer",
+    "feeders": [
+      {
+        "company": "Google",
+        "company_aliases": [],
+        "priority": 1,
+        "min_tenure_years": 3.0,
+        "max_tenure_years": 15.0,
+        "required_titles": [
+          "Linux Engineer", 
+          "Linux System Administrator", 
+          "DevOps Engineer", 
+          "Site Reliability Engineer"
+        ],
+        "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
+        "multiplier": 1.0,
+        "candidates_sourced": 0,
+        "candidates_placed": 0,
+        "conversion_rate": 0,
+        "last_updated": "2025-10-30"
+      },
+      {
+        "company": "Amazon",
+        "company_aliases": [
+          "Amazon Web Services",
+          "Amazon Web Services (AWS)",
+          "AWS"
+        ],
+        "priority": 1,
+        "min_tenure_years": 3.0,
+        "max_tenure_years": 15.0,
+        "required_titles": [
+          "Systems Development Engineer",
+          "System Development Engineer",
+          "SDE",
+          "Linux Engineer", 
+          "Linux System Administrator", 
+          "DevOps Engineer", 
+          "Site Reliability Engineer"
+        ],
+        "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
+        "multiplier": 1.0,
+        "candidates_sourced": 0,
+        "candidates_placed": 0,
+        "conversion_rate": 0,
+        "last_updated": "2025-10-30"
+      },
+      {
+        "company": "Susquehanna International Group",
+        "company_aliases": [
+          "Amazon Web Services",
+          "Amazon Web Services (AWS)",
+          "AWS"
+        ],
+        "priority": 1,
+        "min_tenure_years": 3.0,
+        "max_tenure_years": 15.0,
+        "required_titles": [
+          "Systems Development Engineer",
+          "System Development Engineer",
+          "SDE",
+          "Linux Engineer", 
+          "Linux System Administrator", 
+          "DevOps Engineer", 
+          "Site Reliability Engineer"
+        ],
+        "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
+        "multiplier": 1.0,
+        "candidates_sourced": 0,
+        "candidates_placed": 0,
+        "conversion_rate": 0,
+        "last_updated": "2025-10-30"
+      }
+    ],
+    "required_skills": [
+      {"name": "Linux", "weight": 1.0},
+      {"name": "Bash", "weight": 0.75}
+    ],
+    "nice_to_have_skills": [
+      {"name": "Red Hat Linux", "weight": 5.0},
+      {"name": "Puppet", "weight": 5.0},
+      {"name": "Linux Kernel", "weight": 5.0},
+      {"name": "Python (Programming Language)", "weight": 3.0}
+    ],
+    "pedigree_companies": [
+      {
+        "company": "Google",
+        "company_aliases": ["Google LLC", "Alphabet"],
+        "multiplier": 1.0
+      }
+    ],
+    "relevant_title_keywords": ["linux", "system", "devops", "sre", "infrastructure"],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {
+      "Manager": 10.0,
+      "Technical Program": 10.0,
+      "Software": 5.0,
+      "SWE": 5.0,
+      "Network": 3.0
+    },
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 150000,
+      "base_max": 300000,
+      "total_comp_min": 250000,
+      "total_comp_max": 650000,
+      "currency": "AUD",
+      "note": "Google candidates have been super strong for this role as they have really good linux infrastructure"
+    },
+    "notes": "We have roles available for Virtu + Jump Trading"
+  }
+}
