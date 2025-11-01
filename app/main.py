@@ -22,6 +22,7 @@ from app.services.feedback_service import FeedbackService
 from app.services.company_service import CompanyService
 from app.services.job_service import JobService
 from app.services.feeder_optimization_service import FeederOptimizationService
+from app.services.company_linkage_service import CompanyLinkageService
 from app.api.schemas.responses import CandidateScoreResponse, CandidateFilterResponse
 from app.api.schemas.requests import (
     CreateInterviewRequest,
@@ -121,6 +122,9 @@ interview_service = InterviewService(interview_repository, company_service, job_
 
 # Initialize feeder optimization service
 feeder_optimization_service = FeederOptimizationService(candidate_repository, company_repository)
+
+# Initialize company linkage service
+company_linkage_service = CompanyLinkageService(candidate_repository, company_service)
 
 
 @app.get("/")
@@ -821,6 +825,40 @@ def optimize_general_feeders(request: OptimizationRequest):
             status_code=500,
             detail=f"General feeder optimization failed: {str(error)}"
         )
+
+
+@app.post("/utilities/link-companies")
+def link_companies(dry_run: bool = True):
+    """Sweep database and link unlinked company references to companies table.
+
+    Scans all candidates and attempts to link companies with empty IDs to
+    existing companies in the database using name/alias matching.
+
+    Args:
+        dry_run: If True, only report what would be updated without saving (default: True).
+
+    Returns:
+        Dictionary with sweep results:
+        - total_candidates: Total candidates scanned
+        - unlinked_current_companies: Candidates with unlinked current_company
+        - unlinked_experiences: Total experience entries with unlinked companies
+        - linked_current_companies: Successfully linked current companies
+        - linked_experiences: Successfully linked experience companies
+        - total_linked: Total successful linkages
+        - linked_companies: List of companies that were linked with their linkage counts (sorted by count desc)
+        - not_found_companies: List of company names not found in database
+        - dry_run: Whether this was a dry run
+        - timestamp: When the sweep was performed
+
+    Example:
+        POST /utilities/link-companies?dry_run=true
+        POST /utilities/link-companies?dry_run=false
+    """
+    try:
+        result = company_linkage_service.sweep_and_link_companies(dry_run=dry_run)
+        return result
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error))
 
 
 @app.post("/analytics/optimize-firm-feeders/{firm_name}", response_model=OptimizationResponse)
