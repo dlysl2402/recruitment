@@ -294,6 +294,32 @@ class InterviewService:
 
         return result
 
+    def get_all_interviews(
+        self,
+        status_filter: Optional[InterviewStatus] = None
+    ) -> List[InterviewProcess]:
+        """Get all interviews with optional status filter.
+
+        Args:
+            status_filter: Optional status to filter by.
+
+        Returns:
+            List of InterviewProcess objects sorted by creation date (newest first).
+        """
+        interviews = self.interview_repository.get_all_interviews()
+
+        result = []
+        for interview_dict in interviews:
+            interview = self._dict_to_interview_process(interview_dict)
+
+            # Apply status filter if specified
+            if status_filter and interview.status != status_filter:
+                continue
+
+            result.append(interview)
+
+        return result
+
     def get_company_interviews(
         self,
         company_name: str,

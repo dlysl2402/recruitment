@@ -111,6 +111,23 @@ class InterviewRepository:
         except Exception as error:
             raise Exception(f"Failed to get interviews by candidate: {str(error)}")
 
+    def get_all_interviews(self) -> List[Dict[str, Any]]:
+        """Retrieve all interview processes ordered by creation date.
+
+        Returns:
+            List of all interview process records, sorted newest first.
+        """
+        try:
+            response = (
+                self.db_client.table("interview_processes")
+                .select("*")
+                .order("created_at", desc=True)
+                .execute()
+            )
+            return response.data if response.data else []
+        except Exception as error:
+            raise Exception(f"Failed to retrieve interviews: {str(error)}")
+
     def get_interviews_by_company(self, company_name: str) -> List[Dict[str, Any]]:
         """Retrieve all interview processes for a specific company.
 

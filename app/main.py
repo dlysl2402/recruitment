@@ -536,10 +536,11 @@ def list_interviews(
         status: Filter by interview status.
 
     Returns:
-        List of InterviewProcess objects.
+        List of InterviewProcess objects sorted by creation date (newest first).
 
     Note:
         If both candidate_id and company_name provided, candidate_id takes precedence.
+        If no filters provided, returns all interviews.
     """
     try:
         if candidate_id:
@@ -551,11 +552,8 @@ def list_interviews(
                 company_name, status_filter=status
             )
         else:
-            # Return all interviews (consider pagination for production)
-            raise HTTPException(
-                status_code=400,
-                detail="Must provide either candidate_id or company_name filter"
-            )
+            # Return all interviews sorted by creation date
+            return interview_service.get_all_interviews(status_filter=status)
     except HTTPException:
         raise
     except Exception as error:
