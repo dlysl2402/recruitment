@@ -79,9 +79,9 @@
         "min_tenure_years": 3.0,
         "max_tenure_years": 15.0,
         "required_titles": [
-          "Linux Engineer", 
-          "Linux System Administrator", 
-          "DevOps Engineer", 
+          "Linux Engineer",
+          "Linux System Administrator",
+          "DevOps Engineer",
           "Site Reliability Engineer"
         ],
         "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
@@ -105,9 +105,9 @@
           "Systems Development Engineer",
           "System Development Engineer",
           "SDE",
-          "Linux Engineer", 
-          "Linux System Administrator", 
-          "DevOps Engineer", 
+          "Linux Engineer",
+          "Linux System Administrator",
+          "DevOps Engineer",
           "Site Reliability Engineer"
         ],
         "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
@@ -131,9 +131,9 @@
           "Systems Development Engineer",
           "System Development Engineer",
           "SDE",
-          "Linux Engineer", 
-          "Linux System Administrator", 
-          "DevOps Engineer", 
+          "Linux Engineer",
+          "Linux System Administrator",
+          "DevOps Engineer",
           "Site Reliability Engineer"
         ],
         "boost_keywords": ["red hat linux", "rhel", "bash", "puppet", "kernel"],
@@ -180,5 +180,181 @@
       "note": "Google candidates have been super strong for this role as they have really good linux infrastructure"
     },
     "notes": "We have roles available for Virtu + Jump Trading"
+  },
+
+  "trading_system_engineer": {
+    "role_name": "trading_system_engineer",
+    "display_name": "Trading System Engineer",
+    "feeders": [],
+    "required_skills": [],
+    "nice_to_have_skills": [],
+    "pedigree_companies": [],
+    "relevant_title_keywords": [],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {},
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 0,
+      "base_max": 0,
+      "total_comp_min": 0,
+      "total_comp_max": 0,
+      "currency": "AUD",
+      "note": "TBD"
+    },
+    "notes": "TBD"
+  },
+
+  "trading_engineer": {
+    "role_name": "trading_engineer",
+    "display_name": "Trading Engineer",
+    "feeders": [],
+    "required_skills": [],
+    "nice_to_have_skills": [],
+    "pedigree_companies": [],
+    "relevant_title_keywords": [],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {},
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 0,
+      "base_max": 0,
+      "total_comp_min": 0,
+      "total_comp_max": 0,
+      "currency": "AUD",
+      "note": "TBD"
+    },
+    "notes": "TBD"
+  },
+
+  "devops_engineer": {
+    "role_name": "devops_engineer",
+    "display_name": "DevOps Engineer",
+    "feeders": [],
+    "required_skills": [],
+    "nice_to_have_skills": [],
+    "pedigree_companies": [],
+    "relevant_title_keywords": [],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {},
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 0,
+      "base_max": 0,
+      "total_comp_min": 0,
+      "total_comp_max": 0,
+      "currency": "AUD",
+      "note": "TBD"
+    },
+    "notes": "TBD"
+  },
+
+  "platform_engineer": {
+    "role_name": "platform_engineer",
+    "display_name": "Platform Engineer",
+    "feeders": [],
+    "required_skills": [],
+    "nice_to_have_skills": [],
+    "pedigree_companies": [],
+    "relevant_title_keywords": [],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {},
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 0,
+      "base_max": 0,
+      "total_comp_min": 0,
+      "total_comp_max": 0,
+      "currency": "AUD",
+      "note": "TBD"
+    },
+    "notes": "TBD"
+  },
+
+  "data_engineer": {
+    "role_name": "data_engineer",
+    "display_name": "Data Engineer",
+    "feeders": [],
+    "required_skills": [],
+    "nice_to_have_skills": [],
+    "pedigree_companies": [],
+    "relevant_title_keywords": [],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {},
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 0,
+      "base_max": 0,
+      "total_comp_min": 0,
+      "total_comp_max": 0,
+      "currency": "AUD",
+      "note": "TBD"
+    },
+    "notes": "TBD"
+  },
+
+  "data_centre_engineer": {
+    "role_name": "data_centre_engineer",
+    "display_name": "Data Centre Engineer",
+    "feeders": [],
+    "required_skills": [],
+    "nice_to_have_skills": [],
+    "pedigree_companies": [],
+    "relevant_title_keywords": [],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {},
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 0,
+      "base_max": 0,
+      "total_comp_min": 0,
+      "total_comp_max": 0,
+      "currency": "AUD",
+      "note": "TBD"
+    },
+    "notes": "TBD"
+  },
+
+  "app_support_engineer": {
+    "role_name": "app_support_engineer",
+    "display_name": "App Support Engineer",
+    "feeders": [],
+    "required_skills": [],
+    "nice_to_have_skills": [],
+    "pedigree_companies": [],
+    "relevant_title_keywords": [],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {},
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 0,
+      "base_max": 0,
+      "total_comp_min": 0,
+      "total_comp_max": 0,
+      "currency": "AUD",
+      "note": "TBD"
+    },
+    "notes": "TBD"
+  },
+
+  "site_reliability_engineer": {
+    "role_name": "site_reliability_engineer",
+    "display_name": "Site Reliability Engineer",
+    "feeders": [],
+    "required_skills": [],
+    "nice_to_have_skills": [],
+    "pedigree_companies": [],
+    "relevant_title_keywords": [],
+    "avoid_companies": [],
+    "avoid_title_keyword_penalties": {},
+    "red_flags": [],
+    "typical_salary_range": {
+      "base_min": 0,
+      "base_max": 0,
+      "total_comp_min": 0,
+      "total_comp_max": 0,
+      "currency": "AUD",
+      "note": "TBD"
+    },
+    "notes": "TBD"
   }
 }

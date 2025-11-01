@@ -3,10 +3,17 @@
     "canonical_name": "Trading Systems Engineer",
     "description": "Keep trading environment up and running at all times",
     "companies": {
-      "IMC": ["Trading Systems Engineer", "Trading Engineer"],
+      "IMC": ["Trading Systems Engineer"],
       "Optiver": ["Application Engineer", "Production Engineer"],
-      "Citadel Securities": ["Site Reliability Engineer"]
+      "Citadel Securities": ["Site Reliability Engineer"],
+      "Virtu": ["Core Ops"],
+      "Hudson River Trading": ["TradeOps", "Trading Operations", "Trading Systems"]
     }
+  },
+  "trading_engineer": {
+    "canonical_name": "Trading Engineer",
+    "description": "TBD",
+    "companies": {}
   },
   "network_engineer": {
     "canonical_name": "Infrastructure/Platform Engineer",
@@ -26,5 +33,37 @@
       "Jane Street": ["Systems Engineer", "Linux Engineer"],
       "Jump Trading": ["Linux Engineer", "Systems Engineer"]
     }
+  },
+  "devops_engineer": {
+    "canonical_name": "DevOps Engineer",
+    "description": "TBD",
+    "companies": {}
+  },
+  "platform_engineer": {
+    "canonical_name": "Platform Engineer",
+    "description": "TBD",
+    "companies": {
+      "Hudson River Trading": ["Site Reliability Engineer", "SRE", "Systems Software Engineer", "Systems Developer"]
+    }
+  },
+  "data_engineer": {
+    "canonical_name": "Data Engineer",
+    "description": "TBD",
+    "companies": {}
+  },
+  "data_centre_engineer": {
+    "canonical_name": "Data Centre Engineer",
+    "description": "TBD",
+    "companies": {}
+  },
+  "app_support_engineer": {
+    "canonical_name": "App Support Engineer",
+    "description": "TBD",
+    "companies": {}
+  },
+  "site_reliability_engineer": {
+    "canonical_name": "Site Reliability Engineer",
+    "description": "TBD",
+    "companies": {}
   }
 }
