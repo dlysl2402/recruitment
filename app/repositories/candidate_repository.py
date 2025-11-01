@@ -119,3 +119,103 @@ class CandidateRepository(BaseRepository):
             .execute()
         )
         return response.data
+
+    def get_by_job_function_tags(self, tags: List[str]) -> List[Dict[str, Any]]:
+        """Retrieve candidates with ANY of the specified job function tags.
+
+        Uses PostgreSQL JSONB containment to find candidates tagged with
+        at least one of the provided tags.
+
+        Args:
+            tags: List of job function tag keys (e.g., ['trading_system_engineer', 'devops_engineer']).
+
+        Returns:
+            List of candidate records that have at least one matching tag.
+        """
+        if not tags:
+            return []
+
+        # Build JSONB query to find candidates with any of the tags
+        # Using PostgREST's cs (contains) operator for JSONB arrays
+        response = (
+            self.db_client.table(self.table_name)
+            .select("*")
+            .filter("job_function_tags", "cs", json.dumps([{"tag": tags[0]}]))
+        )
+
+        # For multiple tags, we need to use OR logic
+        # PostgREST doesn't support OR directly in filter chaining,
+        # so we'll fetch and filter in Python for now
+        # TODO: Optimize with raw SQL query if performance becomes an issue
+        if len(tags) == 1:
+            return response.execute().data
+        else:
+            # Get all candidates and filter in Python
+            all_candidates = self.db_client.table(self.table_name).select("*").execute().data
+            matching_candidates = []
+            tag_set = set(tags)
+
+            for candidate in all_candidates:
+                candidate_tags = candidate.get("job_function_tags", [])
+                if any(tag_obj.get("tag") in tag_set for tag_obj in candidate_tags):
+                    matching_candidates.append(candidate)
+
+            return matching_candidates
+
+    def update_job_function_tags(
+        self, candidate_id: str, tags: List[Dict[str, str]]
+    ) -> Dict[str, Any]:
+        """Update job function tags for a candidate.
+
+        Args:
+            candidate_id: Database ID of the candidate.
+            tags: List of tag dictionaries with 'tag' and 'display_name' keys.
+
+        Returns:
+            Updated candidate record.
+
+        Raises:
+            Exception: If update fails or candidate not found.
+        """
+        response = (
+            self.db_client.table(self.table_name)
+            .update({"job_function_tags": tags})
+            .eq("id", candidate_id)
+            .execute()
+        )
+
+        if not response.data:
+            raise ValueError(f"Candidate with ID {candidate_id} not found")
+
+        return response.data[0]
+
+    def get_tag_statistics(self) -> List[Dict[str, Any]]:
+        """Get statistics on job function tag distribution.
+
+        Returns:
+            List of dictionaries with tag, display_name, and candidate_count.
+            Sorted by candidate_count descending.
+        """
+        # Get all candidates
+        all_candidates = self.db_client.table(self.table_name).select("job_function_tags").execute().data
+
+        # Count tags
+        tag_counts = {}
+        for candidate in all_candidates:
+            tags = candidate.get("job_function_tags", [])
+            for tag_obj in tags:
+                tag_key = tag_obj.get("tag")
+                display_name = tag_obj.get("display_name")
+                if tag_key:
+                    if tag_key not in tag_counts:
+                        tag_counts[tag_key] = {
+                            "tag": tag_key,
+                            "display_name": display_name,
+                            "candidate_count": 0
+                        }
+                    tag_counts[tag_key]["candidate_count"] += 1
+
+        # Convert to list and sort by count
+        stats = sorted(tag_counts.values(), key=lambda x: x["candidate_count"], reverse=True)
+
+        return stats

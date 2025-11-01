@@ -1,0 +1,4978 @@
+{
+  "timestamp": "2025-11-01T14:29:53.188984",
+  "analysis_type": "feeder_optimization",
+  "job_function_filter": null,
+  "min_sample_size": 0,
+  "hft_companies_analyzed": [
+    "Citadel Securities",
+    "Jane Street",
+    "Jump Trading",
+    "Hudson River Trading",
+    "Tower Research Capital",
+    "DRW",
+    "Optiver",
+    "IMC Trading",
+    "Susquehanna International Group",
+    "Flow Traders",
+    "XTX Markets"
+  ],
+  "total_candidates_analyzed": 124,
+  "job_function_metrics": [
+    {
+      "job_function": "trading_system_engineer",
+      "display_name": "Trading System Engineer",
+      "total_candidates": 124,
+      "classified_candidates": 30,
+      "unique_companies": 112,
+      "avg_confidence": 0.3,
+      "top_feeders": [
+        {
+          "company": "Optiver Asia Pacific",
+          "sample_size": 2,
+          "avg_tenure_years": 2.07,
+          "min_tenure_years": 0.25,
+          "max_tenure_years": 4.33,
+          "common_titles": [
+            "Applications Engineer",
+            "Trading Systems Engineer (Intern)",
+            "Engineering Manager - Development"
+          ],
+          "frequency": 0.228,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Goldman Sachs",
+          "sample_size": 4,
+          "avg_tenure_years": 3.0,
+          "min_tenure_years": 0.58,
+          "max_tenure_years": 7.17,
+          "common_titles": [
+            "Technology Associate",
+            "Technology Analyst",
+            "Sr. Techops lead - Client subledger application "
+          ],
+          "frequency": 0.166,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "ServiceNow",
+          "sample_size": 1,
+          "avg_tenure_years": 0.9,
+          "min_tenure_years": 0.17,
+          "max_tenure_years": 2.0,
+          "common_titles": [
+            "Senior Site Reliability Engineer",
+            "Site Reliability Engineer",
+            "Associate Site Reliability Engineer"
+          ],
+          "frequency": 0.166,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "ExpressVPN",
+          "sample_size": 1,
+          "avg_tenure_years": 1.38,
+          "min_tenure_years": 1.0,
+          "max_tenure_years": 2.0,
+          "common_titles": [
+            "Senior Operations Engineer",
+            "Operations Engineer II",
+            "Operations Engineer I"
+          ],
+          "frequency": 0.133,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Autodesk",
+          "sample_size": 1,
+          "avg_tenure_years": 2.48,
+          "min_tenure_years": 1.17,
+          "max_tenure_years": 4.58,
+          "common_titles": [
+            "SW Engineer - Build & Release Engineering",
+            "Senior Site Reliability Engineer - Rendering as a Service",
+            "SW Engineer"
+          ],
+          "frequency": 0.133,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "JPMorgan Chase & Co.",
+          "sample_size": 2,
+          "avg_tenure_years": 1.46,
+          "min_tenure_years": 0.17,
+          "max_tenure_years": 2.0,
+          "common_titles": [
+            "Production Support Engineer",
+            "Network Engineer",
+            "Summer Analyst"
+          ],
+          "frequency": 0.13,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "DRW",
+          "sample_size": 2,
+          "avg_tenure_years": 1.42,
+          "min_tenure_years": 0.33,
+          "max_tenure_years": 3.42,
+          "common_titles": [
+            "DRW",
+            "Garden Leave",
+            "Trading Support Engineer"
+          ],
+          "frequency": 0.099,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "IMC financial markets & asset management",
+          "sample_size": 2,
+          "avg_tenure_years": 1.31,
+          "min_tenure_years": 1.08,
+          "max_tenure_years": 1.5,
+          "common_titles": [
+            "System Integration Engineer",
+            "Manager, Linux Systems Engineering",
+            "Linux Engineer"
+          ],
+          "frequency": 0.099,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Morgan Stanley",
+          "sample_size": 2,
+          "avg_tenure_years": 4.58,
+          "min_tenure_years": 3.0,
+          "max_tenure_years": 6.08,
+          "common_titles": [
+            "Technology Associate",
+            "Vice President",
+            "Consultant"
+          ],
+          "frequency": 0.099,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "CTI Technology",
+          "sample_size": 1,
+          "avg_tenure_years": 0.54,
+          "min_tenure_years": 0.33,
+          "max_tenure_years": 0.75,
+          "common_titles": [
+            "Cloud Services Administrator II",
+            "Service Desk Administrator"
+          ],
+          "frequency": 0.067,
+          "confidence_score": 0.3
+        }
+      ]
+    },
+    {
+      "job_function": "devops_engineer",
+      "display_name": "DevOps Engineer",
+      "total_candidates": 124,
+      "classified_candidates": 16,
+      "unique_companies": 66,
+      "avg_confidence": 0.3,
+      "top_feeders": [
+        {
+          "company": "Optiver",
+          "sample_size": 2,
+          "avg_tenure_years": 2.99,
+          "min_tenure_years": 0.92,
+          "max_tenure_years": 5.42,
+          "common_titles": [
+            "Head of Japan, Application Engineering",
+            "Application Engineering, Senior",
+            "Special Projects Engineer"
+          ],
+          "frequency": 0.368,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "LinkedIn",
+          "sample_size": 1,
+          "avg_tenure_years": 2.06,
+          "min_tenure_years": 1.5,
+          "max_tenure_years": 2.83,
+          "common_titles": [
+            "Site Reliability Engineer",
+            "Sr. Site Operations Engineer",
+            "Site Operations Engineer"
+          ],
+          "frequency": 0.187,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Bank of America Merrill Lynch",
+          "sample_size": 1,
+          "avg_tenure_years": 1.94,
+          "min_tenure_years": 0.67,
+          "max_tenure_years": 2.83,
+          "common_titles": [
+            "AVP, Programmer, Architecture Team - QAR",
+            "AVP, Programmer, High Frequency Data Team (KDB) - QAR",
+            "Programmer, High Frequency Data Team (Vhayu Velocity) - QAR"
+          ],
+          "frequency": 0.186,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Citadel Securities",
+          "sample_size": 2,
+          "avg_tenure_years": 2.92,
+          "min_tenure_years": 0.17,
+          "max_tenure_years": 6.75,
+          "common_titles": [
+            "Senior Site Reliability Engineer",
+            "SRE"
+          ],
+          "frequency": 0.183,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "HSBC",
+          "sample_size": 1,
+          "avg_tenure_years": 2.04,
+          "min_tenure_years": 0.17,
+          "max_tenure_years": 3.92,
+          "common_titles": [
+            "Systems Specialist",
+            "Senior Network Analyst"
+          ],
+          "frequency": 0.125,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Freewheel",
+          "sample_size": 1,
+          "avg_tenure_years": 2.62,
+          "min_tenure_years": 2.58,
+          "max_tenure_years": 2.67,
+          "common_titles": [
+            "Senior Site Reliability Engineer",
+            "Site Reliability Engineer"
+          ],
+          "frequency": 0.125,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Layar",
+          "sample_size": 1,
+          "avg_tenure_years": 1.96,
+          "min_tenure_years": 0.75,
+          "max_tenure_years": 3.17,
+          "common_titles": [
+            "Server Team Lead",
+            "Backend developer"
+          ],
+          "frequency": 0.125,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Amazon Web Services (AWS)",
+          "sample_size": 1,
+          "avg_tenure_years": 1.79,
+          "min_tenure_years": 1.0,
+          "max_tenure_years": 2.58,
+          "common_titles": [
+            "Cloud Engineer (DevOps)",
+            "Cloud Engineer (Linux)"
+          ],
+          "frequency": 0.125,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Northeastern University",
+          "sample_size": 1,
+          "avg_tenure_years": 1.08,
+          "min_tenure_years": 0.83,
+          "max_tenure_years": 1.33,
+          "common_titles": [
+            "RSO Proctor",
+            "Operations Assistant"
+          ],
+          "frequency": 0.124,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "IBM",
+          "sample_size": 2,
+          "avg_tenure_years": 0.75,
+          "min_tenure_years": 0.25,
+          "max_tenure_years": 1.25,
+          "common_titles": [
+            "Automation and Testing Developer",
+            "DevOps Intern"
+          ],
+          "frequency": 0.12,
+          "confidence_score": 0.3
+        }
+      ]
+    },
+    {
+      "job_function": "network_engineer",
+      "display_name": "Network Engineer",
+      "total_candidates": 124,
+      "classified_candidates": 2,
+      "unique_companies": 17,
+      "avg_confidence": 0.3,
+      "top_feeders": [
+        {
+          "company": "Digital Network",
+          "sample_size": 1,
+          "avg_tenure_years": 3.42,
+          "min_tenure_years": 2.83,
+          "max_tenure_years": 4.0,
+          "common_titles": [
+            "Network Operations Manager",
+            "Software Engineer"
+          ],
+          "frequency": 1.0,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Booking.com",
+          "sample_size": 1,
+          "avg_tenure_years": 1.54,
+          "min_tenure_years": 0.58,
+          "max_tenure_years": 2.5,
+          "common_titles": [
+            "Senior Network Engineer",
+            "Network Engineer"
+          ],
+          "frequency": 0.997,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Tesla",
+          "sample_size": 1,
+          "avg_tenure_years": 1.88,
+          "min_tenure_years": 1.0,
+          "max_tenure_years": 2.75,
+          "common_titles": [
+            "Staff Network Engineer",
+            "Sr WAN Network Engineer"
+          ],
+          "frequency": 0.993,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Amazon Web Services",
+          "sample_size": 1,
+          "avg_tenure_years": 1.08,
+          "min_tenure_years": 1.08,
+          "max_tenure_years": 1.08,
+          "common_titles": [
+            "Network Development Engineer"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "KDDI",
+          "sample_size": 1,
+          "avg_tenure_years": 1.83,
+          "min_tenure_years": 1.83,
+          "max_tenure_years": 1.83,
+          "common_titles": [
+            "Senior Engineer/IT Project manager"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Beltelecom",
+          "sample_size": 1,
+          "avg_tenure_years": 3.92,
+          "min_tenure_years": 3.92,
+          "max_tenure_years": 3.92,
+          "common_titles": [
+            "Network Engineer"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Columbus Nova LLC",
+          "sample_size": 1,
+          "avg_tenure_years": 2.75,
+          "min_tenure_years": 2.75,
+          "max_tenure_years": 2.75,
+          "common_titles": [
+            "Advisor"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "VIVA Dengi",
+          "sample_size": 1,
+          "avg_tenure_years": 1.17,
+          "min_tenure_years": 1.17,
+          "max_tenure_years": 1.17,
+          "common_titles": [
+            "Chief Technology Officer"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "NETBYNET HOLDING",
+          "sample_size": 1,
+          "avg_tenure_years": 6.08,
+          "min_tenure_years": 6.08,
+          "max_tenure_years": 6.08,
+          "common_titles": [
+            "Chief Technical Officer"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "NVision Group",
+          "sample_size": 1,
+          "avg_tenure_years": 2.5,
+          "min_tenure_years": 2.5,
+          "max_tenure_years": 2.5,
+          "common_titles": [
+            "System Engineer"
+          ],
+          "frequency": 0.497,
+          "confidence_score": 0.3
+        }
+      ]
+    },
+    {
+      "job_function": "app_support_engineer",
+      "display_name": "Application Support Engineer",
+      "total_candidates": 124,
+      "classified_candidates": 2,
+      "unique_companies": 13,
+      "avg_confidence": 0.3,
+      "top_feeders": [
+        {
+          "company": "Optiver",
+          "sample_size": 1,
+          "avg_tenure_years": 2.29,
+          "min_tenure_years": 1.42,
+          "max_tenure_years": 3.17,
+          "common_titles": [
+            "Enterprise Infrastructure Engineer",
+            "Application Engineer - Workstation Management"
+          ],
+          "frequency": 0.997,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Liquid Capital",
+          "sample_size": 1,
+          "avg_tenure_years": 2.67,
+          "min_tenure_years": 2.67,
+          "max_tenure_years": 2.67,
+          "common_titles": [
+            "Head of Support - Asia Pac"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Liquid Capital Group",
+          "sample_size": 1,
+          "avg_tenure_years": 12.5,
+          "min_tenure_years": 12.5,
+          "max_tenure_years": 12.5,
+          "common_titles": [
+            "Senior Windows Administrator"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "OSI Pharmaceuticals",
+          "sample_size": 1,
+          "avg_tenure_years": 2.67,
+          "min_tenure_years": 2.67,
+          "max_tenure_years": 2.67,
+          "common_titles": [
+            "IT Engineer"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Atkins",
+          "sample_size": 1,
+          "avg_tenure_years": 2.58,
+          "min_tenure_years": 2.58,
+          "max_tenure_years": 2.58,
+          "common_titles": [
+            "Systems Manager / Engineer"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Vinci Partners USA",
+          "sample_size": 1,
+          "avg_tenure_years": 3.17,
+          "min_tenure_years": 3.17,
+          "max_tenure_years": 3.17,
+          "common_titles": [
+            "IT Manager / Senior System Administrator"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Vinci Partners",
+          "sample_size": 1,
+          "avg_tenure_years": 2.17,
+          "min_tenure_years": 2.17,
+          "max_tenure_years": 2.17,
+          "common_titles": [
+            "Infrastructure Analyst / Helpdesk Manager"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "UBS Pactual Bank",
+          "sample_size": 1,
+          "avg_tenure_years": 1.25,
+          "min_tenure_years": 1.25,
+          "max_tenure_years": 1.25,
+          "common_titles": [
+            "Support Analyst L2"
+          ],
+          "frequency": 0.497,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Adyen",
+          "sample_size": 1,
+          "avg_tenure_years": 3.25,
+          "min_tenure_years": 3.25,
+          "max_tenure_years": 3.25,
+          "common_titles": [
+            "IT Automation Engineer"
+          ],
+          "frequency": 0.496,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Brasil PCH S.A.",
+          "sample_size": 1,
+          "avg_tenure_years": 0.75,
+          "min_tenure_years": 0.75,
+          "max_tenure_years": 0.75,
+          "common_titles": [
+            "Support Analyst"
+          ],
+          "frequency": 0.496,
+          "confidence_score": 0.3
+        }
+      ]
+    },
+    {
+      "job_function": "linux_engineer",
+      "display_name": "Linux Engineer",
+      "total_candidates": 124,
+      "classified_candidates": 4,
+      "unique_companies": 33,
+      "avg_confidence": 0.3,
+      "top_feeders": [
+        {
+          "company": "eBay",
+          "sample_size": 1,
+          "avg_tenure_years": 2.28,
+          "min_tenure_years": 1.42,
+          "max_tenure_years": 3.0,
+          "common_titles": [
+            "Site Operations Tech Lead, Gumtree Australia",
+            "Site Operations Manager, Gumtree Australia",
+            "Site Operations Engineer, Gumtree Australia"
+          ],
+          "frequency": 0.75,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "AOL Australia / AOL|7",
+          "sample_size": 1,
+          "avg_tenure_years": 2.04,
+          "min_tenure_years": 1.33,
+          "max_tenure_years": 2.75,
+          "common_titles": [
+            "Engineering Manager",
+            "Online Engineer"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Air Arena",
+          "sample_size": 1,
+          "avg_tenure_years": 0.67,
+          "min_tenure_years": 0.67,
+          "max_tenure_years": 0.67,
+          "common_titles": [
+            "CTO",
+            "Systems Architect ; Technical Product Lead"
+          ],
+          "frequency": 0.497,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "UNSW",
+          "sample_size": 1,
+          "avg_tenure_years": 2.88,
+          "min_tenure_years": 1.92,
+          "max_tenure_years": 3.83,
+          "common_titles": [
+            "Academic Mentor",
+            "Academic Tutor"
+          ],
+          "frequency": 0.434,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Octantis Pty Ltd",
+          "sample_size": 1,
+          "avg_tenure_years": 10.33,
+          "min_tenure_years": 10.33,
+          "max_tenure_years": 10.33,
+          "common_titles": [
+            "Systems Manager & Co-founder"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Freelancer.com",
+          "sample_size": 1,
+          "avg_tenure_years": 2.42,
+          "min_tenure_years": 2.42,
+          "max_tenure_years": 2.42,
+          "common_titles": [
+            "Snr. Systems Engineer"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Group Commerce",
+          "sample_size": 1,
+          "avg_tenure_years": 0.33,
+          "min_tenure_years": 0.33,
+          "max_tenure_years": 0.33,
+          "common_titles": [
+            "Systems Consultant"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Dealised",
+          "sample_size": 1,
+          "avg_tenure_years": 0.83,
+          "min_tenure_years": 0.83,
+          "max_tenure_years": 0.83,
+          "common_titles": [
+            "Platform Engineering Manager"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Kazaa",
+          "sample_size": 1,
+          "avg_tenure_years": 0.67,
+          "min_tenure_years": 0.67,
+          "max_tenure_years": 0.67,
+          "common_titles": [
+            "CTO"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Sharman Networks Ltd",
+          "sample_size": 1,
+          "avg_tenure_years": 5.5,
+          "min_tenure_years": 5.5,
+          "max_tenure_years": 5.5,
+          "common_titles": [
+            "Snr. Systems Manager"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        }
+      ]
+    },
+    {
+      "job_function": "platform_engineer",
+      "display_name": "platform_engineer",
+      "total_candidates": 124,
+      "classified_candidates": 9,
+      "unique_companies": 45,
+      "avg_confidence": 0.3,
+      "top_feeders": [
+        {
+          "company": "Google",
+          "sample_size": 3,
+          "avg_tenure_years": 2.6,
+          "min_tenure_years": 0.83,
+          "max_tenure_years": 7.25,
+          "common_titles": [
+            "Site Reliability Engineer",
+            "Senior Software Engineer, Site Reliability Engineering",
+            "Software Engineer, Site Reliability Engineering"
+          ],
+          "frequency": 0.888,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Goldman Sachs",
+          "sample_size": 1,
+          "avg_tenure_years": 1.58,
+          "min_tenure_years": 0.75,
+          "max_tenure_years": 2.42,
+          "common_titles": [
+            "Vice President (Cloud Engineering)",
+            "Associate (Cloud Engineering)",
+            "Technical Analyst"
+          ],
+          "frequency": 0.44,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "ITMAGINATION",
+          "sample_size": 1,
+          "avg_tenure_years": 1.61,
+          "min_tenure_years": 0.67,
+          "max_tenure_years": 3.33,
+          "common_titles": [
+            "Architect & Team Leader",
+            "Senior Software Engineer, Team Leader",
+            "Software Engineer, Web Developer"
+          ],
+          "frequency": 0.331,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "IDC",
+          "sample_size": 1,
+          "avg_tenure_years": 3.96,
+          "min_tenure_years": 3.75,
+          "max_tenure_years": 4.17,
+          "common_titles": [
+            "Senior System Administrator - UK",
+            "Senior System Administrator - CZE"
+          ],
+          "frequency": 0.222,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "ExodusPoint Capital Management, LP",
+          "sample_size": 1,
+          "avg_tenure_years": 2.38,
+          "min_tenure_years": 2.17,
+          "max_tenure_years": 2.58,
+          "common_titles": [
+            "Head of Compute",
+            "Linux Engineering"
+          ],
+          "frequency": 0.221,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Soft Egg Ltd",
+          "sample_size": 1,
+          "avg_tenure_years": 1.0,
+          "min_tenure_years": 0.42,
+          "max_tenure_years": 1.58,
+          "common_titles": [
+            "Technical Analyst",
+            "Technical Engineer"
+          ],
+          "frequency": 0.221,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "University of Wyoming",
+          "sample_size": 1,
+          "avg_tenure_years": 2.0,
+          "min_tenure_years": 1.25,
+          "max_tenure_years": 2.75,
+          "common_titles": [
+            "Team Leader",
+            "Lab Assistant"
+          ],
+          "frequency": 0.221,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Ripple",
+          "sample_size": 1,
+          "avg_tenure_years": 1.58,
+          "min_tenure_years": 1.42,
+          "max_tenure_years": 1.75,
+          "common_titles": [
+            "Principal Platform Engineer",
+            "Lead Platform Engineer"
+          ],
+          "frequency": 0.215,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Hudson River Trading",
+          "sample_size": 2,
+          "avg_tenure_years": 0.62,
+          "min_tenure_years": 0.25,
+          "max_tenure_years": 1.0,
+          "common_titles": [
+            "Linux Administrator",
+            "Systems Intern"
+          ],
+          "frequency": 0.213,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Atlassian",
+          "sample_size": 1,
+          "avg_tenure_years": 1.75,
+          "min_tenure_years": 1.75,
+          "max_tenure_years": 1.75,
+          "common_titles": [
+            "Site Reliability Engineer"
+          ],
+          "frequency": 0.111,
+          "confidence_score": 0.3
+        }
+      ]
+    },
+    {
+      "job_function": "data_centre_engineer",
+      "display_name": "Data Centre Engineer",
+      "total_candidates": 124,
+      "classified_candidates": 4,
+      "unique_companies": 15,
+      "avg_confidence": 0.3,
+      "top_feeders": [
+        {
+          "company": "Optiver",
+          "sample_size": 2,
+          "avg_tenure_years": 2.9,
+          "min_tenure_years": 1.83,
+          "max_tenure_years": 4.08,
+          "common_titles": [
+            "Application Engineer",
+            "IT Operations Lead - Data Center Engineering, System Support Engineering, Windows",
+            "Infrastructure Lead - Trading Operations Technology"
+          ],
+          "frequency": 1.0,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Goldman Sachs",
+          "sample_size": 1,
+          "avg_tenure_years": 3.14,
+          "min_tenure_years": 2.42,
+          "max_tenure_years": 4.33,
+          "common_titles": [
+            "Vice President, FICC SMM Engineering",
+            "Vice President, FX Trading & Sales Technology",
+            "Developer, FX Trading and Sales Technology"
+          ],
+          "frequency": 0.747,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Windstream Communications",
+          "sample_size": 1,
+          "avg_tenure_years": 13.71,
+          "min_tenure_years": 5.17,
+          "max_tenure_years": 22.25,
+          "common_titles": [
+            "CFCE / DCO Network Tech II - NJ & NYC Regional Operations (CO, Field and Microwave-LOS)",
+            "Fixed Wireless & Network Systems Technician II - CFCE"
+          ],
+          "frequency": 0.5,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Hudson River Trading",
+          "sample_size": 1,
+          "avg_tenure_years": 1.17,
+          "min_tenure_years": 0.83,
+          "max_tenure_years": 1.5,
+          "common_titles": [
+            "Datacenter Technician",
+            "Datacenter Technician Intern"
+          ],
+          "frequency": 0.498,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "All Star Code",
+          "sample_size": 1,
+          "avg_tenure_years": 0.08,
+          "min_tenure_years": 0.08,
+          "max_tenure_years": 0.08,
+          "common_titles": [
+            "Student Intern"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "UBS Global Asset Management",
+          "sample_size": 1,
+          "avg_tenure_years": 4.5,
+          "min_tenure_years": 4.5,
+          "max_tenure_years": 4.5,
+          "common_titles": [
+            "Software Engineer"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Accenture",
+          "sample_size": 1,
+          "avg_tenure_years": 5.08,
+          "min_tenure_years": 5.08,
+          "max_tenure_years": 5.08,
+          "common_titles": [
+            "Manager"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Cook County Assessor's Office",
+          "sample_size": 1,
+          "avg_tenure_years": 3.92,
+          "min_tenure_years": 3.92,
+          "max_tenure_years": 3.92,
+          "common_titles": [
+            "Programmer"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Prytania Investment Advisors",
+          "sample_size": 1,
+          "avg_tenure_years": 1.0,
+          "min_tenure_years": 1.0,
+          "max_tenure_years": 1.0,
+          "common_titles": [
+            "Software Developer"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        },
+        {
+          "company": "Covista Communications",
+          "sample_size": 1,
+          "avg_tenure_years": 3.42,
+          "min_tenure_years": 3.42,
+          "max_tenure_years": 3.42,
+          "common_titles": [
+            "Switch Operations Technician II"
+          ],
+          "frequency": 0.25,
+          "confidence_score": 0.3
+        }
+      ]
+    }
+  ],
+  "feeder_comparisons": {
+    "trading_system_engineer": [
+      {
+        "company": "Optiver Asia Pacific",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.07,
+          "sample_size": 2,
+          "frequency": 0.228
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Goldman Sachs",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.0,
+          "sample_size": 4,
+          "frequency": 0.166
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "ServiceNow",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.9,
+          "sample_size": 1,
+          "frequency": 0.166
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "ExpressVPN",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.38,
+          "sample_size": 1,
+          "frequency": 0.133
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Autodesk",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.48,
+          "sample_size": 1,
+          "frequency": 0.133
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "JPMorgan Chase & Co.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.46,
+          "sample_size": 2,
+          "frequency": 0.13
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "DRW",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.42,
+          "sample_size": 2,
+          "frequency": 0.099
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IMC financial markets & asset management",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.31,
+          "sample_size": 2,
+          "frequency": 0.099
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Morgan Stanley",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.58,
+          "sample_size": 2,
+          "frequency": 0.099
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CTI Technology",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.54,
+          "sample_size": 1,
+          "frequency": 0.067
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Mechdyne Corporation",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.21,
+          "sample_size": 1,
+          "frequency": 0.067
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CMC Markets APAC",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.04,
+          "sample_size": 1,
+          "frequency": 0.067
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "InfoReach, Inc.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.08,
+          "sample_size": 1,
+          "frequency": 0.067
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Google",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 7.71,
+          "sample_size": 2,
+          "frequency": 0.067
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Barclays Investment Bank",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.58,
+          "sample_size": 1,
+          "frequency": 0.066
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Societe Generale Corporate and Investment Banking - SGCIB",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.21,
+          "sample_size": 2,
+          "frequency": 0.066
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "BNP Paribas Corporate and Institutional Banking",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.38,
+          "sample_size": 1,
+          "frequency": 0.066
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Barclays",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.08,
+          "sample_size": 1,
+          "frequency": 0.066
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "DOCOMO interTouch Pte. Ltd.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.04,
+          "sample_size": 1,
+          "frequency": 0.066
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CERN",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.54,
+          "sample_size": 1,
+          "frequency": 0.066
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "International Institute of Information Technology – Bangalore",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.33,
+          "sample_size": 1,
+          "frequency": 0.066
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "INRO Technologies Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.62,
+          "sample_size": 1,
+          "frequency": 0.065
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "1Password",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.064
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Citi",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.42,
+          "sample_size": 1,
+          "frequency": 0.064
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Market Maker",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.67,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Follett School Solutions",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Dixie Soccer Club",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.5,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Contineo",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "HKT",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.42,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Hong Kong Trade Development Council",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.83,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "pickupp",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Services for the UnderServed",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.17,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Infosys",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.0,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Australasian Union of Jewish Students",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.92,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "HSC Tutor",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.83,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Dover Constructions",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.42,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Nasdaq",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.83,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "BlackRock",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.08,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "NUS Civil Engineering Department",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "JPMorgan Chase",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.08,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Javacatz",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.5,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Fujitsu",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.33,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "TORA, an LSEG business",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.0,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Aquis Exchange PLC",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CME Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.58,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "EBS BrokerTec",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.67,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "ICAP",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.67,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "EBA CLEARING",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Chicago Trading Company",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.67,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "impact-technologies.org",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "XR Trading",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Virtu Financial",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.58,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Credit Suisse",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.83,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Thomson Reuters",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.33,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "D. E. SHAW INDIA PRIVATE LIMITED",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.0,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Fixit-IT Pty Limited",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Linfox Armaguard Pty Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.5,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "FDM Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "BearingPoint",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Ericsson",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.5,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Tibra Capital",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.17,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CMC Markets",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.0,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Barclys Capital",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.0,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Deutsche Bank",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.67,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Headstrong",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 6.08,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Sopra Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.92,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "DataWave",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.0,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Crédit Agricole CIB",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.08,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "The University of Hong Kong",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.08,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "SafetyCulture",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.67,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "eBay",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.92,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Self Employed",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.5,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "inter-touch (Malaysia) Sdn Bhd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "inter-touch",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.92,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Telstra",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Fugro Survey Pty. Ltd.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.08,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Cisco",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.92,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "GirlScript Summer of Code",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "The Linux Foundation",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "International Institute of Information Technology Bangalore",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.0,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "KOLO GROUP, Inc",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.42,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Roads and Traffic Authority of NSW",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.83,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CommSecure",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.0,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Multiple Companies",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 6.58,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Mirae Asset Daewoo",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.08,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "200 Sigma",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.17,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Various Startups",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Classified Ventures, LLC.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.08,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Citadel Investment Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.33,
+          "sample_size": 1,
+          "frequency": 0.033
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "ODAIA",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "League",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Year Zero Studios",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Glenforest STEM",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.08,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Hang Seng Bank",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "irwinSolutions Pty Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.33,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Flow Traders",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 6.25,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Maxim Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 8.67,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Optiver",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Citadel Securities",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.17,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "SeaLadder",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.67,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Pharo Consortium",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.33,
+          "sample_size": 1,
+          "frequency": 0.032
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Rippling",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.031
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IMC Trading",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.25,
+          "sample_size": 1,
+          "frequency": 0.031
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Matthew Arnold & Baldwin LLP",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.031
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Paymark",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.031
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "PAK'nSAVE",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.031
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Jebsen Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.03
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Harris Interactive Inc.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.42,
+          "sample_size": 1,
+          "frequency": 0.03
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Orbitz.com",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.03
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "零束科技有限公司",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.029
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IBM",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.028
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IRAS - Inland Revenue Authority of Singapore",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.021
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      }
+    ],
+    "devops_engineer": [
+      {
+        "company": "Optiver",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.99,
+          "sample_size": 2,
+          "frequency": 0.368
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "LinkedIn",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.06,
+          "sample_size": 1,
+          "frequency": 0.187
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Bank of America Merrill Lynch",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.94,
+          "sample_size": 1,
+          "frequency": 0.186
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Citadel Securities",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.92,
+          "sample_size": 2,
+          "frequency": 0.183
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "HSBC",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.04,
+          "sample_size": 1,
+          "frequency": 0.125
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Freewheel",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.62,
+          "sample_size": 1,
+          "frequency": 0.125
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Layar",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.96,
+          "sample_size": 1,
+          "frequency": 0.125
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Amazon Web Services (AWS)",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.79,
+          "sample_size": 1,
+          "frequency": 0.125
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Northeastern University",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.08,
+          "sample_size": 1,
+          "frequency": 0.124
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IBM",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 2,
+          "frequency": 0.12
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IBM Watson Health",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.12,
+          "sample_size": 1,
+          "frequency": 0.115
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Barclays Capital",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.08,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Harbrook",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.92,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "MarQuest",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Nasdaq",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.83,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Macquarie Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.58,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Webtop Systems",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Agility Consulting",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.67,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "TravelWhereHouse",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.0,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "engin Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Netbase Technology",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.25,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "NAB",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Australia Post",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.5,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "JC Jewels",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.58,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "DSD Renewables",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Gambit Research",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 11.33,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Netcraft",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 6.75,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Direct Connection (the ISP)",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.0,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Louis Dreyfus Company",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.42,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "TutorOcean",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.0,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "McMaster University",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Mathnasium - The Math Learning Center",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.33,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "SURFnet",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "MediClara Projects BV",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 6.58,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "TNO ICT",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.5,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Maven Securities",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.0,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Hudson River Trading",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.58,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "MKC Wealth",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.5,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Tesco",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.83,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "JDS Australia",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "E-Flo Computers",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.25,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Zycus",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Directi",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.83,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Basis Technologies",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.92,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Avant",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.42,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Grubhub",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.33,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Jellyvision",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.08,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "GCM Grosvenor",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.58,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Pearson North America",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.5,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Virtual Soldier Research (VSR)",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.5,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Los Alamos National Laboratory",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "UIC Electronic Visualization Laboratory",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.75,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Argonne National Laboratory",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Eisai US",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.58,
+          "sample_size": 1,
+          "frequency": 0.062
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Tramada Systems",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.58,
+          "sample_size": 1,
+          "frequency": 0.06
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Harris Technology",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.67,
+          "sample_size": 1,
+          "frequency": 0.06
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "LIVEWIRE India",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.06
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Infosys",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.059
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Meta",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.08,
+          "sample_size": 1,
+          "frequency": 0.059
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "UNC Department of Computer Science",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.33,
+          "sample_size": 1,
+          "frequency": 0.058
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Bank of America",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.058
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Sebesta Blomberg",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.058
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Mindtree",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.5,
+          "sample_size": 1,
+          "frequency": 0.058
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Tata Consultancy Services",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.58,
+          "sample_size": 1,
+          "frequency": 0.058
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Capital One",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.057
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "BT",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.048
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      }
+    ],
+    "network_engineer": [
+      {
+        "company": "Amazon",
+        "status": "removed",
+        "existing_metrics": {
+          "min_tenure": 3.0,
+          "max_tenure": 15.0
+        },
+        "discovered_metrics": null,
+        "changes": [
+          "No longer meets minimum sample size threshold"
+        ]
+      },
+      {
+        "company": "Digital Network",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.42,
+          "sample_size": 1,
+          "frequency": 1.0
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Booking.com",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.54,
+          "sample_size": 1,
+          "frequency": 0.997
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Tesla",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.88,
+          "sample_size": 1,
+          "frequency": 0.993
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Amazon Web Services",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.08,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "KDDI",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.83,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Beltelecom",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.92,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Columbus Nova LLC",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.75,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "VIVA Dengi",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.17,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "NETBYNET HOLDING",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 6.08,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "NVision Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.5,
+          "sample_size": 1,
+          "frequency": 0.497
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Solvinity",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.497
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Orange Business Services",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.58,
+          "sample_size": 1,
+          "frequency": 0.496
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Cisco Systems",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.08,
+          "sample_size": 1,
+          "frequency": 0.49
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "NetProject",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.25,
+          "sample_size": 1,
+          "frequency": 0.49
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IMC Pacific",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.83,
+          "sample_size": 1,
+          "frequency": 0.463
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "MegaFon",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.463
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "GUYACOM",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.17,
+          "sample_size": 1,
+          "frequency": 0.454
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      }
+    ],
+    "app_support_engineer": [
+      {
+        "company": "Optiver",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.29,
+          "sample_size": 1,
+          "frequency": 0.997
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Liquid Capital",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.67,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Liquid Capital Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 12.5,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "OSI Pharmaceuticals",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.67,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Atkins",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.58,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Vinci Partners USA",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.17,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Vinci Partners",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.17,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "UBS Pactual Bank",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.25,
+          "sample_size": 1,
+          "frequency": 0.497
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Adyen",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.25,
+          "sample_size": 1,
+          "frequency": 0.496
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Brasil PCH S.A.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 1,
+          "frequency": 0.496
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Alphatec S.A.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.08,
+          "sample_size": 1,
+          "frequency": 0.483
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Central X",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.17,
+          "sample_size": 1,
+          "frequency": 0.463
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Prosidion Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.58,
+          "sample_size": 1,
+          "frequency": 0.46
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      }
+    ],
+    "linux_engineer": [
+      {
+        "company": "Google",
+        "status": "removed",
+        "existing_metrics": {
+          "min_tenure": 3.0,
+          "max_tenure": 15.0
+        },
+        "discovered_metrics": null,
+        "changes": [
+          "No longer meets minimum sample size threshold"
+        ]
+      },
+      {
+        "company": "Amazon",
+        "status": "removed",
+        "existing_metrics": {
+          "min_tenure": 3.0,
+          "max_tenure": 15.0
+        },
+        "discovered_metrics": null,
+        "changes": [
+          "No longer meets minimum sample size threshold"
+        ]
+      },
+      {
+        "company": "Susquehanna International Group",
+        "status": "removed",
+        "existing_metrics": {
+          "min_tenure": 3.0,
+          "max_tenure": 15.0
+        },
+        "discovered_metrics": null,
+        "changes": [
+          "No longer meets minimum sample size threshold"
+        ]
+      },
+      {
+        "company": "eBay",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.28,
+          "sample_size": 1,
+          "frequency": 0.75
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "AOL Australia / AOL|7",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.04,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Air Arena",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.67,
+          "sample_size": 1,
+          "frequency": 0.497
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "UNSW",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.88,
+          "sample_size": 1,
+          "frequency": 0.434
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Octantis Pty Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 10.33,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Freelancer.com",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.42,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Group Commerce",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.33,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Dealised",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.83,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Kazaa",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.67,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Sharman Networks Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.5,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "SmartMedia SLR",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.0,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CESYT",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.75,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Self Employed",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.25,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "SI Information Services",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.33,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IngeSoft",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.25,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Credit Sense Australia",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.83,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Epsilon",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 14.08,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "WiredTree",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.08,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CarePages, Inc.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.58,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Digital Voice Corporation",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.58,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Rising Sun Pictures",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.83,
+          "sample_size": 1,
+          "frequency": 0.248
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Tabcorp",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.67,
+          "sample_size": 1,
+          "frequency": 0.248
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Eyecon",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.58,
+          "sample_size": 1,
+          "frequency": 0.248
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Hypermax",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.67,
+          "sample_size": 1,
+          "frequency": 0.248
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Maven Securities",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.0,
+          "sample_size": 1,
+          "frequency": 0.247
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IIX Brisbane",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.247
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Macquarie Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.42,
+          "sample_size": 1,
+          "frequency": 0.243
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Velocix",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.25,
+          "sample_size": 1,
+          "frequency": 0.242
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "James Ruse Agricultural High School",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.5,
+          "sample_size": 1,
+          "frequency": 0.241
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IBM",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.5,
+          "sample_size": 1,
+          "frequency": 0.241
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Apogee Strategies LLC",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.0,
+          "sample_size": 1,
+          "frequency": 0.237
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Office of IT, Univ of Notre Dame",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.75,
+          "sample_size": 1,
+          "frequency": 0.201
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "iseek Communications Pty Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.67,
+          "sample_size": 1,
+          "frequency": 0.195
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      }
+    ],
+    "platform_engineer": [
+      {
+        "company": "Google",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.6,
+          "sample_size": 3,
+          "frequency": 0.888
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Goldman Sachs",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.58,
+          "sample_size": 1,
+          "frequency": 0.44
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "ITMAGINATION",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.61,
+          "sample_size": 1,
+          "frequency": 0.331
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "IDC",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.96,
+          "sample_size": 1,
+          "frequency": 0.222
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "ExodusPoint Capital Management, LP",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.38,
+          "sample_size": 1,
+          "frequency": 0.221
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Soft Egg Ltd",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.0,
+          "sample_size": 1,
+          "frequency": 0.221
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "University of Wyoming",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.0,
+          "sample_size": 1,
+          "frequency": 0.221
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Ripple",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.58,
+          "sample_size": 1,
+          "frequency": 0.215
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Hudson River Trading",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.62,
+          "sample_size": 2,
+          "frequency": 0.213
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Atlassian",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.75,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "CSG International",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Sierra Trading Post",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Cyber Learning Club",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "American Collection Systems, Inc. (Laramie, WY)",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.92,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Vacation",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Red Hat",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.0,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Northeastern University",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.67,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "BRE Bank S.A.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "o2.pl Sp. z o.o.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.75,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "k3o",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.58,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "mySurveyLab.com",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Yuba Solutions",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 7.17,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Bloomberg LP",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.58,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "NewGen Venture Partners",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.25,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Sun Trading LLC",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.42,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "KCG Holdings, Inc.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.25,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "JPMorgan Chase & Co.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.58,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Kyte Group",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.33,
+          "sample_size": 1,
+          "frequency": 0.111
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Alverstoke Junior School",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.75,
+          "sample_size": 1,
+          "frequency": 0.11
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "The University of Queensland",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.42,
+          "sample_size": 1,
+          "frequency": 0.11
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Snap Inc.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.75,
+          "sample_size": 1,
+          "frequency": 0.11
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "MOC Alliance",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.58,
+          "sample_size": 1,
+          "frequency": 0.11
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Sii Sp. z o.o.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.75,
+          "sample_size": 1,
+          "frequency": 0.11
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "dcs.pl Sp. z o.o.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.08,
+          "sample_size": 1,
+          "frequency": 0.11
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Deutsche Bank",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.58,
+          "sample_size": 1,
+          "frequency": 0.11
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Oracle",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.42,
+          "sample_size": 1,
+          "frequency": 0.109
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Guenther Computer",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.25,
+          "sample_size": 1,
+          "frequency": 0.109
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Apple",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.33,
+          "sample_size": 1,
+          "frequency": 0.108
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Spreetail",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.104
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Cboe Global Markets",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.25,
+          "sample_size": 1,
+          "frequency": 0.104
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Bharat Sanchar Nigam Limited",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.08,
+          "sample_size": 1,
+          "frequency": 0.102
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "UNEP/GRID",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.102
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Innobox Inc.",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.17,
+          "sample_size": 1,
+          "frequency": 0.095
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "DOWL HKM",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.92,
+          "sample_size": 1,
+          "frequency": 0.091
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "HQB Chartered Accountants",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.42,
+          "sample_size": 1,
+          "frequency": 0.083
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      }
+    ],
+    "data_centre_engineer": [
+      {
+        "company": "Optiver",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 2.9,
+          "sample_size": 2,
+          "frequency": 1.0
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Goldman Sachs",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.14,
+          "sample_size": 1,
+          "frequency": 0.747
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Windstream Communications",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 13.71,
+          "sample_size": 1,
+          "frequency": 0.5
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Hudson River Trading",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.17,
+          "sample_size": 1,
+          "frequency": 0.498
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "All Star Code",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 0.08,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "UBS Global Asset Management",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 4.5,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Accenture",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.08,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Cook County Assessor's Office",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.92,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Prytania Investment Advisors",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.0,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Covista Communications",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 3.42,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Total-Tel Communications Inc",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.33,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Bennett Testing Service",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.58,
+          "sample_size": 1,
+          "frequency": 0.25
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Chi-Chi's Mexican Restaurant",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 5.0,
+          "sample_size": 1,
+          "frequency": 0.245
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "Urban Assembly Gateway School for Technology",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.58,
+          "sample_size": 1,
+          "frequency": 0.225
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      },
+      {
+        "company": "PAETEC",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 7.33,
+          "sample_size": 1,
+          "frequency": 0.199
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      }
+    ]
+  },
+  "feeders_updated": false,
+  "backup_path": null,
+  "report_path": null,
+  "summary": {
+    "total_job_functions_analyzed": 7,
+    "total_feeders_discovered": 301,
+    "new_feeders": 301,
+    "updated_feeders": 0,
+    "average_feeders_per_function": 43.0
+  }
+}

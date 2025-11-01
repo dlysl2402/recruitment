@@ -1,0 +1,73 @@
+{
+  "timestamp": "2025-11-01T08:07:33.866937",
+  "analysis_type": "feeder_optimization",
+  "job_function_filter": "trading_system_engineer",
+  "min_sample_size": 3,
+  "hft_companies_analyzed": [
+    "Citadel Securities",
+    "Jane Street",
+    "Jump Trading",
+    "Hudson River Trading",
+    "Tower Research Capital",
+    "DRW",
+    "Optiver",
+    "IMC Trading",
+    "Susquehanna International Group",
+    "Flow Traders",
+    "XTX Markets"
+  ],
+  "total_candidates_analyzed": 81,
+  "job_function_metrics": [
+    {
+      "job_function": "trading_system_engineer",
+      "display_name": "Trading System Engineer",
+      "total_candidates": 81,
+      "classified_candidates": 25,
+      "unique_companies": 1,
+      "avg_confidence": 0.3,
+      "top_feeders": [
+        {
+          "company": "Goldman Sachs",
+          "sample_size": 3,
+          "avg_tenure_years": 1.96,
+          "min_tenure_years": 0.58,
+          "max_tenure_years": 3.0,
+          "common_titles": [
+            "Technology Associate",
+            "Technology Analyst",
+            "Sr. Techops lead - Client subledger application "
+          ],
+          "frequency": 0.159,
+          "confidence_score": 0.3
+        }
+      ]
+    }
+  ],
+  "feeder_comparisons": {
+    "trading_system_engineer": [
+      {
+        "company": "Goldman Sachs",
+        "status": "new",
+        "existing_metrics": null,
+        "discovered_metrics": {
+          "avg_tenure": 1.96,
+          "sample_size": 3,
+          "frequency": 0.159
+        },
+        "changes": [
+          "New feeder pattern discovered"
+        ]
+      }
+    ]
+  },
+  "feeders_updated": false,
+  "backup_path": null,
+  "report_path": null,
+  "summary": {
+    "total_job_functions_analyzed": 1,
+    "total_feeders_discovered": 1,
+    "new_feeders": 1,
+    "updated_feeders": 0,
+    "average_feeders_per_function": 1.0
+  }
+}

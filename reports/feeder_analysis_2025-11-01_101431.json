@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-11-01T10:14:31.306795",
+  "analysis_type": "feeder_optimization",
+  "job_function_filter": "trading_system_engineer",
+  "min_sample_size": 15,
+  "hft_companies_analyzed": [
+    "Citadel Securities",
+    "Jane Street",
+    "Jump Trading",
+    "Hudson River Trading",
+    "Tower Research Capital",
+    "DRW",
+    "Optiver",
+    "IMC Trading",
+    "Susquehanna International Group",
+    "Flow Traders",
+    "XTX Markets"
+  ],
+  "total_candidates_analyzed": 124,
+  "job_function_metrics": [
+    {
+      "job_function": "trading_system_engineer",
+      "display_name": "Trading System Engineer",
+      "total_candidates": 124,
+      "classified_candidates": 26,
+      "unique_companies": 0,
+      "avg_confidence": 0.0,
+      "top_feeders": []
+    }
+  ],
+  "feeder_comparisons": {
+    "trading_system_engineer": []
+  },
+  "feeders_updated": false,
+  "backup_path": null,
+  "report_path": null,
+  "summary": {
+    "total_job_functions_analyzed": 1,
+    "total_feeders_discovered": 0,
+    "new_feeders": 0,
+    "updated_feeders": 0,
+    "average_feeders_per_function": 0.0
+  }
+}

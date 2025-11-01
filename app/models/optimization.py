@@ -126,7 +126,7 @@ class OptimizationRequest(BaseModel):
     )
     min_sample_size: int = Field(
         default=15,
-        ge=1,
+        ge=0,
         description="Minimum sample size to consider a feeder pattern valid",
     )
     hft_companies: Optional[List[str]] = Field(

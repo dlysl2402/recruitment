@@ -146,6 +146,17 @@ class Skills(BaseModel):
     endorsement_count: int
 
 
+class JobFunctionTag(BaseModel):
+    """Represents a job function tag assigned to a candidate.
+
+    Attributes:
+        tag: Job function key (e.g., 'trading_system_engineer').
+        display_name: Human-readable name (e.g., 'Trading System Engineer').
+    """
+    tag: str
+    display_name: str
+
+
 class PlacementRecord(BaseModel):
     """Represents a successful job placement for a candidate.
 
@@ -187,6 +198,8 @@ class LinkedInCandidate(BaseModel):
         skills: List of skills.
         certifications: List of certifications.
         benchmark_scores: Dictionary of role-to-score mappings.
+        job_function_tags: List of manually assigned job function tags.
+        placement_history: List of successful job placements.
     """
     # Basic info
     first_name: str
@@ -211,6 +224,9 @@ class LinkedInCandidate(BaseModel):
 
     # Scoring
     benchmark_scores: Dict[str, float] = {}
+
+    # Job function classification
+    job_function_tags: List[JobFunctionTag] = []
 
     # Placement tracking
     placement_history: List[PlacementRecord] = []

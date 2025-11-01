@@ -1,0 +1,144 @@
+{
+  "timestamp": "2025-11-01T07:42:13.830404",
+  "analysis_type": "feeder_optimization",
+  "job_function_filter": null,
+  "min_sample_size": 15,
+  "hft_companies_analyzed": [
+    "Citadel Securities",
+    "Jane Street",
+    "Jump Trading",
+    "Hudson River Trading",
+    "Tower Research Capital",
+    "DRW",
+    "Optiver",
+    "IMC Trading",
+    "Susquehanna International Group",
+    "Flow Traders",
+    "XTX Markets"
+  ],
+  "total_candidates_analyzed": 81,
+  "job_function_metrics": [
+    {
+      "job_function": "trading_system_engineer",
+      "display_name": "Trading System Engineer",
+      "total_candidates": 81,
+      "classified_candidates": 25,
+      "unique_companies": 0,
+      "avg_confidence": 0.0,
+      "top_feeders": []
+    },
+    {
+      "job_function": "devops_engineer",
+      "display_name": "DevOps Engineer",
+      "total_candidates": 81,
+      "classified_candidates": 13,
+      "unique_companies": 0,
+      "avg_confidence": 0.0,
+      "top_feeders": []
+    },
+    {
+      "job_function": "network_engineer",
+      "display_name": "Network Engineer",
+      "total_candidates": 81,
+      "classified_candidates": 2,
+      "unique_companies": 0,
+      "avg_confidence": 0.0,
+      "top_feeders": []
+    },
+    {
+      "job_function": "app_support_engineer",
+      "display_name": "Application Support Engineer",
+      "total_candidates": 81,
+      "classified_candidates": 2,
+      "unique_companies": 0,
+      "avg_confidence": 0.0,
+      "top_feeders": []
+    },
+    {
+      "job_function": "linux_engineer",
+      "display_name": "Linux Engineer",
+      "total_candidates": 81,
+      "classified_candidates": 4,
+      "unique_companies": 0,
+      "avg_confidence": 0.0,
+      "top_feeders": []
+    },
+    {
+      "job_function": "data_centre_engineer",
+      "display_name": "Data Centre Engineer",
+      "total_candidates": 81,
+      "classified_candidates": 3,
+      "unique_companies": 0,
+      "avg_confidence": 0.0,
+      "top_feeders": []
+    }
+  ],
+  "feeder_comparisons": {
+    "trading_system_engineer": [],
+    "devops_engineer": [],
+    "network_engineer": [
+      {
+        "company": "Amazon",
+        "status": "removed",
+        "existing_metrics": {
+          "min_tenure": 3.0,
+          "max_tenure": 15.0
+        },
+        "discovered_metrics": null,
+        "changes": [
+          "No longer meets minimum sample size threshold"
+        ]
+      }
+    ],
+    "app_support_engineer": [],
+    "linux_engineer": [
+      {
+        "company": "Google",
+        "status": "removed",
+        "existing_metrics": {
+          "min_tenure": 3.0,
+          "max_tenure": 15.0
+        },
+        "discovered_metrics": null,
+        "changes": [
+          "No longer meets minimum sample size threshold"
+        ]
+      },
+      {
+        "company": "Amazon",
+        "status": "removed",
+        "existing_metrics": {
+          "min_tenure": 3.0,
+          "max_tenure": 15.0
+        },
+        "discovered_metrics": null,
+        "changes": [
+          "No longer meets minimum sample size threshold"
+        ]
+      },
+      {
+        "company": "Susquehanna International Group",
+        "status": "removed",
+        "existing_metrics": {
+          "min_tenure": 3.0,
+          "max_tenure": 15.0
+        },
+        "discovered_metrics": null,
+        "changes": [
+          "No longer meets minimum sample size threshold"
+        ]
+      }
+    ],
+    "data_centre_engineer": []
+  },
+  "feeders_updated": false,
+  "backup_path": null,
+  "report_path": null,
+  "summary": {
+    "total_job_functions_analyzed": 6,
+    "total_feeders_discovered": 0,
+    "new_feeders": 0,
+    "updated_feeders": 0,
+    "average_feeders_per_function": 0.0
+  }
+}
