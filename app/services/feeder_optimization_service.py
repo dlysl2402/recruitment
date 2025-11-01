@@ -332,10 +332,11 @@ class FeederOptimizationService:
     def _classify_candidates(
         self, candidates: List[LinkedInCandidate]
     ) -> Dict[str, List[LinkedInCandidate]]:
-        """Classifies candidates by job function based on current title and company.
+        """Classifies candidates using ONLY manual job_function_tags.
 
-        Uses RoleMapper for company-specific role equivalence, then falls back to
-        generic JobFunctionClassifier if no mapping exists.
+        Only candidates with manual tags are included in the analysis.
+        Candidates without tags are skipped. Candidates with multiple tags
+        are included in the analysis for each of their tags.
 
         Args:
             candidates: List of candidates to classify.
@@ -345,26 +346,38 @@ class FeederOptimizationService:
         """
         classified = defaultdict(list)
 
+        total_candidates = len(candidates)
+        candidates_with_tags = 0
+        candidates_without_tags = 0
+        multi_tagged_candidates = 0
+        total_tag_assignments = 0
+
         for candidate in candidates:
-            if candidate.current_title:
-                job_function = None
+            # Only process candidates with manual tags
+            if not candidate.job_function_tags or len(candidate.job_function_tags) == 0:
+                candidates_without_tags += 1
+                continue
 
-                # Try RoleMapper first (company-aware classification)
-                if candidate.current_company:
-                    company_name = candidate.current_company.name if hasattr(candidate.current_company, 'name') else str(candidate.current_company)
-                    if company_name:
-                        job_function = RoleMapper.get_job_function(
-                            company_name, candidate.current_title
-                        )
+            candidates_with_tags += 1
+            if len(candidate.job_function_tags) > 1:
+                multi_tagged_candidates += 1
 
-                # Fall back to generic JobFunctionClassifier
-                if not job_function:
-                    job_function, confidence = JobFunctionClassifier.classify(
-                        candidate.current_title
-                    )
+            # Add candidate to ALL their tagged job functions
+            for tag in candidate.job_function_tags:
+                classified[tag.tag].append(candidate)
+                total_tag_assignments += 1
 
-                if job_function:
-                    classified[job_function].append(candidate)
+        # Log classification statistics
+        print(f"\n=== Tag-Based Classification Statistics ===")
+        print(f"Total candidates analyzed: {total_candidates}")
+        print(f"Candidates with tags: {candidates_with_tags}")
+        print(f"Candidates without tags (skipped): {candidates_without_tags}")
+        print(f"Multi-tagged candidates: {multi_tagged_candidates}")
+        print(f"Total tag assignments: {total_tag_assignments}")
+        print(f"Job functions found: {len(classified)}")
+        for job_func, cands in classified.items():
+            print(f"  - {job_func}: {len(cands)} candidates")
+        print(f"==========================================\n")
 
         return dict(classified)
 
