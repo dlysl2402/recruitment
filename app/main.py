@@ -27,7 +27,8 @@ from app.api.schemas.requests import (
     CreateInterviewRequest,
     AddStageRequest,
     UpdateStageOutcomeRequest,
-    CompleteInterviewRequest
+    CompleteInterviewRequest,
+    ScrapeBatchRequest
 )
 from app.api.schemas.company_schemas import (
     CreateCompanyRequest,
@@ -176,6 +177,8 @@ def score_candidate_endpoint(
         )
 
     return CandidateScoreResponse(
+        first_name=candidate.first_name,
+        last_name=candidate.last_name,
         linkedin_url=candidate.linkedin_url,
         score=scoring_result.score,
         breakdown=scoring_result.breakdown
@@ -208,6 +211,8 @@ def get_top_candidates(
 
     return [
         CandidateScoreResponse(
+            first_name=candidate.first_name,
+            last_name=candidate.last_name,
             linkedin_url=candidate.linkedin_url,
             score=scoring_result.score,
             breakdown=scoring_result.breakdown
@@ -420,11 +425,11 @@ def filter_candidates(
 
 # LinkedIn scraping endpoints
 @app.post("/linkedin-scrape-and-save-batch")
-def scrape_and_save_candidate_batch(profile_usernames: str):
+def scrape_and_save_candidate_batch(request: ScrapeBatchRequest):
     """Scrape LinkedIn profiles and save to database with duplicate detection.
 
     Args:
-        profile_usernames: Comma-separated LinkedIn usernames to scrape.
+        request: ScrapeBatchRequest with comma-separated LinkedIn usernames.
 
     Returns:
         Dictionary with categorized results:
@@ -444,7 +449,7 @@ def scrape_and_save_candidate_batch(profile_usernames: str):
     try:
         usernames = [
             username.strip()
-            for username in profile_usernames.split(",")
+            for username in request.profile_usernames.split(",")
             if username.strip()
         ]
         if not usernames:

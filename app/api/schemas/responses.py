@@ -6,6 +6,8 @@ from typing import List, Dict, Optional, Any
 
 class CandidateScoreResponse(BaseModel):
     """Response model for candidate scoring endpoints."""
+    first_name: str
+    last_name: str
     linkedin_url: str
     score: float
     breakdown: Dict
