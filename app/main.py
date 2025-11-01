@@ -1,6 +1,7 @@
 """FastAPI application for recruitment candidate management and scoring."""
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import List, Optional
 
@@ -40,6 +41,18 @@ from app.api.schemas.job_schemas import (
 
 
 app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Global exception handlers
@@ -392,9 +405,13 @@ def filter_candidates(
 
     return [
         CandidateFilterResponse(
+            id=candidate["id"],
             first_name=candidate["first_name"],
             last_name=candidate["last_name"],
             linkedin_url=candidate["linkedin_url"],
+            current_company=candidate.get("current_company"),
+            current_title=candidate.get("current_title"),
+            location=candidate.get("location"),
             matched_skills=candidate["matched_skills"]
         )
         for candidate in filtered_candidates

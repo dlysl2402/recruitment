@@ -213,9 +213,17 @@ class CandidateService:
             ] if requested_skills else []
 
             filtered_candidates.append({
+                "id": candidate_data.get("id", ""),
                 "first_name": candidate_data.get("first_name", ""),
                 "last_name": candidate_data.get("last_name", ""),
                 "linkedin_url": candidate_data.get("linkedin_url", ""),
+                "current_company": candidate_data.get("current_company"),
+                "current_title": (
+                    candidate_data.get("experience", [{}])[0].get("title", "")
+                    if candidate_data.get("experience")
+                    else ""
+                ),
+                "location": candidate_data.get("location"),
                 "matched_skills": matched_skills
             })
 

@@ -79,12 +79,19 @@ class CandidateRepository(BaseRepository):
 
         Note:
             Multiple skills are combined with AND logic (all must match).
+            JSONB fields (current_company) are filtered on nested properties.
         """
         query = self.db_client.table(self.table_name).select("*")
 
         if filters:
             for field, value in filters.items():
-                query = query.ilike(field, f"%{value}%")
+                # Handle JSONB fields specially
+                if field == "current_company":
+                    # Filter on the 'name' property inside the JSONB object
+                    query = query.ilike("current_company->>name", f"%{value}%")
+                else:
+                    # Regular text field filtering
+                    query = query.ilike(field, f"%{value}%")
 
         if skills:
             for skill in skills:
