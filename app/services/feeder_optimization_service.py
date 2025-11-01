@@ -26,6 +26,7 @@ from app.scoring import (
 from app.utils.job_function_classifier import JobFunctionClassifier
 from app.utils.company_matcher import CompanyMatcher
 from app.utils.config_manager import ConfigManager
+from app.utils.role_mapper import RoleMapper
 
 
 # Default HFT companies to analyze
@@ -331,7 +332,10 @@ class FeederOptimizationService:
     def _classify_candidates(
         self, candidates: List[LinkedInCandidate]
     ) -> Dict[str, List[LinkedInCandidate]]:
-        """Classifies candidates by job function based on current title.
+        """Classifies candidates by job function based on current title and company.
+
+        Uses RoleMapper for company-specific role equivalence, then falls back to
+        generic JobFunctionClassifier if no mapping exists.
 
         Args:
             candidates: List of candidates to classify.
@@ -342,10 +346,22 @@ class FeederOptimizationService:
         classified = defaultdict(list)
 
         for candidate in candidates:
-            if candidate.current_position and candidate.current_position.title:
-                job_function, confidence = JobFunctionClassifier.classify(
-                    candidate.current_position.title
-                )
+            if candidate.current_title:
+                job_function = None
+
+                # Try RoleMapper first (company-aware classification)
+                if candidate.current_company:
+                    company_name = candidate.current_company.name if hasattr(candidate.current_company, 'name') else str(candidate.current_company)
+                    if company_name:
+                        job_function = RoleMapper.get_job_function(
+                            company_name, candidate.current_title
+                        )
+
+                # Fall back to generic JobFunctionClassifier
+                if not job_function:
+                    job_function, confidence = JobFunctionClassifier.classify(
+                        candidate.current_title
+                    )
 
                 if job_function:
                     classified[job_function].append(candidate)

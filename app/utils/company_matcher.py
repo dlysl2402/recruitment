@@ -15,7 +15,7 @@ class CompanyMatcher:
     """Unified utility for matching company names.
 
     Handles various company formats (str, CompanyReference, FeederPattern, etc.)
-    and checks for exact matches, substring matches, and alias matches.
+    and checks for exact matches and alias matches.
     """
 
     @staticmethod
@@ -43,10 +43,9 @@ class CompanyMatcher:
     ) -> bool:
         """Check if two companies match, considering aliases.
 
-        Supports three matching strategies:
+        Supports two matching strategies:
         1. Exact name match (case-insensitive)
-        2. Substring match (for variations like "AWS" in "Amazon Web Services")
-        3. Alias match via company_b's company_aliases or company_repository
+        2. Alias match via company_b's company_aliases or company_repository
 
         Args:
             company_a: First company (str or CompanyReference).
@@ -79,8 +78,8 @@ class CompanyMatcher:
 
             name_b_lower = name_b.lower().strip()
 
-            # Exact match or substring match
-            if name_a_lower == name_b_lower or name_b_lower in name_a_lower or name_a_lower in name_b_lower:
+            # Exact match only
+            if name_a_lower == name_b_lower:
                 return True
 
             # If company_repository provided, check database aliases
@@ -102,8 +101,8 @@ class CompanyMatcher:
             for company_name in all_company_names:
                 company_name_lower = company_name.lower().strip()
 
-                # Exact match or substring match
-                if name_a_lower == company_name_lower or company_name_lower in name_a_lower:
+                # Exact match only
+                if name_a_lower == company_name_lower:
                     return True
 
             return False

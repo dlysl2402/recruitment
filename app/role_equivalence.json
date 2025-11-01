@@ -1,0 +1,30 @@
+{
+  "trading_system_engineer": {
+    "canonical_name": "Trading Systems Engineer",
+    "description": "Keep trading environment up and running at all times",
+    "companies": {
+      "IMC": ["Trading Systems Engineer", "Trading Engineer"],
+      "Optiver": ["Application Engineer"],
+      "Citadel Securities": ["Site Reliability Engineer"]
+    }
+  },
+  "network_engineer": {
+    "canonical_name": "Infrastructure/Platform Engineer",
+    "description": "Build projects that improve infrastructure",
+    "companies": {
+      "IMC": ["Site Reliability Engineer", "Platforms Engineer", "Platform Engineer"],
+      "Jane Street": ["Production Engineer"],
+      "Citadel Securities": ["Platform Engineer", "Platforms Engineer"]
+    }
+  },
+  "linux_engineer": {
+    "canonical_name": "Systems Engineer",
+    "description": "Infrastructure layer - Linux boxes, machine configuration, etc.",
+    "companies": {
+      "IMC": ["Systems Engineer", "Linux Systems Engineer", "Linux Engineer"],
+      "Citadel Securities": ["Linux Engineer", "Systems Engineer"],
+      "Jane Street": ["Systems Engineer", "Linux Engineer"],
+      "Jump Trading": ["Linux Engineer", "Systems Engineer"]
+    }
+  }
+}

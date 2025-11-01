@@ -12,6 +12,7 @@ from app.feeder_models import RoleFeederConfig, FeederPattern, PedigreeCompany
 from app.constants import FEEDER_CONFIG_FILE, MONTH_NAME_TO_NUMBER, DAYS_PER_YEAR, MONTHS_PER_YEAR
 from app.utils.company_matcher import CompanyMatcher
 from app.utils.penalty_calculator import PenaltyCalculator
+from app.utils.role_mapper import RoleMapper
 
 
 # Cache for feeder configs
@@ -214,12 +215,31 @@ def _score_feeder_match(
         breakdown["feeder_match"] = f"{feeder.company} ({tenure_years:.1f}y, +{base_score})"
         matched_feeder = feeder.company
 
-        # Title match bonus
+        # Title match bonus (with company-aware role equivalence)
         if feeder.required_titles and candidate.current_title:
-            if any(
-                title.lower() in candidate.current_title.lower()
-                for title in feeder.required_titles
-            ):
+            title_matched = False
+
+            # Try context-aware matching first if we have company info
+            if candidate.current_company:
+                current_company_name = candidate.current_company.name if hasattr(candidate.current_company, 'name') else str(candidate.current_company)
+                for required_title in feeder.required_titles:
+                    if RoleMapper.match_title_with_context(
+                        candidate.current_title,
+                        current_company_name,
+                        required_title
+                    ):
+                        title_matched = True
+                        break
+
+            # Fall back to simple string matching if no context match
+            if not title_matched:
+                if any(
+                    title.lower() in candidate.current_title.lower()
+                    for title in feeder.required_titles
+                ):
+                    title_matched = True
+
+            if title_matched:
                 score += 10
                 breakdown["title_match"] = True
 
