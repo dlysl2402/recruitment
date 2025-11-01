@@ -383,19 +383,20 @@ class FeederOptimizationService:
         Returns:
             List of discovered feeder patterns sorted by frequency.
         """
-        # Track feeder data by company
+        # Track feeder data by company with recency weighting
         feeder_data = defaultdict(lambda: {
             "candidates": set(),
             "tenures": [],
             "titles": [],
+            "weighted_occurrences": 0.0,  # Sum of decay weights
         })
 
         for candidate in candidates:
             if not candidate.experience:
                 continue
 
-            # Skip current position, analyze previous experience only
-            for experience in candidate.experience[1:]:
+            # Analyze all experience (including current, which gets years_ago=0)
+            for i, experience in enumerate(candidate.experience):
                 company_name = self._extract_company_name(experience)
                 if not company_name:
                     continue
@@ -405,9 +406,19 @@ class FeederOptimizationService:
                 if tenure == 0:
                     continue
 
-                # Track this feeder occurrence
-                feeder_data[company_name]["candidates"].add(candidate.id)
+                # Calculate years_ago for recency weighting
+                years_ago = self._calculate_years_ago(i, candidate.experience)
+
+                # Apply exponential decay: 0.92^years_ago with 25% floor for >15 years
+                if years_ago > 15:
+                    decay_weight = 0.25
+                else:
+                    decay_weight = 0.92 ** years_ago
+
+                # Track this feeder occurrence (use linkedin_url as unique identifier)
+                feeder_data[company_name]["candidates"].add(candidate.linkedin_url)
                 feeder_data[company_name]["tenures"].append(tenure)
+                feeder_data[company_name]["weighted_occurrences"] += decay_weight
                 if experience.title:
                     feeder_data[company_name]["titles"].append(experience.title)
 
@@ -418,7 +429,7 @@ class FeederOptimizationService:
         for company, data in feeder_data.items():
             sample_size = len(data["candidates"])
 
-            # Filter by minimum sample size
+            # Filter by minimum sample size (use raw count, not weighted)
             if sample_size < min_sample_size:
                 continue
 
@@ -431,8 +442,8 @@ class FeederOptimizationService:
             title_counts = Counter(data["titles"])
             common_titles = [title for title, _ in title_counts.most_common(3)]
 
-            # Calculate frequency and confidence
-            frequency = sample_size / total_candidates
+            # Calculate frequency using weighted occurrences for better recency sensitivity
+            weighted_frequency = data["weighted_occurrences"] / total_candidates
             confidence = self._calculate_confidence_score(sample_size)
 
             discovered_feeders.append(
@@ -443,12 +454,12 @@ class FeederOptimizationService:
                     min_tenure_years=round(min_tenure, 2),
                     max_tenure_years=round(max_tenure, 2),
                     common_titles=common_titles,
-                    frequency=round(frequency, 3),
+                    frequency=round(weighted_frequency, 3),
                     confidence_score=round(confidence, 2),
                 )
             )
 
-        # Sort by frequency (descending)
+        # Sort by weighted frequency (descending)
         discovered_feeders.sort(key=lambda f: f.frequency, reverse=True)
 
         return discovered_feeders
@@ -476,26 +487,129 @@ class FeederOptimizationService:
 
         Returns:
             Tenure in years, or 0 if cannot be calculated.
+
+        Raises:
+            ValueError: If date fields contain invalid data types.
         """
         if not experience.start_date:
             return 0.0
 
         # If there's an end_date, calculate between start and end
         if experience.end_date:
-            start_year = experience.start_date.year
-            end_year = experience.end_date.year
+            try:
+                # Validate and convert year fields
+                start_year = experience.start_date.year
+                end_year = experience.end_date.year
 
-            start_month = experience.start_date.month or 1
-            end_month = experience.end_date.month or 12
+                if start_year is None or end_year is None:
+                    return 0.0
 
-            years = end_year - start_year
-            months = end_month - start_month
+                # Convert to int if strings
+                if isinstance(start_year, str):
+                    start_year = int(start_year)
+                if isinstance(end_year, str):
+                    end_year = int(end_year)
 
-            return max(0.0, years + (months / 12.0))
+                # Validate they are now integers
+                if not isinstance(start_year, int) or not isinstance(end_year, int):
+                    raise ValueError(
+                        f"Invalid year data types in experience at {experience.company.name}: "
+                        f"start_year={start_year} (type: {type(start_year).__name__}), "
+                        f"end_year={end_year} (type: {type(end_year).__name__})"
+                    )
+
+                # Handle month fields - convert month names to numbers
+                start_month = experience.start_date.month or 1
+                end_month = experience.end_date.month or 12
+
+                # Convert month names to integers if needed
+                from app.constants import MONTH_NAME_TO_NUMBER
+                if isinstance(start_month, str):
+                    start_month = MONTH_NAME_TO_NUMBER.get(start_month, 1)
+                if isinstance(end_month, str):
+                    end_month = MONTH_NAME_TO_NUMBER.get(end_month, 12)
+
+                years = end_year - start_year
+                months = end_month - start_month
+
+                return max(0.0, years + (months / 12.0))
+
+            except (ValueError, TypeError, AttributeError) as e:
+                # Provide detailed error for debugging
+                company_name = experience.company.name if hasattr(experience, 'company') else 'Unknown'
+                raise ValueError(
+                    f"Failed to calculate tenure for experience at {company_name}. "
+                    f"start_date.year={getattr(experience.start_date, 'year', 'N/A')} "
+                    f"(type: {type(getattr(experience.start_date, 'year', None)).__name__}), "
+                    f"end_date.year={getattr(experience.end_date, 'year', 'N/A')} "
+                    f"(type: {type(getattr(experience.end_date, 'year', None)).__name__}). "
+                    f"Original error: {str(e)}"
+                )
 
         # If no end_date (current position), calculate from start to now
         # But we're only analyzing previous positions, so this shouldn't happen
         return 0.0
+
+    def _calculate_years_ago(self, experience_index: int, experiences: List[Experience]) -> float:
+        """Calculates how many years ago an experience ended.
+
+        Uses the same logic as pedigree scoring to calculate recency.
+        For current roles (no end_date), returns 0.0.
+        For past roles, uses the next experience's start date as proxy for how long ago.
+
+        Args:
+            experience_index: Index of this experience in the list.
+            experiences: Full list of experiences (ordered newest first).
+
+        Returns:
+            Years ago this experience ended, or 0.0 for current roles.
+        """
+        from datetime import datetime
+
+        experience = experiences[experience_index]
+
+        # Current role (no end date) - no decay
+        if experience.end_date is None:
+            return 0.0
+
+        # Has end date - calculate years ago
+        years_ago = 0.0
+
+        # If there's a next experience (index - 1, since list is newest first),
+        # use its start date as proxy for when this role ended
+        if experience_index > 0 and experiences[experience_index - 1].start_date:
+            next_start = experiences[experience_index - 1].start_date
+
+            # Calculate tenure from start of next role to now
+            if next_start.year:
+                from app.constants import MONTH_NAME_TO_NUMBER
+                next_month = MONTH_NAME_TO_NUMBER.get(next_start.month, 1) if next_start.month else 1
+                next_start_date = datetime(next_start.year, next_month, 1)
+                years_since_next_start = (datetime.now() - next_start_date).days / 365.25
+
+                # Calculate tenure from end of this role to now
+                if experience.end_date.year:
+                    end_month = MONTH_NAME_TO_NUMBER.get(experience.end_date.month, 12) if experience.end_date.month else 12
+                    end_date = datetime(experience.end_date.year, end_month, 1)
+                    years_since_end = (datetime.now() - end_date).days / 365.25
+
+                    # Difference is years_ago
+                    years_ago = max(0.0, years_since_end - years_since_next_start)
+                else:
+                    years_ago = 0.0
+            else:
+                years_ago = 0.0
+        else:
+            # No next experience, use end_date directly
+            if experience.end_date.year:
+                from app.constants import MONTH_NAME_TO_NUMBER
+                end_month = MONTH_NAME_TO_NUMBER.get(experience.end_date.month, 12) if experience.end_date.month else 12
+                end_date = datetime(experience.end_date.year, end_month, 1)
+                years_ago = (datetime.now() - end_date).days / 365.25
+            else:
+                years_ago = 0.0
+
+        return max(0.0, years_ago)
 
     def _calculate_confidence_score(self, sample_size: int) -> float:
         """Calculates confidence score based on sample size.

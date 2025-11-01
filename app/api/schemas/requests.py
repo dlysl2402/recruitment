@@ -40,3 +40,8 @@ class CompleteInterviewRequest(BaseModel):
     final_status: InterviewStatus
     offer_details: Optional[OfferDetails] = None
     final_outcome: Optional[str] = None
+
+
+class ScrapeBatchRequest(BaseModel):
+    """Request model for batch scraping LinkedIn profiles."""
+    profile_usernames: str

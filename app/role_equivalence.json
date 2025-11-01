@@ -4,7 +4,7 @@
     "description": "Keep trading environment up and running at all times",
     "companies": {
       "IMC": ["Trading Systems Engineer", "Trading Engineer"],
-      "Optiver": ["Application Engineer"],
+      "Optiver": ["Application Engineer", "Production Engineer"],
       "Citadel Securities": ["Site Reliability Engineer"]
     }
   },

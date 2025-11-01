@@ -181,7 +181,11 @@ def _score_feeder_match(
 ) -> Tuple[int, Dict, Optional[str]]:
     """Score candidate based on feeder pattern matching.
 
-    Includes company/tenure match and title match bonus.
+    Iterates through all work experiences and awards points using S-curve
+    based on tenure at feeder companies. Multiple feeders can stack.
+
+    Exponential time decay applied: more recent experience weighs heavier.
+    Decay multiplier = 0.92^years_ago, with 25% floor for experiences >15 years old.
 
     Args:
         candidate: The candidate to score.
@@ -194,56 +198,138 @@ def _score_feeder_match(
     breakdown = {}
     matched_feeder = None
 
-    for feeder in role_config.feeders:
-        if not CompanyMatcher.matches(candidate.current_company, feeder):
-            continue
+    if not role_config.feeders:
+        return score, breakdown, matched_feeder
 
-        # Calculate consecutive tenure at current company (handles internal moves)
-        tenure_years = calculate_consecutive_company_tenure(
-            candidate.experience,
-            candidate.current_company,
-            feeder,
-            candidate.current_start_date
-        )
+    feeder_details = []
 
-        if not (feeder.min_tenure_years <= tenure_years <= feeder.max_tenure_years):
-            continue
+    # Group consecutive experiences by company to avoid double-counting overlapping roles
+    processed_feeders = set()
 
-        # Company and tenure match - calculate S-curve score
-        base_score = calculate_pedigree_s_curve(tenure_years, feeder.multiplier)
-        score += base_score
-        breakdown["feeder_match"] = f"{feeder.company} ({tenure_years:.1f}y, +{base_score})"
-        matched_feeder = feeder.company
+    for i, experience in enumerate(candidate.experience):
+        for feeder in role_config.feeders:
+            # Check if this experience matches a feeder company
+            if not CompanyMatcher.matches(experience.company, feeder):
+                continue
 
-        # Title match bonus (with company-aware role equivalence)
-        if feeder.required_titles and candidate.current_title:
-            title_matched = False
+            # Skip if we already processed this feeder company
+            feeder_key = feeder.company.lower()
+            if feeder_key in processed_feeders:
+                break
 
-            # Try context-aware matching first if we have company info
-            if candidate.current_company:
-                current_company_name = candidate.current_company.name if hasattr(candidate.current_company, 'name') else str(candidate.current_company)
-                for required_title in feeder.required_titles:
-                    if RoleMapper.match_title_with_context(
-                        candidate.current_title,
-                        current_company_name,
-                        required_title
-                    ):
-                        title_matched = True
-                        break
+            # Find all consecutive experiences at this feeder company
+            earliest_start = experience.start_date
+            latest_end = experience.end_date
+            relevant_title = experience.title
 
-            # Fall back to simple string matching if no context match
-            if not title_matched:
-                if any(
-                    title.lower() in candidate.current_title.lower()
-                    for title in feeder.required_titles
-                ):
-                    title_matched = True
+            # Look ahead for more consecutive roles at same company
+            for j in range(i + 1, len(candidate.experience)):
+                next_exp = candidate.experience[j]
+                if CompanyMatcher.matches(next_exp.company, feeder):
+                    # Update earliest/latest dates
+                    if next_exp.start_date and earliest_start:
+                        if _date_is_earlier(next_exp.start_date, earliest_start):
+                            earliest_start = next_exp.start_date
+                    if next_exp.end_date and latest_end:
+                        if _date_is_later(next_exp.end_date, latest_end):
+                            latest_end = next_exp.end_date
+                    elif next_exp.end_date is None:
+                        latest_end = None  # Currently employed
+                else:
+                    # Hit different company, stop looking
+                    break
 
-            if title_matched:
-                score += 10
-                breakdown["title_match"] = True
+            # Calculate total tenure from earliest to latest
+            tenure_years = 0.0
+            if earliest_start:
+                if latest_end is None:
+                    # Currently employed
+                    tenure_years = calculate_tenure(earliest_start)
+                else:
+                    start_tenure = calculate_tenure(earliest_start)
+                    end_tenure = calculate_tenure(latest_end)
+                    tenure_years = abs(start_tenure - end_tenure)
 
-        break  # Only match one feeder
+            # Check tenure requirements
+            if not (feeder.min_tenure_years <= tenure_years <= feeder.max_tenure_years):
+                processed_feeders.add(feeder_key)
+                break
+
+            if tenure_years > 0:
+                # Calculate years_ago for exponential decay
+                years_ago = 0.0
+                if latest_end is None:
+                    # Current role - no decay
+                    years_ago = 0.0
+                else:
+                    # Use end_date to calculate how long ago this ended
+                    # If next experience exists, use its start date as proxy
+                    if i > 0 and candidate.experience[i - 1].start_date:
+                        next_start = candidate.experience[i - 1].start_date
+                        years_ago = calculate_tenure(next_start) - calculate_tenure(latest_end)
+                        years_ago = max(0.0, years_ago)
+                    else:
+                        # Use end_date tenure from today
+                        years_ago = calculate_tenure(latest_end)
+
+                # Apply exponential decay: 0.92^years_ago with 25% floor for >15 years
+                if years_ago > 15:
+                    decay_multiplier = 0.25
+                else:
+                    decay_multiplier = 0.92 ** years_ago
+
+                # Calculate points using S-curve with company multiplier and time decay
+                base_points = calculate_pedigree_s_curve(
+                    tenure_years,
+                    feeder.multiplier
+                )
+                points = int(base_points * decay_multiplier)
+                score += points
+
+                # Track the most recent/highest scoring feeder as the "matched" one
+                if matched_feeder is None or years_ago == 0.0:
+                    matched_feeder = feeder.company
+
+                # Add to breakdown with tenure, years_ago, decay, and points
+                feeder_details.append(
+                    f"{feeder.company} ({tenure_years:.1f}y, {years_ago:.1f}y ago, decay={decay_multiplier:.2f}, +{points})"
+                )
+
+                # Title match bonus (only for current/most recent feeder role)
+                if years_ago == 0.0 and feeder.required_titles and relevant_title:
+                    title_matched = False
+
+                    # Try context-aware matching first if we have company info
+                    company_name = experience.company.name if hasattr(experience.company, 'name') else str(experience.company)
+                    for required_title in feeder.required_titles:
+                        if RoleMapper.match_title_with_context(
+                            relevant_title,
+                            company_name,
+                            required_title
+                        ):
+                            title_matched = True
+                            break
+
+                    # Fall back to simple string matching if no context match
+                    if not title_matched:
+                        if any(
+                            title.lower() in relevant_title.lower()
+                            for title in feeder.required_titles
+                        ):
+                            title_matched = True
+
+                    if title_matched:
+                        score += 10
+                        breakdown["title_match"] = True
+
+                # Mark this feeder as processed
+                processed_feeders.add(feeder_key)
+
+            # Only match one feeder company per experience
+            break
+
+    if feeder_details:
+        breakdown["feeder_companies"] = feeder_details
 
     return score, breakdown, matched_feeder
 
