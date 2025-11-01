@@ -224,7 +224,8 @@ class CandidateService:
                     else ""
                 ),
                 "location": candidate_data.get("location"),
-                "matched_skills": matched_skills
+                "matched_skills": matched_skills,
+                "job_function_tags": candidate_data.get("job_function_tags", [])
             })
 
         return filtered_candidates

@@ -23,3 +23,4 @@ class CandidateFilterResponse(BaseModel):
     current_title: Optional[str] = None
     location: Optional[Dict[str, Any]] = None
     matched_skills: List[str]
+    job_function_tags: List[Dict[str, str]] = []

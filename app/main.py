@@ -421,10 +421,91 @@ def filter_candidates(
             current_company=candidate.get("current_company"),
             current_title=candidate.get("current_title"),
             location=candidate.get("location"),
-            matched_skills=candidate["matched_skills"]
+            matched_skills=candidate["matched_skills"],
+            job_function_tags=candidate.get("job_function_tags", [])
         )
         for candidate in filtered_candidates
     ]
+
+
+@app.get("/candidates/by-tags")
+def get_candidates_by_tags(tags: str):
+    """Get candidates filtered by job function tags.
+
+    Args:
+        tags: Comma-separated list of job function tag keys
+              (e.g., 'trading_system_engineer,devops_engineer').
+
+    Returns:
+        List of candidates that have at least one of the specified tags.
+
+    Example:
+        GET /candidates/by-tags?tags=trading_system_engineer
+        GET /candidates/by-tags?tags=trading_system_engineer,devops_engineer
+    """
+    tag_list = [tag.strip() for tag in tags.split(",") if tag.strip()]
+
+    if not tag_list:
+        raise HTTPException(status_code=400, detail="At least one tag must be provided")
+
+    candidates = candidate_repository.get_by_job_function_tags(tag_list)
+
+    return {
+        "candidates": candidates,
+        "count": len(candidates),
+        "tags_filter": tag_list
+    }
+
+
+@app.post("/candidates/{candidate_id}/tags")
+def update_candidate_tags(candidate_id: str, tags: List[dict]):
+    """Update job function tags for a candidate.
+
+    Args:
+        candidate_id: Database ID of the candidate.
+        tags: List of tag objects with 'tag' and 'display_name' keys.
+
+    Request Body Example:
+        [
+            {
+                "tag": "trading_system_engineer",
+                "display_name": "Trading System Engineer"
+            },
+            {
+                "tag": "devops_engineer",
+                "display_name": "DevOps Engineer"
+            }
+        ]
+
+    Returns:
+        Updated candidate record.
+
+    Raises:
+        404: If candidate not found.
+        400: If tags format is invalid.
+    """
+    # Validate tag format
+    for tag in tags:
+        if "tag" not in tag or "display_name" not in tag:
+            raise HTTPException(
+                status_code=400,
+                detail="Each tag must have 'tag' and 'display_name' keys"
+            )
+
+    try:
+        updated_candidate = candidate_repository.update_job_function_tags(
+            candidate_id, tags
+        )
+        return {
+            "success": True,
+            "candidate_id": candidate_id,
+            "tags": updated_candidate.get("job_function_tags", []),
+            "message": f"Updated tags for candidate {candidate_id}"
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update tags: {str(e)}")
 
 
 # LinkedIn scraping endpoints
