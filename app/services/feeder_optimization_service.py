@@ -391,11 +391,11 @@ class FeederOptimizationService:
         })
 
         for candidate in candidates:
-            if not candidate.experiences:
+            if not candidate.experience:
                 continue
 
             # Skip current position, analyze previous experience only
-            for experience in candidate.experiences[1:]:
+            for experience in candidate.experience[1:]:
                 company_name = self._extract_company_name(experience)
                 if not company_name:
                     continue
